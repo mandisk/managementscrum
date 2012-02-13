@@ -17,14 +17,13 @@
 	border: 1px solid #AAA;
 	color: #555;
 	padding: 2%;
-        margin-left: 5px;
 }
 
 .form-item input[type="submit"], input[type="button"] {
 	color: #555;
 	border: 1px solid #AAA;
 	margin: 0;
-	padding: 2%;
+	padding: 3%;
 	background-color: #F1F1F1;
 }
 
