@@ -4,9 +4,35 @@
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Facelet Title</title>
+        <link type="text/css" rel="stylesheet" href="css/reset.css"></link>
+        <link type="text/css" rel="stylesheet" href="css/text.css"></link>
+        <link type="text/css" rel="stylesheet" href="css/1024.css"></link>
+        <link type="text/css" rel="stylesheet" href="css/classes.css"></link>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h:form>
+            <div style="height: 300px"></div>
+            <div class="container_16">
+                <div class="grid_12">
+                    <h1>Management SCRUM Projects</h1>
+                </div>
+                <div class="grid_4">
+                    <div class="form-item" style="margin: 0px auto; ">
+                        <h:panelGrid style="width: 200px">
+                            <h:outputLabel for="email">Email</h:outputLabel>
+                            <h:inputText id="email" value="#{loginBean.email}"/>
+                            <h:outputLabel for="password">Password</h:outputLabel>
+                            <h:inputSecret id="password" value="#{loginBean.password}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" style="width: 200px">
+                            <h:commandButton value="Login" action="#{loginBean.doLogin()}" style="width: 70%"/>
+                            <h:link value="Resgister" style="text-align: right; width: 30%" />
+                        </h:panelGrid>
+                    </div>
+                </div>
+            <div class="clear"></div>
+            </div>
+        </h:form>
     </h:body>
 </html>
 

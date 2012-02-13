@@ -6,6 +6,7 @@ package org.inftel.scrum.ejb;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import org.inftel.scrum.entity.User;
 
@@ -25,6 +26,16 @@ public class UserFacade extends AbstractFacade<User> {
 
     public UserFacade() {
         super(User.class);
+    }
+    
+    public User findByEmail(String email) {
+        try {
+            return (User) em.createNamedQuery("User.findByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
     
 }
