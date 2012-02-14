@@ -10,41 +10,49 @@
         <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
-                <div class="grid_4">
-                    <h2>Projects</h2>
+                <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
+                <div class="grid_6">
+                    <h2>#{msg.mainprojects}</h2>
                     <div class="box">
                     <h:form>
                         <h:dataTable value="#{loginBean.user.projects}" class="table" var="project">
                             <h:column>
+                                <h:inputHidden value="#{project.idProject}"/>
+                            </h:column>
+                            <h:column>
                                 <h:outputText value="#{project.name}"/>
                             </h:column>
                             <h:column>
-                                <h:outputLink>View info</h:outputLink>
+                                <h:link value="#{msg.mainviewinfo}"/>
                             </h:column>
                         </h:dataTable>
                     </h:form>
                     </div>
                     <div class="box">
-                        <h:form id="actions">
-                            <h:link value="Add"/>
-                            <h:link value="Delete"/>
-                            <h:link value="Modify"/>
-                        </h:form>
+                        <div class="form-item">
+                            <h:form id="actions">
+                                <h:commandButton value="#{msg.mainlinkadd}"/>
+                                <span style="width: 5px"/>
+                                <h:commandButton value="#{msg.mainlinkdelete}"/>
+                                <span style="width: 5px"/>
+                                <h:commandButton value="#{msg.mainlinkmodify}"/>
+                            </h:form>
+                        </div>
                     </div>
                 </div>
-                <div class="grid_12">
-                    <h2>Project Info</h2>
+                <div class="grid_10">
+                    <h2>#{msg.mainprojectinfo}</h2>
                     <div class="box">
                         <h:panelGrid columns="2" class="table" >
-                            <h:outputLabel class="bold" value="Project owner" for="owner" />
+                            <h:outputLabel class="bold" value="#{msg.mainprojectowner}" for="owner" />
                             <h:outputText id="owner" value="#{projectBean.currentProject.scrumMaster.name}"/>
-                            <h:outputLabel class="bold" value="Project name" for="projectName" />
+                            <h:outputLabel class="bold" value="#{msg.mainprojectname}" for="projectName" />
                             <h:outputText id="projectName" value="#{projectBean.currentProject.name}"/>
-                            <h:outputLabel class="bold" value="Project description" for="projectDescription" />
+                            <h:outputLabel class="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
                             <h:outputText id="projectDescription" value="#{projectBean.currentProject.description}"/>
-                            <h:outputLabel class="bold" value="Initial Project date" for="initialDate" />
+                            <h:outputLabel class="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
                             <h:outputText id="initialDate" value="#{projectBean.currentProject.initialDate}"/>
-                            <h:outputLabel class="bold" value="End Project date" for="endDate" />
+                            <h:outputLabel class="bold" value="#{msg.mainprojectenddate}" for="endDate" />
                             <h:outputText id="endDate" value="#{projectBean.currentProject.endDate}"/>
                         </h:panelGrid>
                     </div>
