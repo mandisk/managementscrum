@@ -14,7 +14,7 @@
                     <h2>Projects</h2>
                     <div class="box">
                     <h:form>
-                        <h:dataTable value="#{projectBean.projects}" class="table" var="project">
+                        <h:dataTable value="#{loginBean.user.projects}" class="table" var="project">
                             <h:column>
                                 <h:outputText value="#{project.name}"/>
                             </h:column>
