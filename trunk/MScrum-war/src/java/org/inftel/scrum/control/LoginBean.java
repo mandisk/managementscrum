@@ -41,6 +41,7 @@ public class LoginBean extends LoginBaseBean{
         User u = userFacade.findByEmail(email);
         if (u != null) {
             if (u.getPassword().trim().equals(Util.md5(password.trim()).trim())) {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", u);
                 return "main";
             }
             msg = new FacesMessage("Wrong password");
