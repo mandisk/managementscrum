@@ -13,21 +13,29 @@
                 <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
                 <h:form>
                 <div class="grid_6">
-                    <h2>#{msg.mainprojects}</h2>
+                    
+                    <!-- Proyectos del usuario -->
+                    
+                    <div class="grid_4 alpha">
+                        <h2>#{msg.mainprojects}</h2>
+                    </div>
+                    <div class="grid_12 omega">
+                        <div class="form-item" style="text-align: right">
+                            <h:commandLink value="#{msg.mainlinkadd}"/>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                     <div class="box">
                         <div class="form-item">
 <!--                            <h:form>-->
-                                <h:dataTable value="#{loginBean.user.projects}" class="table" 
+                                <h:dataTable value="#{loginBean.user.projects}" styleClass="table"
                                              var="project" binding="#{currentProjectBean.dataTable}">
-                                    <h:column>
-                                        <h:inputHidden value="#{project.idProject}"/>
-                                    </h:column>
                                     <h:column>
                                         <h:outputText value="#{project.name}"/>
                                     </h:column>
                                     <h:column>
                                         <h:commandLink action="#{currentProjectBean.viewInfo()}" 
-                                                       value="#{msg.mainviewinfo}">
+                                                       value="#{msg.mainselectproject}">
                                             <f:ajax execute="@this" render="@form"/>
                                         </h:commandLink>
                                     </h:column>
@@ -36,33 +44,94 @@
                         </div>
                     </div>
                     <div class="separator_10"/>
-                    <div class="box">
-                        <div id="actions" class="form-item">
-<!--                            <h:form id="actions">-->
-                                <h:commandButton value="#{msg.mainlinkadd}"/>
-                                <span style="width: 10px"/>
-                                <h:commandButton value="#{msg.mainlinkdelete}"/>
-                                <span style="width: 10px"/>
-                                <h:commandButton value="#{msg.mainlinkmodify}"/>
-<!--                            </h:form>-->
-                        </div>
-                    </div>
                 </div>
                 <div class="grid_10">
-                    <h2>#{msg.mainprojectinfo}</h2>
+                    
+                    <!-- Información del proyecto seleccionado -->
+                    
+                    <div class="grid_4 alpha"><h2>#{msg.mainprojectinfo}</h2></div>
+                    <div class="grid_12 omega">
+                        <div class="form-item" style="text-align: right">
+                            <h:commandLink value="#{msg.mainlinkaddusers}" rendered="#{currentProjectBean.currentProject != null}"/>
+                            <h:commandLink value="#{msg.mainlinkmodify}" rendered="#{currentProjectBean.currentProject != null}"/>
+                            <h:commandLink value="#{msg.mainlinkdelete}" rendered="#{currentProjectBean.currentProject != null}"/>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                     <div class="box">
-                        <h:panelGrid columns="2" class="table" >
-                            <h:outputLabel class="bold" value="#{msg.mainprojectowner}" for="owner" />
-                            <h:outputText id="owner" value="#{currentProjectBean.currentProject.scrumMaster.name} #{currentProjectBean.currentProject.scrumMaster.surname}"/>
+                        <p><h:outputText value="No selected project" rendered="#{currentProjectBean.currentProject == null}"/></p>
+                        <h:panelGrid class="table" rendered="#{currentProjectBean.currentProject != null}">
                             <h:outputLabel class="bold" value="#{msg.mainprojectname}" for="projectName" />
                             <h:outputText id="projectName" value="#{currentProjectBean.currentProject.name}"/>
+                            <h:outputLabel class="bold" value="#{msg.mainprojectowner}" for="owner" />
+                            <h:outputText id="owner" value="#{currentProjectBean.currentProject.scrumMaster.name} #{currentProjectBean.currentProject.scrumMaster.surname}"/>
                             <h:outputLabel class="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
                             <h:outputText id="projectDescription" value="#{currentProjectBean.currentProject.description}"/>
                             <h:outputLabel class="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
-                            <h:outputText id="initialDate" value="#{currentProjectBean.currentProject.initialDate}"/>
+                            <h:outputText id="initialDate" value="#{currentProjectBean.currentProject.initialDate}">
+                                <f:convertDateTime type="date" dateStyle="long"/>
+                            </h:outputText>
                             <h:outputLabel class="bold" value="#{msg.mainprojectenddate}" for="endDate" />
-                            <h:outputText id="endDate" value="#{currentProjectBean.currentProject.endDate}"/>
+                            <h:outputText id="endDate" value="#{currentProjectBean.currentProject.endDate}">
+                                <f:convertDateTime type="date" dateStyle="long"/>
+                            </h:outputText>
                         </h:panelGrid>
+                    </div>
+                    <div class="separator_10"></div>
+                    
+                    <!-- Sprints del proyecto seleccionado -->
+                    
+                    <div class="grid_8 alpha">
+                        <h2>Sprints info</h2>
+                    </div>
+                    <div class="grid_8 omega">
+                        <div class="form-item" style="text-align: right">
+                            <h:commandLink value="Add new sprint" rendered="#{currentProjectBean.currentProject != null}"/>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="box">
+                        <div class="form-item">
+                            <p><h:outputText value="No selected project" rendered="#{currentProjectBean.currentProject == null}"/></p>
+                            <p><h:outputText value="This project has not sprints" rendered="#{currentProjectBean.currentProject != null and currentProjectBean.currentProject.sprints.size() == 0}"/></p>
+                            <h:dataTable value="#{currentProjectBean.currentProject.sprints}" styleClass="table"
+                                        var="sprint" rendered="#{currentProjectBean.currentProject != null and currentProjectBean.currentProject.sprints.size() > 0}" >
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Sprint number"/>
+                                    </f:facet>
+                                    <h:outputText value="Sprint #{sprint.sprintNumber}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Initial date"/>
+                                    </f:facet>
+                                    <h:outputText value="#{sprint.initialDate}">
+                                        <f:convertDateTime type="date" dateStyle="medium"/>
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="End date"/>
+                                    </f:facet>
+                                    <h:outputText value="#{sprint.endDate}">
+                                        <f:convertDateTime type="date" dateStyle="medium"/>
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <h:commandLink value="View sprint">
+                                    </h:commandLink>
+                                </h:column>
+                                <h:column>
+                                    <h:commandLink value="Modify">
+                                    </h:commandLink>
+                                </h:column>
+                                <h:column>
+                                    <h:commandLink value="Delete">
+                                    </h:commandLink>
+                                </h:column>
+                            </h:dataTable>
+                        </div>
                     </div>
                 </div>
                 <div class="clear"></div>
