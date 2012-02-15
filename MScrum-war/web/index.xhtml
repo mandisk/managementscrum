@@ -10,7 +10,7 @@
         <link type="text/css" rel="stylesheet" href="css/1024.css"></link>
         <link type="text/css" rel="stylesheet" href="css/classes.css"></link>
     </h:head>
-    <h:body>
+    <h:body style="color: #555">
         <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
         <h:form>
             <div style="height: 300px"></div>
@@ -28,9 +28,9 @@
                             <h:inputSecret id="password" value="#{loginBean.password}"/>
                         </h:panelGrid>
                     </div>
-                    <div class="form-item">
+                    <div class="form-item login">
                         <h:commandButton value="#{msg.indexlogin}" action="#{loginBean.doLogin()}"/>
-                        <h:link value="#{msg.indexregister}" style="margin-left: 15px" />
+                        <h:link value="#{msg.indexregister}"/>
                     </div>
                 </div>
             <div class="clear"></div>

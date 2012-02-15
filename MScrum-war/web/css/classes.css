@@ -8,6 +8,8 @@
 	margin: 10px;
 }
 
+/*############################################################################*/
+
 .form-item {
 	margin: 10px;
 }
@@ -21,22 +23,34 @@
 
 .form-item input[type="submit"], input[type="button"] {
 	color: #555;
-	border: 1px solid #AAA;
+	border: 1px solid #2BB02B;
         border-radius: 3px;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
 	margin: 0;
 	padding: 3%;
-	background-color: #F1F1F1;
+	background-color: #BBE664;
 }
 
 .form-item input[type="submit"]:hover, input[type="button"]:hover {
 	color: #333;
-	border-color: #888;
+	border-color: #2BB02B;
 	-moz-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
 	-webkit-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
 	box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
 }
+
+.form-item a {
+     margin-left: 15px; 
+     text-decoration: none; 
+     color: #4B8CF6
+}
+
+.form-item a:hover {
+    text-decoration: underline;
+}
+
+/*############################################################################*/
 
 .table {
     margin: 10px;
@@ -46,18 +60,22 @@
     padding: 5px;
 }
 
+/*############################################################################*/
+
 .bold {
     font-weight: bold;
 }
+
+/*############################################################################*/
 
 #actions {
     text-align: center;
 }
 
-#actions a {
+/*#actions a {
     text-decoration: none;
     margin: 5px 10px;
-}
+}*/
 
 .infoMsg {
     list-style-type: none;
@@ -70,4 +88,14 @@
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
+}
+
+/*############################################################################*/
+
+.separator_10 {
+    height: 10px;
+}
+
+.separator_20 {
+    height: 20px;
 }
