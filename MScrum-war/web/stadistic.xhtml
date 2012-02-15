@@ -8,10 +8,35 @@
 
     <body>
 
-        <ui:composition template="./WEB-INF/templates/template.xhtml">
+        <ui:composition template="./WEB-INF/templates/stadistictemplate.xhtml">
 
             <ui:define name="content">
-                    <p:tabView id="tabView">
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+</script>
+                <script type="text/javascript" src="js/tabs.js"></script>
+               <ul class="tabs">
+    <li><a href="#instrucciones">Instrucciones</a></li>
+    <li><a href="#configuracion">Configuracion</a></li>
+    <li><a href="#datos">Datos</a></li>
+    <li><a href="#graficos">Graficos</a></li>
+</ul>
+
+<div>
+    <div id="instrucciones" class="tab_container tab_content">
+        <ui:include src="./stadisticmodule/instrucciones.xhtml" />
+    </div>
+    <div id="configuracion" class="tab_container tab_content">
+       <ui:include src="./stadisticmodule/config.xhtml" />
+    </div>
+    <div id="datos" class="tab_container tab_content">
+       <ui:include src="./stadisticmodule/data.xhtml" />
+    </div>
+    <div id="graficos" class="tab_container tab_content">
+       <ui:include src="./stadisticmodule/chart.xhtml" />
+    </div>
+</div>
+                <!--
+                <p:tabView id="tabView">
 
             <p:tab id="tab1" title="Instrucciones">
                 <ui:include src="./stadisticmodule/instrucciones.xhtml" />
@@ -29,7 +54,7 @@
             </p:tab>
                         
 </p:tabView>
-		
+                -->
             </ui:define>
 
         </ui:composition>
