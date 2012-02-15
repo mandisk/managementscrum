@@ -84,12 +84,15 @@ public class User implements Serializable {
         this.idUser = idUser;
     }
 
-    public User(Integer idUser, String name, String password, String dni, String email) {
+    public User(Integer idUser, String name, String surname, String password, int telephone, String dni, String email, String photo) {
         this.idUser = idUser;
         this.name = name;
+        this.surname = surname;
         this.password = password;
         this.dni = dni;
         this.email = email;
+        this.photo = photo;
+        this.telephone = telephone;
     }
 
     public Integer getIdUser() {
@@ -202,7 +205,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.User[ idUser=" + idUser + " ]";
+        return idUser.toString();
     }
     
 }
