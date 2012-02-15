@@ -4,11 +4,17 @@ To change this template, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Stadistic Chart</title>
+    </h:head>
+    <h:body>
+        <h:form>
+       <p:lineChart id="linear" value="#{chartBean.linearModel}" legendPosition="e"  
+                     title="Linear Chart" minY="0" maxY="10" style="height:300px" /> 
+        </h:form>
+    </h:body>
 </html>
