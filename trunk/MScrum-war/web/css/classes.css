@@ -2,6 +2,9 @@
 	color: #555;
 	border: 1px solid #DDD;
 	background-color: white;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
 }
 
 .box p {
@@ -43,7 +46,7 @@
 .form-item a {
      margin-left: 15px; 
      text-decoration: none; 
-     color: #4B8CF6
+     color: #4B8CF6;
 }
 
 .form-item a:hover {
@@ -53,23 +56,37 @@
 /*############################################################################*/
 
 .table {
-    margin: 10px;
+/*    margin: 10px;*/
+    width: 100%;
 }
 
 .table td {
+    padding: 2%;
+}
+
+.table thead tr {
+    border-bottom: 1px solid #9ACD32;
+}
+
+.table th {
+    font-weight: bold;
     padding: 5px;
+    text-align: center;
+    font-style: italic;
 }
 
 /*############################################################################*/
 
 .bold {
     font-weight: bold;
+    font-style: italic;
+    font-size: 1.1em;
 }
 
 /*############################################################################*/
 
 #actions {
-    text-align: center;
+    text-align: right;
 }
 
 /*#actions a {
