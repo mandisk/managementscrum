@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
+
+            <ui:define name="content">
+                    <p:tabView id="tabView">
+
+            <p:tab id="tab1" title="Instrucciones">
+                <ui:include src="./stadisticmodule/instrucciones.xhtml" />
+            </p:tab>
+
+            <p:tab id="tab2" title="Configuración">
+                <ui:include src="./stadisticmodule/config.xhtml" />
+            </p:tab>
+
+            <p:tab id="tab3" title="Datos">
+                <ui:include src="./stadisticmodule/data.xhtml" />
+            </p:tab>
+            <p:tab id="tab4" title="Gráficos">
+                <ui:include src="./stadisticmodule/chart.xhtml" />
+            </p:tab>
+                        
+</p:tabView>
+		
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
