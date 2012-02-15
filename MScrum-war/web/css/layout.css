@@ -24,6 +24,17 @@
 	padding: 10px 0;
 }
 
+#nav a {
+    text-decoration: none;
+    margin-left: 12px;
+    color: #555;
+    font-weight: bold;
+}
+
+#nav a:hover {
+    text-decoration: underline; 
+}
+
 #nav ul {
 	list-style: none;
 	display: block;
