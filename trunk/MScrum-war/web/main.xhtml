@@ -11,32 +11,40 @@
 
             <ui:define name="content">
                 <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
+                <h:form>
                 <div class="grid_6">
                     <h2>#{msg.mainprojects}</h2>
                     <div class="box">
-                    <h:form>
-                        <h:dataTable value="#{loginBean.user.projects}" class="table" var="project">
-                            <h:column>
-                                <h:inputHidden value="#{project.idProject}"/>
-                            </h:column>
-                            <h:column>
-                                <h:outputText value="#{project.name}"/>
-                            </h:column>
-                            <h:column>
-                                <h:link value="#{msg.mainviewinfo}"/>
-                            </h:column>
-                        </h:dataTable>
-                    </h:form>
-                    </div>
-                    <div class="box">
                         <div class="form-item">
-                            <h:form id="actions">
+<!--                            <h:form>-->
+                                <h:dataTable value="#{loginBean.user.projects}" class="table" 
+                                             var="project" binding="#{currentProjectBean.dataTable}">
+                                    <h:column>
+                                        <h:inputHidden value="#{project.idProject}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value="#{project.name}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:commandLink action="#{currentProjectBean.viewInfo()}" 
+                                                       value="#{msg.mainviewinfo}">
+                                            <f:ajax execute="@this" render="@form"/>
+                                        </h:commandLink>
+                                    </h:column>
+                                </h:dataTable>
+<!--                            </h:form>-->
+                        </div>
+                    </div>
+                    <div class="separator_10"/>
+                    <div class="box">
+                        <div id="actions" class="form-item">
+<!--                            <h:form id="actions">-->
                                 <h:commandButton value="#{msg.mainlinkadd}"/>
-                                <span style="width: 5px"/>
+                                <span style="width: 10px"/>
                                 <h:commandButton value="#{msg.mainlinkdelete}"/>
-                                <span style="width: 5px"/>
+                                <span style="width: 10px"/>
                                 <h:commandButton value="#{msg.mainlinkmodify}"/>
-                            </h:form>
+<!--                            </h:form>-->
                         </div>
                     </div>
                 </div>
@@ -45,19 +53,20 @@
                     <div class="box">
                         <h:panelGrid columns="2" class="table" >
                             <h:outputLabel class="bold" value="#{msg.mainprojectowner}" for="owner" />
-                            <h:outputText id="owner" value="#{projectBean.currentProject.scrumMaster.name}"/>
+                            <h:outputText id="owner" value="#{currentProjectBean.currentProject.scrumMaster.name} #{currentProjectBean.currentProject.scrumMaster.surname}"/>
                             <h:outputLabel class="bold" value="#{msg.mainprojectname}" for="projectName" />
-                            <h:outputText id="projectName" value="#{projectBean.currentProject.name}"/>
+                            <h:outputText id="projectName" value="#{currentProjectBean.currentProject.name}"/>
                             <h:outputLabel class="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
-                            <h:outputText id="projectDescription" value="#{projectBean.currentProject.description}"/>
+                            <h:outputText id="projectDescription" value="#{currentProjectBean.currentProject.description}"/>
                             <h:outputLabel class="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
-                            <h:outputText id="initialDate" value="#{projectBean.currentProject.initialDate}"/>
+                            <h:outputText id="initialDate" value="#{currentProjectBean.currentProject.initialDate}"/>
                             <h:outputLabel class="bold" value="#{msg.mainprojectenddate}" for="endDate" />
-                            <h:outputText id="endDate" value="#{projectBean.currentProject.endDate}"/>
+                            <h:outputText id="endDate" value="#{currentProjectBean.currentProject.endDate}"/>
                         </h:panelGrid>
                     </div>
                 </div>
                 <div class="clear"></div>
+                </h:form>
             </ui:define>
 
         </ui:composition>
