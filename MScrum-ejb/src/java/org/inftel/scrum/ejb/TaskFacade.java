@@ -4,9 +4,11 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
 
 /**
@@ -15,6 +17,7 @@ import org.inftel.scrum.entity.Task;
  */
 @Stateless
 public class TaskFacade extends AbstractFacade<Task> {
+
     @PersistenceContext(unitName = "MScrum-ejbPU")
     private EntityManager em;
 
@@ -26,5 +29,9 @@ public class TaskFacade extends AbstractFacade<Task> {
     public TaskFacade() {
         super(Task.class);
     }
-    
+
+    public List<Task> findBySprint(Sprint sprint) {
+        return (List<Task>) em.createQuery("SELECT t FROM Task t WHERE t.sprint = :sprint").setParameter("sprint", sprint).getSingleResult();
+
+    }
 }
