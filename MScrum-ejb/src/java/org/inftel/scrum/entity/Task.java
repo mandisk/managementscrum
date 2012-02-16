@@ -5,19 +5,7 @@
 package org.inftel.scrum.entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -79,6 +67,16 @@ public class Task implements Serializable {
         this.state = state;
         this.description = description;
         this.time = time;
+    }
+
+    public Task(Integer idTask, char state, String description, int time, Project project, Sprint sprint, User user) {
+        this.idTask = idTask;
+        this.state = state;
+        this.description = description;
+        this.time = time;
+        this.project = project;
+        this.sprint = sprint;
+        this.user = user;
     }
 
     public Integer getIdTask() {
@@ -159,7 +157,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Task[ idTask=" + idTask + " ]";
+        return idTask.toString();
     }
     
 }
