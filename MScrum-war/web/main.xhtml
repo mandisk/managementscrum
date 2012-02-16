@@ -63,18 +63,18 @@
                     <div class="clear"></div>
                     <div class="box">
                         <p><h:outputText value="No selected project" rendered="#{currentProjectBean.currentProject == null}"/></p>
-                        <h:panelGrid class="table" rendered="#{currentProjectBean.currentProject != null}">
-                            <h:outputLabel class="bold" value="#{msg.mainprojectname}" for="projectName" />
+                        <h:panelGrid styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
+                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectname}" for="projectName" />
                             <h:outputText id="projectName" value="#{currentProjectBean.currentProject.name}"/>
-                            <h:outputLabel class="bold" value="#{msg.mainprojectowner}" for="owner" />
+                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectowner}" for="owner" />
                             <h:outputText id="owner" value="#{currentProjectBean.currentProject.scrumMaster.name} #{currentProjectBean.currentProject.scrumMaster.surname}"/>
-                            <h:outputLabel class="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
+                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
                             <h:outputText id="projectDescription" value="#{currentProjectBean.currentProject.description}"/>
-                            <h:outputLabel class="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
+                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
                             <h:outputText id="initialDate" value="#{currentProjectBean.currentProject.initialDate}">
                                 <f:convertDateTime type="date" dateStyle="long"/>
                             </h:outputText>
-                            <h:outputLabel class="bold" value="#{msg.mainprojectenddate}" for="endDate" />
+                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectenddate}" for="endDate" />
                             <h:outputText id="endDate" value="#{currentProjectBean.currentProject.endDate}">
                                 <f:convertDateTime type="date" dateStyle="long"/>
                             </h:outputText>
