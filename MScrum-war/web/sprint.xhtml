@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
+
+            <ui:define name="content">
+
+                <div class="grid_16">
+
+                    <h1><h:outputText value="Sprint 1. Project Creation "/></h1>
+
+                    <p> Initial Date: fecha_de_inicio End Date: fecha_de_fin </p>
+
+                    <h:form>  
+
+                        <p:dashboard id="board"  style="resize: none" model="#{sprintBean.model}">  
+
+                            <p:ajax event="reorder" 
+                                    listener="#{sprintBean.handleReorder}"/>  
+
+                            <p:panel id="pnl1" 
+                                     style="background-color: #BBE664;
+                                     border-color: #333; 
+                                     border: 1px solid #2BB02B;
+                                     font-family: Lucida Sans;
+                                     text-align: center; 
+                                     resize: none;
+                                     width: max-content">  
+                                <h:outputText value="Planned" />  
+                            </p:panel>                    
+
+                            <p:panel id="pnl2" 
+                                     style="background-color: #BBE664;
+                                     border-color: black;
+                                     border-color: #333; 
+                                     border: 1px solid #2BB02B;
+                                     font-family: Lucida Sans;
+                                     text-align: center; 
+                                     resize: none;
+                                     width: max-content">  
+                                <h:outputText  value="In Process" />  
+                            </p:panel>
+
+                            <p:panel id="pnl3" 
+                                     style="background-color: #BBE664;
+                                     border-color: black;
+                                     border-color: #333; 
+                                     border: 1px solid #2BB02B;
+                                     font-family: Lucida Sans;
+                                     text-align: center;
+                                     resize: none;">
+                                <h:outputText value="Finished" />  
+                            </p:panel>
+
+                            <p:panel id="pnl4" 
+                                     toggleable="true" 
+                                     header="Database Creation"
+                                     footer="Developer: Alejandro"
+                                     
+                                     style="resize: node">
+                                
+                                <h:outputText value="Description: Creation Database with MySQL." />
+                                <br/>
+                                <h:form>
+                                    <h:outputText value="Time : " /> 
+                                    <p:inplace id="inputAjax1" editor="true">  
+                                        <p:inputText value="#{sprintBean.text1}"  
+                                                     required="true" 
+                                                     label="text1"/>  
+                                    </p:inplace>  
+                                </h:form>   
+
+                            </p:panel>  
+
+                            <p:panel id="pnl5" 
+                                     toggleable="true" 
+                                     header="Repository Creation"
+                                     footer="Developer: Manolo"
+                                     style="resize: node">
+
+                                <h:outputText value="Description: Creation a SVN repository for the project." />
+                                <br/>
+                                <h:form>
+                                    <h:outputText value="Time : " /> 
+                                    <p:inplace id="inputAjax2" editor="true">  
+                                        <p:inputText value="#{sprintBean.text2}"  
+                                                     required="true" 
+                                                     label="text3"/>  
+                                    </p:inplace>  
+                                </h:form>   
+                              
+                            </p:panel>  
+
+                            <p:panel id="pnl6" 
+                                     toggleable="true" 
+                                     header="JSFs Creation"
+                                     footer="Developer: Agustin"
+                                     style="resize: node">
+                                <h:outputText value="Description: Creation JSF views." />
+                                <br/>
+                                <h:form>
+                                    <h:outputText value="Time : " />  
+                                     <p:inplace id="inputAjax3" editor="true">  
+                                        <p:inputText value="#{sprintBean.text3}"  
+                                                     required="true" 
+                                                     label="text3"/>  
+                                    </p:inplace>  
+                                </h:form>
+                            </p:panel>
+
+                        </p:dashboard>
+
+                        <div class="clear"></div>
+                      
+                    </h:form>
+                </div>
+                <div class="clear"></div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
