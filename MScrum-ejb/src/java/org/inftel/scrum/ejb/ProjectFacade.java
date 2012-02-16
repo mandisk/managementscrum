@@ -58,4 +58,9 @@ public class ProjectFacade extends AbstractFacade<Project> {
         
         return em.createQuery("select u from User u, Project p where p.idProject = :project and u not member of p.users").setParameter("project", project).getResultList();
     }
+    
+    public List<Project> findActiveProjectByUser(int idUser) {
+        return em.createQuery("SELECT p FROM Project p, User u WHERE p.finalized = false AND u.idUser = :idUser")
+                .setParameter("idUser", idUser).getResultList();
+    }
 }
