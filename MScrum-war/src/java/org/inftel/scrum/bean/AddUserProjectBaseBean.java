@@ -6,6 +6,7 @@ package org.inftel.scrum.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.User;
 import org.primefaces.model.DualListModel;
 
@@ -17,7 +18,17 @@ public class AddUserProjectBaseBean implements Serializable{
     protected DualListModel<User> users;
     protected List<User> usersSource;
     protected List<User> usersTarget;
+    protected Project project;
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    
     public DualListModel<User> getUsers() {
         return users;
     }

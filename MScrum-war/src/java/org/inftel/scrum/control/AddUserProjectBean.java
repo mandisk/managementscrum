@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -38,25 +39,26 @@ public class AddUserProjectBean extends AddUserProjectBaseBean{
     @EJB
     private UserFacade userFacade;
     
-    @PostConstruct
-    public void init() {
-        loadLists();
-    }
-    private void loadLists() {
-        usersSource = new ArrayList<User>();
-        usersTarget = new ArrayList<User>();
-//        usersSource = userFacade.findAll();
-//        usersSource = userFacade.findUsersNotInProject((Project)projectFacade.findById(2));
-//        
-//        usersTarget = userFacade.findUsersByProject((Project)projectFacade.findById(2));
-//        usersTarget = (List<User>)((Project)projectFacade.findById(2).getUsers());
-        Project p = projectFacade.find(2);
-        usersTarget = (List<User>) p.getUsers();
-        usersSource = projectFacade.selectUsersNotIn(2);
-        users = new DualListModel<User>(usersSource, usersTarget);
-    }
+//    @PostConstruct
+//    public void init() {
+//        loadLists();
+//    }
+//    private void loadLists() {
+//        usersSource = new ArrayList<User>();
+//        usersTarget = new ArrayList<User>();
+////        usersSource = userFacade.findAll();
+////        usersSource = userFacade.findUsersNotInProject((Project)projectFacade.findById(2));
+////        
+////        usersTarget = userFacade.findUsersByProject((Project)projectFacade.findById(2));
+////        usersTarget = (List<User>)((Project)projectFacade.findById(2).getUsers());
+//        Project p = projectFacade.find(project);
+//        usersTarget = (List<User>) p.getUsers();
+//        usersSource = projectFacade.selectUsersNotIn(project.getIdProject());
+//        users = new DualListModel<User>(usersSource, usersTarget);
+//    }
 
-    public void insert() {
+    @PostConstruct
+    public String insert() {
         LOGGER.info("AddUserProjectBean users.target().tostring = "+users.getTarget().toString());
         Object[] listaId = users.getTarget().toArray();
         Vector<User> lista = new Vector<User>();
@@ -70,14 +72,20 @@ public class AddUserProjectBean extends AddUserProjectBaseBean{
             User user = it.next();
             LOGGER.info(user.getName());
         }
-        projectFacade.AddUsers(2, lista);
+        projectFacade.AddUsers(project.getIdProject(), lista);
 //        int i = 0;
+        return "main";
     }
     
-    public void preRenderView() {
-      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );
-      //tune session params, eg. session.setMaxInactiveInterval(..);
-
-      //perform other pre-render stuff, like setting user context...
-   }
+//    public void preRenderView() {
+//      HttpSession session = ( HttpSession ) FacesContext.getCurrentInstance().getExternalContext().getSession( true );
+//      //tune session params, eg. session.setMaxInactiveInterval(..);
+//
+//      //perform other pre-render stuff, like setting user context...
+//   }
+    
+    @Override
+    public String toString(){
+        return "addUserProjectBean: (Source)"+ users.getSource().toString();
+    }
 }
