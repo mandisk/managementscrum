@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
+
+            <ui:define name="content">
+
+                <div class="grid_16">
+                    <h:form>  
+
+                        <p:panel id="dialog" header="Register" >
+
+
+                            <h:outputLabel id="notice" 
+                                           value="Fill up the fields. Fields with asterisk are required." />  <br/>
+
+                           <p:messages id="messages"/>
+                            
+                            <h:panelGrid columns="2" width="800">   
+
+                                <h:outputLabel for="name" value="Name: *" />  
+                                <p:inputText id="name" 
+                                             label="Name"
+                                             value="#{registerBean.name}"/>  
+
+                                <h:outputLabel for="surname" value="Surname: *" />  
+                                <p:inputText id="surname" 
+                                             label="Surname"
+                                             value="#{registerBean.surname}"/>  
+
+                                <h:outputLabel for="email" value="Email: *" />  
+                                <p:inputText id="email" 
+                                             label="Email"
+                                             value="#{registerBean.email}"/>
+
+                                <h:outputLabel for="dni" value="DNI: " />  
+                                <p:inputText id="dni"                                              
+                                             value="#{registerBean.dni}"/>
+
+                                <h:outputLabel for="telephone" value="Telephone Number: " />  
+                                <p:inputText id="telephone"                                              
+                                             value="#{registerBean.telephone}"/>
+
+                                <h:outputLabel for="password1" value="Password: *" />  
+                                <p:password id="password1" 
+                                            value="#{registerBean.password}" 
+                                            feedback="true"
+                                            match="password2" 
+                                            label="Password 1"/>
+
+                                <h:outputLabel for="password2" value="Repeat the Password: *" />  
+                                <p:password id="password2" 
+                                            value="#{registerBean.password}" 
+                                            feedback="false"
+                                            label="Password 2"/>
+
+<!--                                <h:outputLabel id="photo" value="Add a photo: " /> 
+                                <p:fileUpload fileUploadListener="#{fileBean.handleFileUpload}"
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                              description="Select Images"/>  -->
+
+
+                                <!--                                <h:outputLabel for="password2" value="Write the Secret Key: *" />
+                                <p:captcha label="Captcha" 
+                                           language="en" 
+                                           theme="clean"/>  -->
+                                <p:commandButton value="Finish"
+                                                 update="growl"                                                 
+                                                 action="#{registerBean.doRegister}" 
+                                                 ajax="false"/>  
+
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </div>
+                <div class="clear"></div>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
