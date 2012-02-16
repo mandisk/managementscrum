@@ -16,17 +16,28 @@ import javax.faces.component.html.HtmlDataTable;
  */
 @ManagedBean
 @RequestScoped
-public class SprintBaseBean implements Serializable {
+public class SprintBaseBean {
 
     protected Date initialDate;
     protected Date endDate;
+    protected int sprintNumber;
     protected HtmlDataTable sprintTable;
     /**
      * Creates a new instance of SprintBaseBean
      */
     public SprintBaseBean() {
+        this.initialDate = null;
+        this.endDate = null;
     }
-    
+
+    public int getSprintNumber() {
+        return sprintNumber;
+    }
+
+    public void setSprintNumber(int sprintNumber) {
+        this.sprintNumber = sprintNumber;
+    }
+       
     public Date getEndDate() {
         return endDate;
     }
