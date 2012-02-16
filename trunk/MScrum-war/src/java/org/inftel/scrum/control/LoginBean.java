@@ -4,6 +4,8 @@
  */
 package org.inftel.scrum.control;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.inftel.scrum.bean.LoginBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.UserFacade;
+import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.User;
 import org.inftel.scrum.util.Util;
 
@@ -28,7 +31,7 @@ public class LoginBean extends LoginBaseBean{
     @EJB
     private ProjectFacade projectFacade;
     private User user;
-
+    List<String> project;
     /**
      * Creates a new instance of LoginBean
      */
@@ -42,6 +45,17 @@ public class LoginBean extends LoginBaseBean{
 
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public List<String> getProyect(){
+        project = new ArrayList<String>();
+        int i;
+        
+        for (Project p : user.getProjects()) {
+            project.add(p.getName());
+        }
+        
+        return project;
     }
     
     public String doLogin() {
@@ -61,7 +75,7 @@ public class LoginBean extends LoginBaseBean{
                 ProjectListBean projectListBean = new ProjectListBean();
                 projectListBean.setActiveProjects(projectFacade.findActiveProjectByUser(user.getIdUser()));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("projectListBean", projectListBean);
-                return "main";
+                return "main?faces-redirect=true";
             }
             
             msg = new FacesMessage("Wrong password");
@@ -78,6 +92,6 @@ public class LoginBean extends LoginBaseBean{
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         session.invalidate();
-        return "index";
+        return "index?faces-redirect=true";
     }
 }
