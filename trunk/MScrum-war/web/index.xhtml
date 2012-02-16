@@ -30,7 +30,7 @@
                     </div>
                     <div class="form-item login">
                         <h:commandButton value="#{msg.indexlogin}" action="#{loginBean.doLogin()}"/>
-                        <h:link value="#{msg.indexregister}"/>
+                        <h:link value="#{msg.indexregister}" outcome="registration?redirect=true"/>
                     </div>
                 </div>
             <div class="clear"></div>
