@@ -31,8 +31,11 @@
     <div id="datos" class="tab_container tab_content">
        <ui:include src="./stadisticmodule/data.xhtml" />
     </div>
-    <div id="graficos" class="tab_container tab_content">
-       <ui:include src="./stadisticmodule/chart.xhtml" />
+    <div id="graficos" class="tab_container tab_content" >  
+  <p:commandButton id="chartBtn" value="Basic" type="button" />
+  <p:overlayPanel id="chartPanel" for="chartBtn"  hideEffect="fade" dynamic="true"> 
+    <ui:include src="./stadisticmodule/chart.xhtml" />
+    </p:overlayPanel>
     </div>
 </div>
                 <!--
