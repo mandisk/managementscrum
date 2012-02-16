@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <body>
+
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
+            <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
+
+            <ui:define name="content">
+                <h2>#{msg.sprintPlaningtitle}</h2>
+                
+                <h:form id="form">
+
+                    <p:pickList value="#{sprintPlaningBean.tareas}" 
+                                var="task" 
+                                itemLabel="#{task.description}"
+                                itemValue="#{task}"
+                                style="text-align:center;" 
+                                id="pickList">
+                        <f:facet name="sourceCaption">Availables</f:facet>  
+                        <f:facet name="targetCaption">Choosen</f:facet>  
+
+
+                    </p:pickList>
+
+                    <h:panelGrid columns="1" cellpadding="5">  
+                        <p:commandButton id="effectsDialogButton" value="NuevaTarea" onclick="dlg.show();" type="button" />  
+                    </h:panelGrid>         
+                    
+                    <p:commandButton id="userSubmit" value="Submit"  action="#{sprintPlaningBean.modify()}"/>
+
+
+                </h:form>
+
+
+
+                <p:dialog header="Nueva Tarea" widgetVar="dlg" showEffect="explode" hideEffect="explode" height="300">  
+                    <h:form id="formTask">  
+
+
+                        <h:panelGrid columns="2" style="margin-bottom:15px">  
+                            <h:outputLabel for="descripcion" value="Descripcion" />  
+                            <p:inputText id="descripcion" value="#{sprintPlaningBean.descripcion}" /> 
+                            <h:outputLabel for="time" value="Tiempo" />  
+                            <p:inputText id="time" value="#{sprintPlaningBean.time}" /> 
+
+                        </h:panelGrid>  
+
+                        <p:commandButton id="submitButton" value="Submit" update=":form:pickList" action="#{sprintPlaningBean.addlist()}" oncomplete="dlg.hide();"/>  
+
+                    </h:form>  
+                </p:dialog> 
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
