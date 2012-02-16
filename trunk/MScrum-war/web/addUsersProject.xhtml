@@ -12,11 +12,11 @@
         <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
-                <f:event type="javax.faces.event.PreRenderViewEvent" listener="#{addUserProjectBean.preRenderView}"/>
+
                 <f:view contentType="text/html">
                     <center>
                         <h:form id="form">
-                            <p:pickList value="#{addUserProjectBean.users}" 
+                            <p:pickList value="#{userListBean.users}" 
                                         var="user" 
                                         itemLabel="#{user}"
                                         itemValue="#{user}"
@@ -25,36 +25,20 @@
                                         id="usersPickListComponent">
                                 <f:facet name="sourceCaption">Availables</f:facet>  
                                 <f:facet name="targetCaption">Choosen</f:facet>  
-                                <p:column style="width:25%">  
-                                    <p:graphicImage value="#{user.photo}" width="40" height="40"/>
+                                <p:column style="width:25%;">  
+                                    <p:graphicImage value="/images/#{user.photo}" width="40" height="40"/>
                                 </p:column>  
                                 <p:column style="width:75%">  
                                     #{user.idUser} - #{user.name}
                                 </p:column>  
                             </p:pickList>
-                            <p:commandButton id="userSubmit" value="Submit" update="displayUsers" oncomplete="userDialog.show()" action="#{addUserProjectBean.insert()}"/>
+                            <p:commandButton id="userSubmit" value="Submit" 
+                                             action="#{userListBean.insert()}"/>
 
-                            <p:dialog modal="true" showEffect="fade" hideEffect="fade" widgetVar="userDialog">  
-                                <h:panelGrid id="displayUsers" columns="2">  
-                                    <h:outputText value="Source: " style="font-weight:bold"/>  
-                                    <ui:repeat value="#{addUserProjectBean.users.source}" var="item">  
-                                        <h:outputText value="#{item}" style="margin-right:5px" />  
-                                    </ui:repeat>  
-
-                                    <h:outputText value="Target: " style="font-weight:bold"/>  
-                                    <ui:repeat value="#{addUserProjectBean.users.target}" var="item">  
-                                        <h:outputText value="#{item}" style="margin-right:5px" />  
-                                    </ui:repeat> 
-
-                                </h:panelGrid>  
-
-                            </p:dialog>
                         </h:form>
                     </center>
                 </f:view>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>
