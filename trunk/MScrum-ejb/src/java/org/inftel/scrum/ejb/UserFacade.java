@@ -38,4 +38,14 @@ public class UserFacade extends AbstractFacade<User> {
         }
     }
     
+    public User findByDNI(String dni) {
+        try {
+            return (User) em.createNamedQuery("User.findByDni")
+                    .setParameter("dni", dni)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }    
+    }
+    
 }
