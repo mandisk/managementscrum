@@ -4,14 +4,17 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.inftel.scrum.entity.Project;
+import org.inftel.scrum.entity.Task;
 import org.inftel.scrum.entity.User;
 
 /**
@@ -20,6 +23,8 @@ import org.inftel.scrum.entity.User;
  */
 @Stateless
 public class ProjectFacade extends AbstractFacade<Project> {
+    @EJB
+    private UserFacade userFacade;
     private final static Logger LOGGER = Logger.getLogger(ProjectFacade.class .getName());
 
     @PersistenceContext(unitName = "MScrum-ejbPU")
@@ -34,22 +39,31 @@ public class ProjectFacade extends AbstractFacade<Project> {
         super(Project.class);
     }
     
-    public void AddUsers(int project, Vector<User> u) {
+    public void AddUsers(int project, Vector<User> usuarios) {
+        
+        
+        em.createNativeQuery("delete from scrum_team where idproject="+project).executeUpdate();
         Project p = em.find(Project.class, project);
-        LOGGER.info("ProjectFacade: " + p.getName() + " --- "+ u);
-        for (Iterator<User> it = u.iterator(); it.hasNext();) {
+//        p.getUsers().clear();
+//        em.merge(p);
+//        em.flush();
+        LOGGER.info("ProjectFacade: " + p.getName() + " --- "+ usuarios);
+        for (Iterator<User> it = usuarios.iterator(); it.hasNext();) {
             User user = it.next();
-//            user.getProjects().add(p);
-            em.createNativeQuery("insert into scrum_team values("+project+","+user.getIdUser()+")").executeUpdate();
-//            Collection<Project> lista = user.getProjects();
-//            for (Iterator<Project> it1 = lista.iterator(); it1.hasNext();) {
-//                Project project1 = it1.next();
-//                LOGGER.info(project1.getName().toString());
-//            }
-            
+            User u = userFacade.find(user.getIdUser());
+//            p.getUsers().add(u);
+////            user.getProjects().add(p);
+            em.createNativeQuery("insert into scrum_team values("+project+","+u.getIdUser()+")").executeUpdate();
+////            Collection<Project> lista = user.getProjects();
+////            for (Iterator<Project> it1 = lista.iterator(); it1.hasNext();) {
+////                Project project1 = it1.next();
+////                LOGGER.info(project1.getName().toString());
+////            }
         }
-//        p.setUsers(u);
-        em.flush();
+////        p.setUsers(u);
+//        
+//        em.merge(p);
+//        em.flush();
     }
     
     public List<User> selectUsersNotIn(int project){
