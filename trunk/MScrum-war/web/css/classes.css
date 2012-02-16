@@ -58,10 +58,11 @@
 .table {
 /*    margin: 10px;*/
     width: 100%;
+    margin: 5px;
 }
 
 .table td {
-    padding: 2%;
+    padding: 5px;
 }
 
 .table thead tr {
