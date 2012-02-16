@@ -47,6 +47,10 @@ public class Sprint implements Serializable {
     @NotNull
     @Column(name = "idSprint")
     private Integer idSprint;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "sprintNumber")
+    private Integer sprintNumber;
     @Size(max = 200)
     @Column(name = "projectPath")
     private String projectPath;
@@ -85,6 +89,14 @@ public class Sprint implements Serializable {
 
     public void setIdSprint(Integer idSprint) {
         this.idSprint = idSprint;
+    }
+
+    public Integer getSprintNumber() {
+        return sprintNumber;
+    }
+
+    public void setSprintNumber(Integer sprintNumber) {
+        this.sprintNumber = sprintNumber;
     }
 
     public String getProjectPath() {

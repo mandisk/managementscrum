@@ -66,7 +66,7 @@ public class User implements Serializable {
     private String email;
     @Column(name = "telephone")
     private Integer telephone;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name="scrum_team",
             joinColumns={@JoinColumn(name="idUser", referencedColumnName="idUser")},

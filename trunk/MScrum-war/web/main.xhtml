@@ -28,18 +28,21 @@
                     <div class="box">
                         <div class="form-item">
 <!--                            <h:form>-->
-                                <h:dataTable value="#{loginBean.user.projects}" styleClass="table"
-                                             var="project" binding="#{currentProjectBean.dataTable}">
-                                    <h:column>
-                                        <h:outputText value="#{project.name}"/>
-                                    </h:column>
-                                    <h:column>
-                                        <h:commandLink action="#{currentProjectBean.viewInfo()}" 
-                                                       value="#{msg.mainselectproject}">
-                                            <f:ajax execute="@this" render="@form"/>
-                                        </h:commandLink>
-                                    </h:column>
-                                </h:dataTable>
+                            <h:outputText value="You are not working in any project" 
+                                          rendered="#{projectListBean.activeProjects.size() == 0}"/>
+                            <h:dataTable value="#{projectListBean.activeProjects}" styleClass="table"
+                                            var="project" binding="#{currentProjectBean.dataTable}"
+                                            rendered="#{projectListBean.activeProjects.size() > 0}">
+                                <h:column>
+                                    <h:outputText value="#{project.name}"/>
+                                </h:column>
+                                <h:column>
+                                    <h:commandLink action="#{currentProjectBean.viewInfo()}" 
+                                                    value="#{msg.mainselectproject}">
+                                        <f:ajax execute="@this" render="@form"/>
+                                    </h:commandLink>
+                                </h:column>
+                            </h:dataTable>
 <!--                            </h:form>-->
                         </div>
                     </div>
