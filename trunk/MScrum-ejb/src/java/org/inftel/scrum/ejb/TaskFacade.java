@@ -8,12 +8,13 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
 
 /**
  *
- * @author Jorge
+ * @author Jorge, Antonio
  */
 @Stateless
 public class TaskFacade extends AbstractFacade<Task> {
@@ -33,5 +34,26 @@ public class TaskFacade extends AbstractFacade<Task> {
     public List<Task> findBySprint(Sprint sprint) {
         return (List<Task>) em.createQuery("SELECT t FROM Task t WHERE t.sprint = :sprint").setParameter("sprint", sprint).getSingleResult();
 
+    }
+    
+    public List<Task> findTaskNotSprint(int idProject) {
+
+        Query query = em.createQuery("select t from Task t where t.project.idProject = :project and t.sprint is null").setParameter("project", idProject);
+        List lista = query.getResultList();
+        List<Task> listT = (List<Task>) lista;
+        return listT;
+    }
+
+    public void setSprint(Sprint s, List<Task> tasks) {
+        
+        Sprint saux = em.find(Sprint.class, s.getIdSprint());
+
+        for (Task t : tasks) {
+           
+            Task taux = em.find(Task.class, t.getIdTask());
+            taux.setSprint(saux);
+        }
+
+        em.flush();
     }
 }
