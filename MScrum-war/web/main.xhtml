@@ -129,13 +129,13 @@
                                 
                                 <h:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Sprint number"/>
+                                        <h:outputText value="#{msg.createSprintFieldSprintNumber}}"/>
                                     </f:facet>
                                     <h:outputText value="Sprint #{sprint.sprintNumber}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
-                                        <h:outputText value="Initial date"/>
+                                        <h:outputText value="#{msg.createSprintFieldInitDate}"/>
                                     </f:facet>
                                     <h:outputText value="#{sprint.initialDate}">
                                         <f:convertDateTime type="date" dateStyle="medium"/>
@@ -143,7 +143,7 @@
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
-                                        <h:outputText value="End date"/>
+                                        <h:outputText value="#{msg.createSprintFieldInitDate}"/>
                                     </f:facet>
                                     <h:outputText value="#{sprint.endDate}">
                                         <f:convertDateTime type="date" dateStyle="medium"/>
