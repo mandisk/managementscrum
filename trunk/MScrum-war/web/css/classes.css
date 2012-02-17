@@ -121,7 +121,7 @@
 
 /*############################################################################*/
 
-.dialog .button {
+.prime-component .button {
     color: #555;
     border: 1px solid #2BB02B;
     border-radius: 3px;
@@ -134,7 +134,7 @@
     font-size: 12px;
 }
 
-.dialog .button:hover {
+.prime-component .button:hover {
     color: #333;
     border-color: #2BB02B;
     -moz-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);

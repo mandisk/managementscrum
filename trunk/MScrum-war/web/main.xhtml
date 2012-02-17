@@ -24,11 +24,11 @@
                                 <p:commandLink value="#{msg.mainlinkadd}" onclick="dlg.show()"/>
 <!--                                <h:commandLink value="#{msg.mainlinkadd}"/>-->
                             </h:form>
-                            <p:dialog widgetVar="dlg" modal="true" resizable="false" styleClass="dialog" header="#{msg.mainlinkadd}">
+                            <p:dialog widgetVar="dlg" modal="true" resizable="false" styleClass="prime-component" header="#{msg.mainlinkadd}">
                                 <div class="form-item">
                                 <h:form>
                                     <h:panelGrid styleClass="table" columns="2" style="margin-bottom:10px">
-                                        <h:outputLabel for="dlg_name" value="#{msg.mainprojectname}" />  
+                                        <h:outputLabel for="dlg_name" value="#{msg.mainprojectname}" />
                                         <h:inputText id="dlg_name"/>
                                         <h:outputLabel for="dlg_description" value="#{msg.mainprojectdescription}" />  
                                         <h:inputTextarea id="dlg_description"/>
