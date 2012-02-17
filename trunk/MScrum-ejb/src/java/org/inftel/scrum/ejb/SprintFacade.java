@@ -4,11 +4,13 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 import javax.persistence.PersistenceContext;
+import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.User;
 
@@ -31,15 +33,10 @@ public class SprintFacade extends AbstractFacade<Sprint> {
         super(Sprint.class);
     } 
     
-    public User findById(String dni) {
-        try {
-            return (User) em.createNamedQuery("User.findByDni")
-                    .setParameter("dni", dni)
-                    .getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
-        }    
-    }
-   
+    public List<Sprint> findByProject(Project project) {
+        return em.createQuery("SELECT s FROM Sprint s WHERE s.project = :project")
+                .setParameter("project", project)
+                .getResultList();
+    }   
     
 }
