@@ -12,7 +12,8 @@
         <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
-
+  <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
+  
                 <f:view contentType="text/html">
                     <center>
                         <h:form id="form">
@@ -23,8 +24,8 @@
                                         style="text-align:center;" 
                                         widgetVar="teamsPickList"
                                         id="usersPickListComponent">
-                                <f:facet name="sourceCaption">Availables</f:facet>  
-                                <f:facet name="targetCaption">Choosen</f:facet>  
+                                <f:facet name="sourceCaption">#{msg.sprintPlaningtitle1picklist}</f:facet>  
+                                <f:facet name="targetCaption">#{msg.sprintPlaningtitle2picklist}</f:facet>  
                                 <p:column style="width:25%;">  
                                     <p:graphicImage value="/images/#{user.photo}" width="40" height="40"/>
                                 </p:column>  
@@ -32,7 +33,7 @@
                                     #{user.idUser} - #{user.name}
                                 </p:column>  
                             </p:pickList>
-                            <p:commandButton id="userSubmit" value="Submit" 
+                            <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}" 
                                              action="#{userListBean.insert()}"/>
 
                         </h:form>
