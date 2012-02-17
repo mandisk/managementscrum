@@ -27,15 +27,7 @@ public class RegisterBean extends RegisterBaseBean {
     @EJB
     private UserFacade userFacade;
     private User user;
-    
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
+       
     /**
      * Creates a new instance of RegisterBean
      */
@@ -43,6 +35,14 @@ public class RegisterBean extends RegisterBaseBean {
         user = null;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     public String doRegister() {
 
         if (name == null || name.trim().isEmpty()
