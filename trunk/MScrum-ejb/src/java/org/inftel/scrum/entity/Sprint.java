@@ -85,6 +85,18 @@ public class Sprint implements Serializable {
         this.endDate = endDate;
     }
 
+    public Sprint(Integer idSprint, Integer sprintNumber, String projectPath, Date initialDate, Date endDate, Collection<Task> taskCollection, Project project) {
+        this.idSprint = idSprint;
+        this.sprintNumber = sprintNumber;
+        this.projectPath = projectPath;
+        this.initialDate = initialDate;
+        this.endDate = endDate;
+        this.taskCollection = taskCollection;
+        this.project = project;
+    }
+    
+    
+
     public Integer getIdSprint() {
         return idSprint;
     }
