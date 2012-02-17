@@ -12,7 +12,7 @@
 
             <ui:define name="content">
                 <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
-                    <div class="grid_8 suffix_8 alpha">
+                    <div class="grid_8 suffix_8">
                         <h2>#{msg.createSprintTitle}</h2>
                     </div>
                 
@@ -33,8 +33,10 @@
 
                                 <h:outputLabel value="#{msg.createSprintFieldPathProject}"/>
                                 <p:inputText value ="#{createSprintBean.projectPath}" required="false"/>  
-                            </h:panelGrid>
-                            <h:commandButton value="#{msg.createSprintButtonCreate}"  action="#{createSprintBean.createNewSprint()}" styleClass="button"/> 
+                           
+                            
+                            <h:commandButton value="#{msg.createSprintButtonCreate}"  action="#{createSprintBean.createNewSprint()}" styleClass="prime-component button"/> 
+                       </h:panelGrid>
                         </h:form>
                     </div>
                     
