@@ -60,7 +60,7 @@ public class Project implements Serializable {
     @NotNull
     @Column(name = "finalized")
     private boolean finalized;
-    @ManyToMany(mappedBy="projects")
+    @ManyToMany(mappedBy="projects", fetch= FetchType.EAGER)
     private Collection<User> users;
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "scrum_master", referencedColumnName = "idUser")
