@@ -32,10 +32,14 @@
        <ui:include src="./stadisticmodule/data.xhtml" />
     </div>
     <div id="graficos" class="tab_container tab_content" >  
-  <p:commandButton id="chartBtn" value="Basic" type="button" />
-  <p:overlayPanel id="chartPanel" for="chartBtn"  hideEffect="fade" dynamic="true"> 
+   <p:commandButton id="chartBtn" value="Basic" type="button" />
+   <p:overlayPanel id="chartPanel" for="chartBtn"  hideEffect="fade" dynamic="true"> 
     <ui:include src="./stadisticmodule/chart.xhtml" />
-    </p:overlayPanel>
+  </p:overlayPanel>
+    <p:commandButton id="chartBtn2" value="Task" type="button" />
+  <p:overlayPanel id="chartPanel2" for="chartBtn2"  hideEffect="fade" dynamic="true"> 
+    <ui:include src="./stadisticmodule/taskgraphic.xhtml" />
+  </p:overlayPanel>
     </div>
 </div>
                 <!--
