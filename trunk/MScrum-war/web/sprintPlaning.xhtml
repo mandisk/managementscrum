@@ -9,49 +9,53 @@
     <body>
 
         <ui:composition template="./WEB-INF/templates/template.xhtml">
-            <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
-
             <ui:define name="content">
-                <h2>#{msg.sprintPlaningtitle}</h2>
-                
-                <h:form id="form">
+                <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
 
-                    <p:pickList value="#{sprintPlaningBean.tareas}" 
+                <div class="grid_8 suffix_8 header">
+                    <h2>#{msg.sprintPlaningtitle}</h2>
+                </div>
+
+                <h:form id="form" styleClass="prime-component table">
+
+                    <p:pickList value="#{sprintPlaningBean.tareas}"  
                                 var="task" 
                                 itemLabel="#{task.description}"
                                 itemValue="#{task}"
                                 style="text-align:center;" 
+                                styleClass="prime-component"
                                 id="pickList">
-                        <f:facet name="sourceCaption">Availables</f:facet>  
-                        <f:facet name="targetCaption">Choosen</f:facet>  
+                        <f:facet name="sourceCaption">#{msg.sprintPlaningtitle1picklist}</f:facet>  
+                        <f:facet name="targetCaption">#{msg.sprintPlaningtitle2picklist}</f:facet>  
 
 
                     </p:pickList>
 
-                    <h:panelGrid columns="1" cellpadding="5">  
-                        <p:commandButton id="effectsDialogButton" value="NuevaTarea" onclick="dlg.show();" type="button" />  
+                    <h:panelGrid columns="2" cellpadding="5">  
+                        <p:commandButton id="effectsDialogButton" value="#{msg.sprintPlaningbuttonNewTask}" onclick="dlg.show();" type="button" styleClass="button" />  
+                        <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button"/>
+
                     </h:panelGrid>         
-                    
-                    <p:commandButton id="userSubmit" value="Submit"  action="#{sprintPlaningBean.modify()}"/>
+
 
 
                 </h:form>
 
 
 
-                <p:dialog header="Nueva Tarea" widgetVar="dlg" showEffect="explode" hideEffect="explode" height="300">  
-                    <h:form id="formTask">  
+                <p:dialog header="#{msg.sprintPlaningbuttonNewTask}" modal="true" resizable="false" widgetVar="dlg" showEffect="explode" hideEffect="explode" styleClass="prime-component button">  
+                    <h:form id="formTask" styleClass="prime-component table"  >
 
 
-                        <h:panelGrid columns="2" style="margin-bottom:15px">  
-                            <h:outputLabel for="descripcion" value="Descripcion" />  
-                            <p:inputText id="descripcion" value="#{sprintPlaningBean.descripcion}" /> 
-                            <h:outputLabel for="time" value="Tiempo" />  
+                        <h:panelGrid columns="2" style="table-layout: auto">  
+                            <h:outputLabel for="descripcion" value="#{msg.sprintPlaningDlgDescription}" />  
+                            <h:inputTextarea id="descripcion" value="#{sprintPlaningBean.descripcion}" /> 
+                            <h:outputLabel for="time" value="#{msg.sprintPlaningDlgTime}" />  
                             <p:inputText id="time" value="#{sprintPlaningBean.time}" /> 
 
                         </h:panelGrid>  
 
-                        <p:commandButton id="submitButton" value="Submit" update=":form:pickList" action="#{sprintPlaningBean.addlist()}" oncomplete="dlg.hide();"/>  
+                        <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList" action="#{sprintPlaningBean.addlist()}" styleClass="button" oncomplete="dlg.hide();"/>  
 
                     </h:form>  
                 </p:dialog> 
