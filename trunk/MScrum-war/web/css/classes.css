@@ -25,22 +25,22 @@
 }
 
 .form-item input[type="submit"], input[type="button"] {
-	color: #555;
-	border: 1px solid #2BB02B;
-        border-radius: 3px;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-	margin: 0;
-	padding: 3%;
-	background-color: #BBE664;
+    color: #555;
+    border: 1px solid #2BB02B;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 0;
+    padding: 3%;
+    background-color: #BBE664;
 }
 
 .form-item input[type="submit"]:hover, input[type="button"]:hover {
-	color: #333;
-	border-color: #2BB02B;
-	-moz-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
-	-webkit-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
-	box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
+    color: #333;
+    border-color: #2BB02B;
+    -moz-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
+    -webkit-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
+    box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
 }
 
 .form-item a {
@@ -63,6 +63,7 @@
 
 .table td {
     padding: 5px;
+    vertical-align: middle;
 }
 
 .table thead tr {
@@ -116,4 +117,27 @@
 
 .separator_20 {
     height: 20px;
+}
+
+/*############################################################################*/
+
+.dialog .button {
+    color: #555;
+    border: 1px solid #2BB02B;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin: 0;
+    padding: .2em 1em;
+    background-color: #BBE664;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.dialog .button:hover {
+    color: #333;
+    border-color: #2BB02B;
+    -moz-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
+    -webkit-box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
+    box-shadow: 2px 2px 2px rgba(185, 185, 185, 0.5);
 }

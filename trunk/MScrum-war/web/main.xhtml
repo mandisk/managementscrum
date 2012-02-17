@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <body>
 
@@ -20,14 +21,32 @@
                     <div class="grid_12 omega">
                         <div class="form-item" style="text-align: right">
                             <h:form>
-                                <h:commandLink value="#{msg.mainlinkadd}"/>
+                                <p:commandLink value="#{msg.mainlinkadd}" onclick="dlg.show()"/>
+<!--                                <h:commandLink value="#{msg.mainlinkadd}"/>-->
                             </h:form>
+                            <p:dialog widgetVar="dlg" modal="true" resizable="false" styleClass="dialog" header="#{msg.mainlinkadd}">
+                                <div class="form-item">
+                                <h:form>
+                                    <h:panelGrid styleClass="table" columns="2" style="margin-bottom:10px">
+                                        <h:outputLabel for="dlg_name" value="#{msg.mainprojectname}" />  
+                                        <h:inputText id="dlg_name"/>
+                                        <h:outputLabel for="dlg_description" value="#{msg.mainprojectdescription}" />  
+                                        <h:inputTextarea id="dlg_description"/>
+                                        <h:outputLabel for="dlg_initialdate" value="#{msg.mainprojectinitialdate}" />  
+                                        <h:inputText id="dlg_initialdate"/>
+                                        <h:outputLabel for="dlg_ienddate" value="#{msg.mainprojectenddate}" />  
+                                        <h:inputText id="dlg_enddate"/>
+                                    </h:panelGrid>
+                                    <p:commandButton id="submitButton" value="Submit" oncomplete="dlg.hide();" styleClass="button"/>
+                                </h:form>
+                                </div>
+                            </p:dialog>
                         </div>
                     </div>
                     <div class="clear"></div>
                     <div class="box">
                         <div class="form-item">
-                            <h:form>
+                            <h:form id="projectList">
                             <h:dataTable value="#{projectListBean.activeProjects}" styleClass="table"
                                             var="project" binding="#{currentProjectBean.dataTable}"
                                             rendered="#{projectListBean.activeProjects.size() > 0}">
@@ -62,11 +81,11 @@
                     <div class="box">
                         <h:form id="infoProject">
                         <p><h:outputText value="No selected project" rendered="#{currentProjectBean.currentProject == null}"/></p>
-                        <h:panelGrid styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
+                        <h:panelGrid style="margin-left: 10px" styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
                             <h:outputLabel styleClass="bold" value="#{msg.mainprojectname}" for="projectName" />
                             <h:outputText id="projectName" value="#{currentProjectBean.currentProject.name}"/>
                         </h:panelGrid>
-                        <h:panelGrid columns="3" styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
+                        <h:panelGrid style="margin-left: 10px" columns="3" styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
                             <h:outputLabel styleClass="bold" value="#{msg.mainprojectowner}" for="owner" />
                             <h:outputLabel styleClass="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
                             <h:outputLabel styleClass="bold" value="#{msg.mainprojectenddate}" for="endDate" />
@@ -78,7 +97,7 @@
                                 <f:convertDateTime type="date" dateStyle="long"/>
                             </h:outputText>
                         </h:panelGrid>
-                        <h:panelGrid styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
+                        <h:panelGrid style="margin-left: 10px" styleClass="table" rendered="#{currentProjectBean.currentProject != null}">
                             <h:outputLabel styleClass="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
                             <h:outputText id="projectDescription" value="#{currentProjectBean.currentProject.description}"/>
                         </h:panelGrid>
