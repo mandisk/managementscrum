@@ -74,7 +74,8 @@ public class ProjectFacade extends AbstractFacade<Project> {
     }
     
     public List<Project> findActiveProjectByUser(int idUser) {
-        return em.createQuery("SELECT p FROM Project p, User u WHERE p.finalized = false AND u.idUser = :idUser")
-                .setParameter("idUser", idUser).getResultList();
+        User u = (User) em.find(User.class, idUser);
+        return em.createQuery("SELECT p FROM Project p WHERE p.finalized = false AND :user MEMBER OF p.users")
+                .setParameter("user", u).getResultList();
     }
 }
