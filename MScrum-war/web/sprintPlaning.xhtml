@@ -18,6 +18,8 @@
 
                 <h:form id="form" styleClass="prime-component table">
 
+                    <p:growl id="growl" showDetail="true" life="3000" />
+                    
                     <p:pickList value="#{sprintPlaningBean.tareas}"  
                                 var="task" 
                                 itemLabel="#{task.description}"
@@ -45,17 +47,16 @@
 
                 <p:dialog header="#{msg.sprintPlaningbuttonNewTask}" modal="true" resizable="false" widgetVar="dlg" showEffect="explode" hideEffect="explode" styleClass="prime-component button">  
                     <h:form id="formTask" styleClass="prime-component table"  >
-
-
+                        <p:messages id="messages"/>
                         <h:panelGrid columns="2" style="table-layout: auto">  
                             <h:outputLabel for="descripcion" value="#{msg.sprintPlaningDlgDescription}" />  
-                            <h:inputTextarea id="descripcion" value="#{sprintPlaningBean.descripcion}" /> 
+                            <h:inputTextarea id="descripcion" value="#{sprintPlaningBean.descripcion}" required="true"/> 
                             <h:outputLabel for="time" value="#{msg.sprintPlaningDlgTime}" />  
-                            <p:inputText id="time" value="#{sprintPlaningBean.time}" /> 
+                            <p:inputText id="time" value="#{sprintPlaningBean.time}"  /> 
 
                         </h:panelGrid>  
 
-                        <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList" action="#{sprintPlaningBean.addlist()}" styleClass="button" oncomplete="dlg.hide();"/>  
+                        <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList, :form:growl"   actionListener="#{sprintPlaningBean.addlist(actionEvent)}" styleClass="button" oncomplete="dlg.hide();"/>  
 
                     </h:form>  
                 </p:dialog> 
