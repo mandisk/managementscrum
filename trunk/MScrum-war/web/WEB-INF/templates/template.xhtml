@@ -6,7 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
-         <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
+        <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link href="#{facesContext.externalContext.requestContextPath}/css/reset.css" 
               rel="stylesheet" type="text/css" />
@@ -18,11 +18,12 @@
               rel="stylesheet" type="text/css" />
         <link href="#{facesContext.externalContext.requestContextPath}/css/classes.css" 
               rel="stylesheet" type="text/css" />
+
         <title>#{msg.templateTitle}</title>
     </h:head>
 
     <h:body>
-        
+
         <div id="header">
             <div class="container_16">
                 <div class="grid_16">
@@ -31,18 +32,32 @@
                 <div class="clear"></div>
             </div>
         </div>
-        
+
+
         <div id="nav">
+
+            <ul id="button" style="display: inline"> 
+               
+                <li> <h:link value="#{msg.templateMenuMain}" outcome="main.xhtml"/></li>  
+                <li><a href="#">#{msg.templateMenuStadistic}</a></li>  
+                <li><a href="#">#{msg.templateCreateProyect}</a></li>
+                <li><a href="#">#{msg.templateAbout}</a></li>  
+
+            </ul>  
+
             <div class="container_16">
                 <div class="grid_6 prefix_10 omega">
                     <h:form>
-                         <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
+                        <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
                         <h:commandLink value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
                     </h:form>
                 </div>
                 <div class="clear"></div>
             </div>
         </div>
+
+
+
 
         <div id="content">
             <div class="container_16">
