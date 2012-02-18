@@ -4,20 +4,21 @@
  */
 package org.inftel.scrum.control;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.inftel.scrum.bean.SprintPlaningBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.SprintFacade;
 import org.inftel.scrum.ejb.TaskFacade;
-import org.inftel.scrum.entity.Project;
-import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
 import org.primefaces.model.DualListModel;
 
@@ -35,12 +36,11 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
     private SprintFacade sprintFacade;
     @EJB
     private ProjectFacade projectFacade;
-    
-    
+    private FacesMessage msg;
+
     public SprintPlaningBean() {
     }
-    
-    
+
     @PostConstruct
     void init() {
         loadlist();
@@ -53,7 +53,7 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
         //Esto se debe pasar por sesion <<<<--------------------------------------
         p = projectFacade.find(1);
         s = sprintFacade.find(1);
-        
+
         List<Task> lista = taskFacade.findTaskNotSprint(p.getIdProject());
 
         //Tareas sin sprint seleccionado
@@ -72,11 +72,19 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
 
     }
 
-    public void addlist() {
+    public String addlist(ActionEvent actionEvent) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+        if (descripcion.isEmpty() || descripcion == null || time == 0) {
 
+            context.addMessage(null, new FacesMessage("Advise", "Please chek the empty field"));
+            return null;
+        }
         Task t = new Task(1, 't', descripcion, time, p, null, null);
         taskFacade.create(t);
         tareasSource.add(t);
+        context.addMessage(null, new FacesMessage("Successful", "Task Created"));
+        return "";
     }
 
     public void modify() {
@@ -88,7 +96,7 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
             Task t = taskFacade.find(Integer.parseInt(sid));
             lista.add(t);
         }
-        
+
         taskFacade.setSprint(s, lista);
     }
 }
