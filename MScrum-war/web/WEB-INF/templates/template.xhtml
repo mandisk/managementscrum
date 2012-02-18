@@ -2,9 +2,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
+         <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link href="#{facesContext.externalContext.requestContextPath}/css/reset.css" 
               rel="stylesheet" type="text/css" />
@@ -16,23 +18,26 @@
               rel="stylesheet" type="text/css" />
         <link href="#{facesContext.externalContext.requestContextPath}/css/classes.css" 
               rel="stylesheet" type="text/css" />
-        <title>SCRUM Management Project</title>
+        <title>#{msg.templateTitle}</title>
     </h:head>
 
     <h:body>
+        
         <div id="header">
             <div class="container_16">
                 <div class="grid_16">
-                    <h1>SCRUM Management Project</h1>
+                    <h1 class="texto3d">#{msg.templateTitle}</h1>
                 </div>
                 <div class="clear"></div>
             </div>
         </div>
+        
         <div id="nav">
             <div class="container_16">
                 <div class="grid_6 prefix_10 omega">
                     <h:form>
-                        <h:commandLink value="Sign out" action="#{loginBean.doLogout()}"/>
+                         <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
+                        <h:commandLink value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
                     </h:form>
                 </div>
                 <div class="clear"></div>
@@ -48,7 +53,7 @@
         <div id="footer">
             <div class="container_16">
                 <div class="grid_16">
-                    <p>Powered by Master INFTEL - Proyecto de aplicación a la Web</p>
+                    <p>#{msg.templateFooter}</p>
                 </div>
             </div>
         </div>
