@@ -14,32 +14,32 @@
 
                 <div class="grid_16">
 
-                    <h1><h:outputText value="#{sprintBean.nameProject}" /></h1>
+<!--                    <h1><h:outputText value="" /></h1>-->
                     
                     <b><h:outputText value="Sprint Number: "/></b> 
-                    <h:outputText value="#{sprintBean.sprintNumber}"/>
+                    <h:outputText value="#{selectedSprintBean.sprintNumber}"/>
                     
                     <br/>
                     
                     <b><h:outputText value="Initial Date: "/></b>                        
-                    <h:outputText value="#{sprintBean.initialDate}">
+                    <h:outputText value="#{selectedSprintBean.initialDate}">
                         <f:convertDateTime type="date" dateStyle="medium"/> 
                     </h:outputText>     
                     
                     <b><h:outputText value="End Date: "/></b>
-                    <h:outputText value="#{sprintBean.endDate}"> 
+                    <h:outputText value="#{selectedSprintBean.endDate}"> 
                      <f:convertDateTime type="date" dateStyle="medium"/> 
                     </h:outputText>
                     
                     <br/>
                     <br/>    
                     
-                    <h:form>  
+<!--                    <h:form>  
 
-                        <p:dashboard id="board" style="resize: none" model="#{sprintBean.model}">  
+                        <p:dashboard id="board" style="resize: none" model="">  
 
                             <p:ajax event="reorder" 
-                                    listener="#{sprintBean.handleReorder}"/>  
+                                    listener=""/>  
 
                             
                             <p:panel id="pnl1" 
@@ -75,9 +75,10 @@
                             </p:panel>
 
                             
-                            <p:panel id="pnl4" 
+                            <p:panel id="pnl4"
+                                     
                                      toggleable="true" 
-                                     header="Database Creation"
+                                     header=""
                                      footer="Developer: Alejandro"
                                      
                                      style="resize: node">
@@ -87,7 +88,7 @@
                                 <h:form>
                                     <h:outputText value="Time : " /> 
                                     <p:inplace editor="true">  
-                                        <p:inputText value="#{sprintBean.text1}"  
+                                        <p:inputText value=""  
                                                      required="true" 
                                                      label="text1"/>  
                                     </p:inplace>  
@@ -106,7 +107,7 @@
                                 <h:form>
                                     <h:outputText value="Time : " /> 
                                     <p:inplace id="inputAjax2" editor="true">  
-                                        <p:inputText value="#{sprintBean.text2}"  
+                                        <p:inputText value=""  
                                                      required="true" 
                                                      label="text3"/>  
                                     </p:inplace>  
@@ -124,7 +125,7 @@
                                 <h:form>
                                     <h:outputText value="Time : " />  
                                      <p:inplace id="inputAjax3" editor="true">  
-                                        <p:inputText value="#{sprintBean.text3}"  
+                                        <p:inputText value=""  
                                                      required="true" 
                                                      label="text3"/>  
                                     </p:inplace>  
@@ -133,7 +134,7 @@
 
                         </p:dashboard>
                       
-                    </h:form>
+                    </h:form>-->
                     </div>
                                 
                 <div class="clear"></div>
