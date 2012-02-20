@@ -77,4 +77,13 @@ public class SelectedSprintBean extends SprintBaseBean {
         
         return null;
     }
+    
+    public String createTask() {
+        Sprint sprint = (Sprint) this.sprintTable.getRowData();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        
+        requestMap.put("sprint", sprint);
+        return "sprintPlaning?faces-redirect=true";
+    }
 }
