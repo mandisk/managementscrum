@@ -4,6 +4,8 @@
  */
 package org.inftel.scrum.control;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -13,7 +15,11 @@ import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import org.inftel.scrum.bean.SprintBaseBean;
 import org.inftel.scrum.ejb.SprintFacade;
+import org.inftel.scrum.ejb.TaskFacade;
 import org.inftel.scrum.entity.Sprint;
+import org.inftel.scrum.entity.Task;
+import org.inftel.scrum.entity.User;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -22,6 +28,8 @@ import org.inftel.scrum.entity.Sprint;
 @ManagedBean
 @SessionScoped
 public class SelectedSprintBean extends SprintBaseBean {
+    @EJB
+    private TaskFacade taskFacade;
     @EJB
     private SprintFacade sprintFacade;
 
@@ -79,13 +87,28 @@ public class SelectedSprintBean extends SprintBaseBean {
     }
     
     public String createTask() {
-        Sprint sprint = (Sprint) this.sprintTable.getRowData();
+         Sprint currentSprint = (Sprint) sprintTable.getRowData();
+//        LOGGER.info(currentProject.getDescription());
+        List<Task> tareasSource = new ArrayList<Task>();
+        List<Task> tareasTarget = new ArrayList<Task>();
+          DualListModel<Task> tareas;
+//        LOGGER.info("loadList: " + currentProject.getName());
+       tareasTarget = (List<Task>) currentSprint.getTaskCollection();
+//        for (Iterator<User> it = usersTarget.iterator(); it.hasNext();) {
+//            User user = it.next();
+//            LOGGER.info("usersTarget: " + user.getName());
+//        }
         
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        tareasSource = taskFacade.findTaskNotSprint(currentSprint.getProject().getIdProject());
+        tareas = new DualListModel<Task>(tareasSource, tareasTarget);
+      
+        SprintPlaningBean sprintPlaningBean = new SprintPlaningBean();
+        sprintPlaningBean.settareasSourcee(tareasSource);
         
-        requestMap.put("sprint", sprint);
-        return "sprintPlaning?faces-redirect=true";
+        sprintPlaningBean.setTareas(tareas);
+        
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sprintPlaningBean", sprintPlaningBean);
+        return "sprintPlaningBean?faces-redirect=true";
     }
     
     public String viewPanel() {
