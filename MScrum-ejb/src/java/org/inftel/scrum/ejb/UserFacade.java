@@ -31,14 +31,14 @@ public class UserFacade extends AbstractFacade<User> {
     
     public User findByEmail(String email) {
         
-        User user = null;
+        User user;
         
         try {
             user = (User) em.createNamedQuery("User.findByEmail")
                     .setParameter("email", email)
                     .getSingleResult();
         } catch (Exception ex) {
-            throw new EJBException(ex);
+            return null;
         }
         
         return user;
