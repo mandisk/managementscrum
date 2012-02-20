@@ -8,12 +8,13 @@
 
     <body>
 
-        <ui:composition template="./WEB-INF/templates/stadistictemplate.xhtml">
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
                 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
 </script>
                 <script type="text/javascript" src="js/tabs.js"></script>
+                <script type="text/javascript" src="js/viewChart.js"></script>
                <ul class="tabs">
     <li><a href="#instrucciones">Instrucciones</a></li>
     <li><a href="#configuracion">Configuracion</a></li>
@@ -32,12 +33,12 @@
        <ui:include src="./stadisticmodule/data.xhtml" />
     </div>
     <div id="graficos" class="tab_container tab_content" >  
-   <p:commandButton id="chartBtn" value="Basic" type="button" />
-   <p:overlayPanel id="chartPanel" for="chartBtn"  hideEffect="fade" dynamic="true"> 
+   <p:commandButton id="chartBtn" value="GRAFICO INDIVIDUAL" onclick="view('chartPanel')" type="button" />
+   <p:overlayPanel id="chartPanel" for="chartBtn"  hideEffect="fade" style="visibility: hidden;"  dynamic="true"> 
     <ui:include src="./stadisticmodule/chart.xhtml" />
   </p:overlayPanel>
-    <p:commandButton id="chartBtn2" value="Task" type="button" />
-  <p:overlayPanel id="chartPanel2" for="chartBtn2"  hideEffect="fade" dynamic="true"> 
+   <p:commandButton id="chartBtn2" value="Task" onclick="view('chartPanel2')" type="button" />
+  <p:overlayPanel id="chartPanel2" for="chartBtn2"  hideEffect="fade" style="visibility: hideen;" dynamic="true"> 
     <ui:include src="./stadisticmodule/taskgraphic.xhtml" />
   </p:overlayPanel>
     </div>
