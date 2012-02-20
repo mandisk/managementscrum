@@ -32,9 +32,14 @@ public class TaskFacade extends AbstractFacade<Task> {
         super(Task.class);
     }
 
-    public List<Task> findBySprint(Sprint sprint) {
-        return (List<Task>) em.createQuery("SELECT t FROM Task t WHERE t.sprint = :sprint").setParameter("sprint", sprint).getSingleResult();
-
+    public List<Task> findBySprint(int idSprint) {
+        Sprint sprint = em.find(Sprint.class, idSprint);
+        
+        if (sprint == null) {
+            return null;
+        }
+        
+        return (List<Task>) sprint.getTaskCollection();
     }
     
     public List<Task> findTaskNotSprint(int idProject) {
