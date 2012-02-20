@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{facesContext.externalContext.requestContextPath}/css/reset.css" 
+              rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/css/text.css" 
+              rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/css/1024.css" 
+              rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/css/layout.css" 
+              rel="stylesheet" type="text/css" />
+        <link href="#{facesContext.externalContext.requestContextPath}/css/classes.css" 
+              rel="stylesheet" type="text/css" />
+
+        <title>#{msg.templateTitle}</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="header">
+            <div class="container_16">
+                <div class="grid_16">
+                    <h1 class="texto3d">#{msg.templateTitle}</h1>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="container_16">
+                <ui:insert name="content"></ui:insert>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div class="container_16">
+                <div class="grid_16">
+                    <p>#{msg.templateFooter}</p>
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+
+</html>
