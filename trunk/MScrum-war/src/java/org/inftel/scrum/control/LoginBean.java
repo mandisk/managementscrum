@@ -90,7 +90,7 @@ public class LoginBean extends LoginBaseBean{
     
     public String doLogout() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(false);
+                .getExternalContext().getSession(true);
         session.invalidate();
         return "index?faces-redirect=true";
     }
