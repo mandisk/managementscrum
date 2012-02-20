@@ -66,7 +66,7 @@ public class Sprint implements Serializable {
     @Column(name = "endDate")
     @Temporal(TemporalType.DATE)
     private Date endDate;
-    @OneToMany(mappedBy = "sprint", fetch= FetchType.EAGER)
+    @OneToMany(mappedBy = "sprint", cascade= CascadeType.REMOVE,fetch= FetchType.EAGER)
     private Collection<Task> taskCollection;
     @JoinColumn(name = "project", referencedColumnName = "idProject")
     @ManyToOne(optional = false)
