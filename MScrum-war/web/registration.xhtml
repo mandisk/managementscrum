@@ -15,14 +15,14 @@
                 <div class="grid_16">
                     <h:form>  
 
-                        <p:panel id="dialog" header="#{msg.registrationheader}" >
+                        <p:panel id="dialog" style="border-color: #9ACD32;" header="#{msg.registrationheader}" >
                             <br/>
                             <h:panelGrid>
-                            <h:outputLabel id="notice" 
-                                           value="#{msg.registrationadvice}" />  <br/>
-                            
-                            <p:messages id="messages"/>
-                            <br/>
+                                <h:outputLabel id="notice" 
+                                               value="#{msg.registrationadvice}" />  <br/>
+
+                                <p:messages id="messages"/>
+                                <br/>
                                 <h:outputLabel for="name" value="#{msg.registrationname}" />  
                                 <p:inputText id="name" 
                                              label="Name"
@@ -65,10 +65,16 @@
                                            theme="clean"/>  
                                 <br/>
                                 <div align="right">
-                                <p:commandButton value="#{msg.registrationfinish}"
-                                                 update="growl"                                                 
-                                                 action="#{registerBean.doRegister}" 
-                                                 ajax="false"/>  
+                                    <p:commandButton style=" color: #555;
+                                                     border: 1px solid #2BB02B;
+                                                     background-color: #BBE664;
+                                                     border-radius: 3px;
+                                                     -webkit-border-radius: 3px;
+                                                     -moz-border-radius: 3px;"
+                                                     value="#{msg.registrationfinish}"
+                                                     update="growl"                                                 
+                                                     action="#{registerBean.doRegister}" 
+                                                     ajax="false"/>  
                                 </div>
                             </h:panelGrid>
                         </p:panel>
