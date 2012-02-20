@@ -5,45 +5,39 @@
 package org.inftel.scrum.bean;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.component.html.HtmlDataTable;
+import org.inftel.scrum.entity.Task;
 
 /**
  *
- * @author inftel
+ * @author Jorge
  */
-@ManagedBean
-@RequestScoped
-public class SprintBaseBean {
-
+public class SprintBaseBean implements Serializable {
+    protected int idSprint;
+    protected int sprintNumber;
     protected Date initialDate;
     protected Date endDate;
-    protected int sprintNumber;
-    protected HtmlDataTable sprintTable;
-    /**
-     * Creates a new instance of SprintBaseBean
-     */
+    
+    protected Collection<Task> taskList;
+
     public SprintBaseBean() {
-        this.initialDate = null;
-        this.endDate = null;
     }
 
-    public int getSprintNumber() {
-        return sprintNumber;
-    }
-
-    public void setSprintNumber(int sprintNumber) {
-        this.sprintNumber = sprintNumber;
-    }
-       
     public Date getEndDate() {
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public int getIdSprint() {
+        return idSprint;
+    }
+
+    public void setIdSprint(int idSprint) {
+        this.idSprint = idSprint;
     }
 
     public Date getInitialDate() {
@@ -54,12 +48,19 @@ public class SprintBaseBean {
         this.initialDate = initialDate;
     }
 
-    public HtmlDataTable getSprintTable() {
-        return sprintTable;
+    public int getSprintNumber() {
+        return sprintNumber;
     }
 
-    public void setSprintTable(HtmlDataTable sprintTable) {
-        this.sprintTable = sprintTable;
+    public void setSprintNumber(int sprintNumber) {
+        this.sprintNumber = sprintNumber;
     }
-    
+
+    public Collection<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(Collection<Task> taskList) {
+        this.taskList = taskList;
+    }
 }
