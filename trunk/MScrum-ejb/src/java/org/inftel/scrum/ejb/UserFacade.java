@@ -46,14 +46,14 @@ public class UserFacade extends AbstractFacade<User> {
     
     public User findByDNI(String dni) {
         
-        User user = null;
+        User user;
         
         try {
             user = (User) em.createNamedQuery("User.findByDni")
                     .setParameter("dni", dni)
                     .getSingleResult();
         } catch (Exception ex) {
-            throw new EJBException(ex);
+            return null;
         }    
         
         return user;
