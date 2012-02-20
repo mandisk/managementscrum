@@ -22,17 +22,17 @@
                                            value="#{msg.registrationadvice}" />  <br/>
                             
                             <p:messages id="messages"/>
-
+                            <br/>
                                 <h:outputLabel for="name" value="#{msg.registrationname}" />  
                                 <p:inputText id="name" 
                                              label="Name"
                                              value="#{registerBean.name}"/>  
                                 <br/>
-                                <h:outputLabel for="surname" value="#{msg.registratiosurname}" />  
+                                <h:outputLabel for="surname" value="#{msg.registrationsurname}" />  
                                 <p:inputText id="surname" 
                                              label="Surname"
                                              value="#{registerBean.surname}"/>  
-
+                                <br/>
                                 <h:outputLabel for="email" value="#{msg.registrationemail}" />  
                                 <p:inputText id="email" 
                                              label="Email"
@@ -64,14 +64,11 @@
                                            language="en" 
                                            theme="clean"/>  
                                 <br/>
+                                <div align="right">
                                 <p:commandButton value="#{msg.registrationfinish}"
                                                  update="growl"                                                 
                                                  action="#{registerBean.doRegister}" 
                                                  ajax="false"/>  
-
-                                <div align="right">
-                                    
-                                  
                                 </div>
                             </h:panelGrid>
                         </p:panel>
