@@ -194,7 +194,7 @@
                             <p><h:outputText value="This project has not sprints" rendered="#{selectedProjectBean.selected and selectedProjectBean.sprints.size() == 0}"/></p>
                             <h:dataTable value="#{selectedProjectBean.sprints}" styleClass="table"
                                          var="sprint" rendered="#{selectedProjectBean.selected and selectedProjectBean.sprints.size() > 0}"
-                                         binding="#{selectedProjectBean.sprintTable}">
+                                         binding="#{sprintBean.sprintTable}">
                                 
                                 <h:column>
                                     <f:facet name="header">
@@ -227,7 +227,7 @@
                                     </h:link>
                                 </h:column>
                                 <h:column>
-                                    <p:commandLink value="Delete" actionListener="#{sprintBean.selectSprint()}" oncomplete="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
+                                    <p:commandLink value="Delete" actionListener="#{sprintBean.deleteSprint()}" oncomplete="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
                                 </h:column>
                                 
                             </h:dataTable>                            
