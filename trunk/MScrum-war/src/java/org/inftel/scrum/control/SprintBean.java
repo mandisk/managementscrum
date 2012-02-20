@@ -4,29 +4,18 @@
  */
 package org.inftel.scrum.control;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.inftel.scrum.bean.SprintBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.SprintFacade;
 import org.inftel.scrum.ejb.TaskFacade;
-import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
-import org.inftel.scrum.entity.Task;
 import org.primefaces.event.DashboardReorderEvent;
-import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
-import org.primefaces.model.DefaultDashboardColumn;
-import org.primefaces.model.DefaultDashboardModel;
 
 /**
  *
@@ -144,5 +133,24 @@ public class SprintBean extends SprintBaseBean {
     public String viewSprint() {
         sprint = (Sprint) sprintTable.getRowData();
         return "sprint";
+    }
+    
+    public String selectSprint() {
+        sprint = (Sprint) sprintTable.getRowData();
+        return null;
+    }
+    
+    public String deleteSprint() {
+        
+//        sprint = (Sprint) sprintTable.getRowData();
+        
+        sprintFacade.remove(sprint);
+        
+        FacesContext context = FacesContext.getCurrentInstance();      
+        String delete = "Sprint " + sprint.getSprintNumber() + " deleted";
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, delete, delete);
+        context.addMessage(null, msg);
+        
+        return null;
     }
 }
