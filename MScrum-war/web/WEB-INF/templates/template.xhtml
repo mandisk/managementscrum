@@ -33,20 +33,19 @@
             </div>
         </div>
 
-
         <div id="nav">
-
-            <ul id="button" style="display: inline"> 
-               
-                <li> <h:link value="#{msg.templateMenuMain}" outcome="main.xhtml"/></li>  
-                <li><a href="#">#{msg.templateMenuStadistic}</a></li>  
-                <li><a href="#">#{msg.templateCreateProyect}</a></li>
-                <li><a href="#">#{msg.templateAbout}</a></li>  
-
-            </ul>  
-
             <div class="container_16">
-                <div class="grid_6 prefix_10 omega">
+                <div class="grid_10">
+                    <ul style="display: inline"> 
+
+                        <li> <h:link value="#{msg.templateMenuMain}" outcome="main.xhtml"/></li>  
+                        <li><a href="#">#{msg.templateMenuStadistic}</a></li>  
+                        <li><a href="#">#{msg.templateCreateProyect}</a></li>
+                        <li><a href="#">#{msg.templateAbout}</a></li>  
+
+                    </ul> 
+                </div>
+                <div class="grid_6">
                     <h:form>
                         <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
                         <h:commandLink value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
@@ -55,9 +54,6 @@
                 <div class="clear"></div>
             </div>
         </div>
-
-
-
 
         <div id="content">
             <div class="container_16">
