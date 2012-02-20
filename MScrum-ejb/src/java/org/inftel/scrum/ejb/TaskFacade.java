@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
+import org.inftel.scrum.entity.User;
 
 /**
  *
@@ -55,5 +56,25 @@ public class TaskFacade extends AbstractFacade<Task> {
         }
 
         em.flush();
+    }
+    
+    public List<Task> findByUserSprint(int user, int sprint){
+        User u = em.find(User.class, user);
+        
+        if (u == null) {
+            return null;
+        }
+        
+        List<Task> tasks = em.createQuery("select t from Task t where t.user = :user and t.sprint = :sprint")
+                .setParameter("user", u)
+                .setParameter("sprint", sprint)
+                .getResultList();
+        
+        return tasks;
+        
+//        Query query = em.createQuery("select t from Task t where t.user = :user").setParameter("user", u);
+//        List lista = query.getResultList();
+//        List<Task> listT = (List<Task>) lista;
+//        return listT;
     }
 }
