@@ -17,8 +17,6 @@ import org.inftel.scrum.ejb.ProjectFacade;
 @ManagedBean
 @SessionScoped
 public class ProjectListBean extends ProjectListBaseBean {
-    @EJB
-    private ProjectFacade projectFacade;
 
     /**
      * Creates a new instance of ProjectListBean
@@ -26,7 +24,4 @@ public class ProjectListBean extends ProjectListBaseBean {
     public ProjectListBean() {
     }
     
-    public void loadProjects() {
-        
-    }
 }

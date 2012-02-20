@@ -26,4 +26,12 @@ public class ProjectListBaseBean implements Serializable {
         this.activeProjects = activeProjects;
     }
     
+    public void addActiveProject(Project project) {
+        this.activeProjects.add(project);
+    }
+    
+    public void removeActiveProject(Project project) {
+        this.activeProjects.remove(project);
+    }
+    
 }
