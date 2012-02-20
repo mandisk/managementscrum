@@ -4,14 +4,13 @@
  */
 package org.inftel.scrum.ejb;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Task;
@@ -74,8 +73,116 @@ public class ProjectFacade extends AbstractFacade<Project> {
     }
     
     public List<Project> findActiveProjectByUser(int idUser) {
-        User u = (User) em.find(User.class, idUser);
-        return em.createQuery("SELECT p FROM Project p WHERE p.finalized = false AND :user MEMBER OF p.users")
-                .setParameter("user", u).getResultList();
+        
+        User user = null;
+        List<Project> projects = null;
+        
+        try {
+            user = em.find(User.class, idUser);
+            
+            if (user == null) {
+                return null;
+            }
+            
+            projects = em.createQuery("SELECT p FROM Project p WHERE p.finalized = false AND :user MEMBER OF p.users")
+                                .setParameter("user", user).getResultList();
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return projects;
+    }
+    
+    public Project findByName(String name) {
+        Project p;
+        try {
+            p = (Project) em.createNamedQuery("Project.findByName")
+                    .setParameter("name", name).getSingleResult();
+        } catch (NoResultException ex) {
+            p = null;
+        }
+        return p;
+    }
+    
+    public Project createProject(
+            String name, 
+            String description, 
+            Date initialDate,
+            Date endDate,
+            int idScrumMaster) {
+        
+        User scrumMaster = null;
+        Project project = null;
+        
+        try {
+            
+            scrumMaster = em.find(User.class, idScrumMaster);
+            
+            if (scrumMaster != null) {
+            
+                project = new Project(-1, name, description, initialDate, endDate, false);
+                em.persist(project);
+                project.setScrumMaster(scrumMaster);
+
+                scrumMaster.addProject(project);
+            }
+            
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return project;
+    }
+    
+    public Project removeProject(int idProject) {
+        
+        Project project = null;
+        
+        try {
+            
+            project = em.find(Project.class, idProject);
+            
+            if (project != null) {
+                
+                em.remove(project);
+                return project;
+            }
+            
+            return null;
+            
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+    }
+    
+    public Project updateProject(
+            int idProject,
+            String name,
+            String description,
+            Date initialDate,
+            Date endDate) {
+        
+        Project project;
+        
+        try {
+            
+            project = em.find(Project.class, idProject);
+            
+            if (project == null) {
+                return null;
+            }
+            
+            project.setName(name);
+            project.setDescription(description);
+            project.setInitialDate(initialDate);
+            project.setEndDate(endDate);
+            
+//            em.merge(project);
+//            em.flush();
+            
+            return project;
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
     }
 }
