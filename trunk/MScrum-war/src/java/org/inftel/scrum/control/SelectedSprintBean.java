@@ -4,6 +4,7 @@
  */
 package org.inftel.scrum.control;
 
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -53,10 +54,14 @@ public class SelectedSprintBean extends SprintBaseBean {
     public String deleteSprint() {
         
         FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         
         Sprint sprint = sprintFacade.removeSprint(this.idSprint);
         
         if (sprint != null) {
+            
+            SelectedProjectBean selectedProjectBean = (SelectedProjectBean) sessionMap.get("selectedProjectBean");
+            selectedProjectBean.removeSprint(sprint);
             
             String delete = "Sprint " + this.sprintNumber + " deleted";
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, delete, delete);
