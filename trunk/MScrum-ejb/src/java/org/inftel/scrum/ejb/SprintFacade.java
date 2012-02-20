@@ -45,7 +45,7 @@ public class SprintFacade extends AbstractFacade<Sprint> {
                 return null;
             }
             
-            sprints = em.createQuery("SELECT s FROM Sprint s WHERE s.project = :project")
+            sprints = em.createQuery("SELECT s FROM Sprint s WHERE s.project = :project ORDER BY s.sprintNumber")
                     .setParameter("project", project)
                     .getResultList();
         } catch (Exception ex) {

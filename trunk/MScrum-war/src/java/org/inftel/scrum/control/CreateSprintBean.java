@@ -32,11 +32,6 @@ public class CreateSprintBean extends CreateSprintBaseBean {
     public CreateSprintBean() {
     }
 
-    @PostConstruct
-    public void init() {
-        p = projectFacade.find(1);
-    }
-
     public Date getActualDate() {
         Date d = new Date();
 
@@ -44,12 +39,18 @@ public class CreateSprintBean extends CreateSprintBaseBean {
 
     }
 
-    public Date getMaxDate() {
-
-        return p.getEndDate();
-    }
-
     public String createNewSprint() {
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        SelectedProjectBean selectedProjectBean = 
+                (SelectedProjectBean) context.getExternalContext().getSessionMap().get("selectedProjectBean");
+        
+        p = projectFacade.find(selectedProjectBean.getIdProject());
+        p.setSprints(selectedProjectBean.getSprints());
+        
+        if (p == null) {
+            return null;
+        }
 
         int sNumber;
 
@@ -82,6 +83,8 @@ public class CreateSprintBean extends CreateSprintBaseBean {
         System.out.println(p.toString());
         Sprint s = new Sprint(1, sNumber, projectPath, initDate, endDate, null, p);
         sprintFacade.create(s);
+        
+        selectedProjectBean.setSprints(sprintFacade.findByProject(p.getIdProject()));
 
         return "main?faces-redirect=true";
     }
