@@ -13,8 +13,6 @@
             <ui:define name="content">
 
                 <div class="grid_16">
-
-<!--                    <h1><h:outputText value="" /></h1>-->
                     
                     <b><h:outputText value="Sprint Number: "/></b> 
                     <h:outputText value="#{selectedSprintBean.sprintNumber}"/>
@@ -34,12 +32,12 @@
                     <br/>
                     <br/>    
                     
-<!--                    <h:form>  
+                    <h:form>  
 
-                        <p:dashboard id="board" style="resize: none" model="">  
+                        <p:dashboard id="board" style="resize: none" model="#{selectedSprintBean.model}">  
 
                             <p:ajax event="reorder" 
-                                    listener=""/>  
+                                    listener="#{selectedSprintBean.handleReorder}"/>  
 
                             
                             <p:panel id="pnl1" 
@@ -75,7 +73,7 @@
                             </p:panel>
 
                             
-                            <p:panel id="pnl4"
+<!--                            <p:panel id="pnl4"
                                      
                                      toggleable="true" 
                                      header=""
@@ -128,13 +126,13 @@
                                         <p:inputText value=""  
                                                      required="true" 
                                                      label="text3"/>  
-                                    </p:inplace>  
-                                </h:form>
-                            </p:panel>
+                                    </p:inplace>  -->
+                                
+                          
 
                         </p:dashboard>
                       
-                    </h:form>-->
+                    </h:form>
                     </div>
                                 
                 <div class="clear"></div>
