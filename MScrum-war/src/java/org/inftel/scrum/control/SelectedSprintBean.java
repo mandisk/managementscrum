@@ -69,6 +69,11 @@ public class SelectedSprintBean extends SprintBaseBean {
             
             return null;
         }
+        else {
+            String error = "Sprint " + this.sprintNumber + " can not be deleted";
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, error, error);
+            context.addMessage(null, msg);
+        }
         
         return null;
     }
