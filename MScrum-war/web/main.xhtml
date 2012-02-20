@@ -46,7 +46,7 @@
                                             </h:inputText>
                                         </h:panelGrid>
                                         <p:commandButton id="submitButton" value="Create" oncomplete="dlg.hide();" styleClass="button"
-                                                         update=":growl :projectList :actions :infoProject :sprintAction :sprint :update dlg_name dlg_description dlg_initialdate dlg_enddate" 
+                                                         update=":growl :projectList :actions :infoProject :sprintAction :sprint :update dlg_name dlg_description dlg_initialdate dlg_enddate :create-sprint" 
                                                          actionListener="#{projectBean.createProject}"/>
                                     </h:form>
                                 </div>
@@ -64,7 +64,7 @@
                                     </h:column>
                                     <h:column>
                                         <h:commandLink value="#{msg.mainselectproject}" action="#{selectedProjectBean.select()}">
-                                            <f:ajax execute="@this" render=":infoProject :actions :sprintAction :sprint :update"/>
+                                            <f:ajax execute="@this" render=":infoProject :actions :sprintAction :sprint :update :create-sprint"/>
                                         </h:commandLink>
                                     </h:column>
                                 </h:dataTable>
@@ -79,9 +79,9 @@
                     <div class="grid_8 omega">
                         <div class="form-item" style="text-align: right">
                             <h:form id="actions">
-                                <h:link value="#{msg.mainlinkaddusers}" rendered="#{selectedProjectBean.selected}"/>
-                                <p:commandLink value="#{msg.mainlinkmodify}" rendered="#{selectedProjectBean.selected}" onclick="dlgUpdate.show();" />
-                                <p:commandLink value="#{msg.mainlinkdelete}" rendered="#{selectedProjectBean.selected}" onclick="dlgDelete.show();"/>
+                                <h:link value="#{msg.mainlinkaddusers}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}"/>
+                                <p:commandLink value="#{msg.mainlinkmodify}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}" onclick="dlgUpdate.show();" />
+                                <p:commandLink value="#{msg.mainlinkdelete}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}" onclick="dlgDelete.show();"/>
                             </h:form>
                             <p:dialog widgetVar="dlgUpdate" modal="true" resizable="false" styleClass="prime-component" header="#{msg.mainlinkmodify}">
                                 <div class="form-item">
@@ -159,30 +159,29 @@
                         <div class="form-item" style="text-align: right">
                             <h:form id="sprintAction">
                                 <p:commandLink value="#{msg.mainaddnewSprint}" onclick="dlgCreateSprint.show()"
-                                               rendered="#{selectedProjectBean.selected}"/>
+                                               rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}"/>
                             </h:form>
                         </div>
 
-                        <p:dialog widgetVar="dlgCreateSprint" modal="true" resizable="false" styleClass="prime-component" header="#{msg.createSprintTitle}}">
+                        <p:dialog widgetVar="dlgCreateSprint" modal="true" resizable="false" styleClass="prime-component" header="#{msg.createSprintTitle}">
                             <div class="form-item">
-                                <h:form id="form" styleClass="prime-component">
+                                <h:form id="create-sprint" styleClass="prime-component">
                                     <h:panelGrid  styleClass="table" columns="2">  
 
                                         <h:outputLabel value="#{msg.createSprintFieldSprintNumber}"/>
                                         <p:inputText value="#{createSprintBean.sprintNumber}"/>  
 
                                         <h:outputLabel value="#{msg.createSprintFieldInitDate}"/>
-                                        <p:calendar id="InitialDate" value="#{createSprintBean.initDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{createSprintBean.maxDate}"/>  
+                                        <p:calendar id="InitialDate" value="#{createSprintBean.initDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{selectedProjectBean.endDate}"/>  
 
                                         <h:outputLabel value="#{msg.createSprintFieldEndDate}"/>
-                                        <p:calendar id="EndDate" value="#{createSprintBean.endDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{createSprintBean.maxDate}"/>  
+                                        <p:calendar id="EndDate" value="#{createSprintBean.endDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{selectedProjectBean.endDate}"/>  
 
                                         <h:outputLabel value="#{msg.createSprintFieldPathProject}"/>
                                         <p:inputText value ="#{createSprintBean.projectPath}" required="false"/>  
 
-
-                                        <h:commandButton value="#{msg.createSprintButtonCreate}"  action="#{createSprintBean.createNewSprint()}" styleClass="prime-component button"/> 
                                     </h:panelGrid>
+                                    <p:commandButton value="#{msg.createSprintButtonCreate}"  action="#{createSprintBean.createNewSprint()}" styleClass="prime-component button" update=":sprint"/> 
                                 </h:form>
                             </div>
                         </p:dialog>
@@ -225,11 +224,11 @@
                                     </h:link>
                                 </h:column>
                                 <h:column>
-                                    <h:link value="Modify">
+                                    <h:link value="Modify" rendered="#{selectedProjectBean.owner == loginBean.user}">
                                     </h:link>
                                 </h:column>
                                 <h:column>
-                                    <h:link value="Delete">
+                                    <h:link value="Delete" rendered="#{selectedProjectBean.owner == loginBean.user}">
                                     </h:link>
                                 </h:column>
                                 
