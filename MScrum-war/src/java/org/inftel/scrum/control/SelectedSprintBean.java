@@ -80,10 +80,22 @@ public class SelectedSprintBean extends SprintBaseBean {
     
     public String createTask() {
         Sprint sprint = (Sprint) this.sprintTable.getRowData();
+        
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         
         requestMap.put("sprint", sprint);
         return "sprintPlaning?faces-redirect=true";
+    }
+    
+    public String viewPanel() {
+        Sprint sprint = (Sprint) this.sprintTable.getRowData();
+        
+        this.idSprint = sprint.getIdSprint();
+        this.sprintNumber = sprint.getSprintNumber();
+        this.initialDate = sprint.getInitialDate();
+        this.endDate = sprint.getEndDate();
+        
+        return "sprint?faces-redirect=true";
     }
 }
