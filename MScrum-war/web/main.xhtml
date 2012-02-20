@@ -11,12 +11,12 @@
         <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
-                
+
                 <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
                 <p:growl id="growl" life="3000"/>
                 <div class="grid_6">
                     <!-- Proyectos del usuario -->
-                    
+
                     <div class="grid_4 alpha">
                         <h2 class="gradient"><span></span>#{msg.mainprojects}</h2>
                     </div>
@@ -33,21 +33,21 @@
                                             <h:inputText id="dlg_name" value="#{projectBean.name}" required="true"/>
                                             <h:outputLabel for="dlg_description" value="#{msg.mainprojectdescription}" />  
                                             <h:inputTextarea id="dlg_description" style="color: #555;" cols="30" rows="3" 
-                                                            value="#{projectBean.description}" required="true"/>
+                                                             value="#{projectBean.description}" required="true"/>
                                             <h:outputLabel for="dlg_initialdate" value="#{msg.mainprojectinitialdate}" />  
                                             <h:inputText id="dlg_initialdate" value="#{projectBean.initialDate}" 
-                                                        required="true">
+                                                         required="true">
                                                 <f:convertDateTime type="date" dateStyle="short"/>
                                             </h:inputText>
                                             <h:outputLabel for="dlg_enddate" value="#{msg.mainprojectenddate}" />  
                                             <h:inputText id="dlg_enddate" value="#{projectBean.endDate}"
-                                                        required="true">
+                                                         required="true">
                                                 <f:convertDateTime type="date" dateStyle="short"/>
                                             </h:inputText>
                                         </h:panelGrid>
                                         <p:commandButton id="submitButton" value="Create" oncomplete="dlg.hide();" styleClass="button"
-                                                        update=":growl :projectList :actions :infoProject :sprintAction :sprint :update dlg_name dlg_description dlg_initialdate dlg_enddate" 
-                                                        actionListener="#{projectBean.createProject}"/>
+                                                         update=":growl :projectList :actions :infoProject :sprintAction :sprint :update dlg_name dlg_description dlg_initialdate dlg_enddate" 
+                                                         actionListener="#{projectBean.createProject}"/>
                                     </h:form>
                                 </div>
                             </p:dialog>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="grid_10">
                     <!-- Información del proyecto seleccionado -->
-                    
+
                     <div class="grid_8 alpha"><h2>#{msg.mainprojectinfo}</h2></div>
                     <div class="grid_8 omega">
                         <div class="form-item" style="text-align: right">
@@ -91,21 +91,21 @@
                                             <h:inputText id="dlgUpdate_name" value="#{selectedProjectBean.name}" required="true"/>
                                             <h:outputLabel for="dlgUpdate_description" value="#{msg.mainprojectdescription}" />  
                                             <h:inputTextarea id="dlgUpdate_description" style="color: #555;" cols="30" rows="3" 
-                                                            value="#{selectedProjectBean.description}" required="true"/>
+                                                             value="#{selectedProjectBean.description}" required="true"/>
                                             <h:outputLabel for="dlgUpdate_initialdate" value="#{msg.mainprojectinitialdate}" />  
                                             <h:inputText id="dlgUpdate_initialdate" value="#{selectedProjectBean.initialDate}" 
-                                                        required="true">
+                                                         required="true">
                                                 <f:convertDateTime type="date" dateStyle="short"/>
                                             </h:inputText>
                                             <h:outputLabel for="dlgUpdate_enddate" value="#{msg.mainprojectenddate}" />  
                                             <h:inputText id="dlgUpdate_enddate" value="#{selectedProjectBean.endDate}"
-                                                        required="true">
+                                                         required="true">
                                                 <f:convertDateTime type="date" dateStyle="short"/>
                                             </h:inputText>
                                         </h:panelGrid>
                                         <p:commandButton id="updateButton" value="Update" oncomplete="dlgUpdate.hide();" styleClass="button"
-                                                        update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
-                                                        actionListener="#{selectedProjectBean.updateProject()}"/>
+                                                         update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
+                                                         actionListener="#{selectedProjectBean.updateProject()}"/>
                                     </h:form>
                                 </div>
                             </p:dialog>
@@ -114,8 +114,8 @@
                                     <h:form id="delete">
                                         <h5>Are you sure to delete this project?</h5>
                                         <p:commandButton id="deleteButton" value="Yes" oncomplete="dlgDelete.hide();" styleClass="button"
-                                                        update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
-                                                        action="#{selectedProjectBean.deleteProject()}" ajax="false"/>
+                                                         update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
+                                                         action="#{selectedProjectBean.deleteProject()}" ajax="false"/>
                                         <span style="width: 20px;"></span>
                                         <p:commandButton id="cancelButton" value="Cancel" styleClass="button" onclick="dlgDelete.hide();"/>
                                     </h:form>
@@ -126,42 +126,67 @@
                     <div class="clear"></div>
                     <div class="box">
                         <h:form id="infoProject">
-                        <p><h:outputText value="No selected project" rendered="#{!selectedProjectBean.selected}"/></p>
-                        <h:panelGrid style="margin-left: 10px" styleClass="table" rendered="#{selectedProjectBean.selected}">
-                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectname}" for="projectName" />
-                            <h:outputText id="projectName" value="#{selectedProjectBean.name}"/>
-                        </h:panelGrid>
-                        <h:panelGrid style="margin-left: 10px" columns="3" styleClass="table" rendered="#{selectedProjectBean.selected}">
-                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectowner}" for="owner" />
-                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
-                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectenddate}" for="endDate" />
-                            <h:outputText id="owner" value="#{selectedProjectBean.owner.name} #{selectedProjectBean.owner.surname}"/>
-                            <h:outputText id="initialDate" value="#{selectedProjectBean.initialDate}">
-                                <f:convertDateTime type="date" dateStyle="long"/>
-                            </h:outputText>    
-                            <h:outputText id="endDate" value="#{selectedProjectBean.endDate}">
-                                <f:convertDateTime type="date" dateStyle="long"/>
-                            </h:outputText>
-                        </h:panelGrid>
-                        <h:panelGrid style="margin-left: 10px" styleClass="table" rendered="#{selectedProjectBean.selected}">
-                            <h:outputLabel styleClass="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
-                            <h:outputText id="projectDescription" value="#{selectedProjectBean.description}"/>
-                        </h:panelGrid>
+                            <p><h:outputText value="No selected project" rendered="#{!selectedProjectBean.selected}"/></p>
+                            <h:panelGrid style="margin-left: 10px" styleClass="table" rendered="#{selectedProjectBean.selected}">
+                                <h:outputLabel styleClass="bold" value="#{msg.mainprojectname}" for="projectName" />
+                                <h:outputText id="projectName" value="#{selectedProjectBean.name}"/>
+                            </h:panelGrid>
+                            <h:panelGrid style="margin-left: 10px" columns="3" styleClass="table" rendered="#{selectedProjectBean.selected}">
+                                <h:outputLabel styleClass="bold" value="#{msg.mainprojectowner}" for="owner" />
+                                <h:outputLabel styleClass="bold" value="#{msg.mainprojectinitialdate}" for="initialDate" />
+                                <h:outputLabel styleClass="bold" value="#{msg.mainprojectenddate}" for="endDate" />
+                                <h:outputText id="owner" value="#{selectedProjectBean.owner.name} #{selectedProjectBean.owner.surname}"/>
+                                <h:outputText id="initialDate" value="#{selectedProjectBean.initialDate}">
+                                    <f:convertDateTime type="date" dateStyle="long"/>
+                                </h:outputText>    
+                                <h:outputText id="endDate" value="#{selectedProjectBean.endDate}">
+                                    <f:convertDateTime type="date" dateStyle="long"/>
+                                </h:outputText>
+                            </h:panelGrid>
+                            <h:panelGrid style="margin-left: 10px" styleClass="table" rendered="#{selectedProjectBean.selected}">
+                                <h:outputLabel styleClass="bold" value="#{msg.mainprojectdescription}" for="projectDescription" />
+                                <h:outputText id="projectDescription" value="#{selectedProjectBean.description}"/>
+                            </h:panelGrid>
                         </h:form>
                     </div>
                     <div class="separator_20"></div>
                     <!-- Sprints del proyecto seleccionado -->
-                    
+
                     <div class="grid_8 alpha">
                         <h2>Sprints info</h2>
                     </div>
                     <div class="grid_8 omega">
                         <div class="form-item" style="text-align: right">
                             <h:form id="sprintAction">
-                                <h:commandLink value="Add new sprint" 
+                                <p:commandLink value="#{msg.mainaddnewSprint}" onclick="dlgCreateSprint.show()"
                                                rendered="#{selectedProjectBean.selected}"/>
                             </h:form>
                         </div>
+
+                        <p:dialog widgetVar="dlgCreateSprint" modal="true" resizable="false" styleClass="prime-component" header="#{msg.createSprintTitle}}">
+                            <div class="form-item">
+                                <h:form id="form" styleClass="prime-component">
+                                    <h:panelGrid  styleClass="table" columns="2">  
+
+                                        <h:outputLabel value="#{msg.createSprintFieldSprintNumber}"/>
+                                        <p:inputText value="#{createSprintBean.sprintNumber}"/>  
+
+                                        <h:outputLabel value="#{msg.createSprintFieldInitDate}"/>
+                                        <p:calendar id="InitialDate" value="#{createSprintBean.initDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{createSprintBean.maxDate}"/>  
+
+                                        <h:outputLabel value="#{msg.createSprintFieldEndDate}"/>
+                                        <p:calendar id="EndDate" value="#{createSprintBean.endDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{createSprintBean.maxDate}"/>  
+
+                                        <h:outputLabel value="#{msg.createSprintFieldPathProject}"/>
+                                        <p:inputText value ="#{createSprintBean.projectPath}" required="false"/>  
+
+
+                                        <h:commandButton value="#{msg.createSprintButtonCreate}"  action="#{createSprintBean.createNewSprint()}" styleClass="prime-component button"/> 
+                                    </h:panelGrid>
+                                </h:form>
+                            </div>
+                        </p:dialog>
+
                     </div>
                     <div class="clear"></div>
                     <div class="box">
@@ -215,7 +240,7 @@
                 </div>
                 <div class="clear"></div>
                 <div class="separator_10"></div>
-                
+
             </ui:define>
 
         </ui:composition>
