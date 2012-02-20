@@ -72,6 +72,14 @@ public class SelectedProjectBean extends ProjectBaseBean {
         this.selected = selected;
     }
     
+    public void addSprint(Sprint sprint) {
+        this.sprints.add(sprint);
+    }
+    
+    public void removeSprint(Sprint sprint) {
+        this.sprints.remove(sprint);
+    }
+    
     public String select() {
         Project p = (Project) projectTable.getRowData();
         
