@@ -4,7 +4,9 @@
  */
 package org.inftel.scrum.control;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,6 +19,8 @@ import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.SprintFacade;
 import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
+import org.inftel.scrum.entity.User;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -34,6 +38,7 @@ public class SelectedProjectBean extends ProjectBaseBean {
     private Collection<Sprint> sprints;
     private HtmlDataTable projectTable;
     private boolean selected;
+    private DualListModel<User> users;
     /**
      * Creates a new instance of SelectedProjectBean
      */
@@ -78,6 +83,14 @@ public class SelectedProjectBean extends ProjectBaseBean {
     
     public void removeSprint(Sprint sprint) {
         this.sprints.remove(sprint);
+    }
+
+    public DualListModel<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(DualListModel<User> users) {
+        this.users = users;
     }
     
     public String select() {
@@ -165,5 +178,28 @@ public class SelectedProjectBean extends ProjectBaseBean {
         }
         
         return null;
+    }
+    
+    public String addUsers(){
+        Project currentProject = (Project) projectTable.getRowData();
+//        LOGGER.info(currentProject.getDescription());
+        List<User> usersSource = new ArrayList<User>();
+        List<User> usersTarget = new ArrayList<User>();
+//        LOGGER.info("loadList: " + currentProject.getName());
+        usersTarget = (List<User>) currentProject.getUsers();
+//        for (Iterator<User> it = usersTarget.iterator(); it.hasNext();) {
+//            User user = it.next();
+//            LOGGER.info("usersTarget: " + user.getName());
+//        }
+        
+        usersSource = projectFacade.selectUsersNotIn(currentProject.getIdProject());
+        users = new DualListModel<User>(usersSource, usersTarget);
+        UserListBean userListBean = new UserListBean();
+        userListBean.setProject(currentProject);
+        userListBean.setUsers(users);
+        userListBean.setUsersSource(users.getSource());
+        userListBean.setUsersTarget(users.getTarget());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userListBean", userListBean);
+        return "addUsersProject?faces-redirect=true";
     }
 }

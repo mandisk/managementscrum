@@ -78,7 +78,7 @@
                     <div class="grid_8 omega">
                         <div class="form-item" style="text-align: right">
                             <h:form id="actions">
-                                <h:link value="#{msg.mainlinkaddusers}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}"/>
+                                <h:link value="#{msg.mainlinkaddusers}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}" outcome="#{selectedProjectBean.addUsers()}"/>
                                 <p:commandLink value="#{msg.mainlinkmodify}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}" onclick="dlgUpdate.show();" />
                                 <p:commandLink value="#{msg.mainlinkdelete}" rendered="#{selectedProjectBean.selected and selectedProjectBean.owner == loginBean.user}" onclick="dlgDelete.show();"/>
                             </h:form>
