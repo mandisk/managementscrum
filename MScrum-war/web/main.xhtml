@@ -11,7 +11,6 @@
         <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
-<!--erqwerwerwerwer-->
                 <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
                 <p:growl id="growl" life="3000"/>
                 <div class="grid_6">
@@ -165,8 +164,8 @@
 
                         <p:dialog widgetVar="dlgCreateSprint" modal="true" resizable="false" styleClass="prime-component" header="#{msg.createSprintTitle}">
                             <div class="form-item">
-                                <h:form id="create-sprint" styleClass="prime-component">
-                                    <h:panelGrid  styleClass="table" columns="2">  
+                                <h:form id="create-sprint" style="text-align: right">
+                                    <h:panelGrid  styleClass="table" columns="2" style="margin-bottom:10px">  
 
                                         <h:outputLabel value="#{msg.createSprintFieldSprintNumber}"/>
                                         <p:inputText value="#{createSprintBean.sprintNumber}"/>  
@@ -181,7 +180,7 @@
                                         <p:inputText value ="#{createSprintBean.projectPath}" required="false"/>  
 
                                     </h:panelGrid>
-                                    <p:commandButton value="#{msg.createSprintButtonCreate}"  action="#{createSprintBean.createNewSprint()}" styleClass="prime-component button" update=":sprint"/> 
+                                    <p:commandButton id="createSprintButton" value="#{msg.createSprintButtonCreate}"  actionListener="#{createSprintBean.createNewSprint()}" oncomplete="dlgCreateSprint.hide();" styleClass="button" update=":growl :sprint"/> 
                                 </h:form>
                             </div>
                         </p:dialog>
@@ -195,7 +194,7 @@
                             <p><h:outputText value="This project has not sprints" rendered="#{selectedProjectBean.selected and selectedProjectBean.sprints.size() == 0}"/></p>
                             <h:dataTable value="#{selectedProjectBean.sprints}" styleClass="table"
                                          var="sprint" rendered="#{selectedProjectBean.selected and selectedProjectBean.sprints.size() > 0}"
-                                        binding="#{sprintBean.sprintTable}">
+                                         binding="#{selectedProjectBean.sprintTable}">
                                 
                                 <h:column>
                                     <f:facet name="header">
@@ -220,7 +219,7 @@
                                     </h:outputText>
                                 </h:column>
                                 <h:column>
-                                    <h:link value="View sprint" outcome="#{sprintBean.viewSprint()}">
+                                    <h:link value="View sprint">
                                     </h:link>
                                 </h:column>
                                 <h:column>
@@ -228,12 +227,23 @@
                                     </h:link>
                                 </h:column>
                                 <h:column>
-                                    <h:link value="Delete" rendered="#{selectedProjectBean.owner == loginBean.user}">
-                                    </h:link>
+                                    <p:commandLink value="Delete" actionListener="#{sprintBean.selectSprint()}" oncomplete="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
                                 </h:column>
                                 
                             </h:dataTable>                            
                             </h:form>
+                            <p:dialog widgetVar="dlgDeleteSprint" modal="true" resizable="false" styleClass="prime-component" header="Delete sprint">
+                                <div class="form-item">
+                                    <h:form id="delete-sprint" style="text-align: right">
+                                        <h5>Are you sure to delete this sprint?</h5>
+                                        <p:commandButton id="deleteSprintButton" value="Yes" oncomplete="dlgDeleteSprint.hide();" styleClass="button"
+                                                         update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
+                                                         action="#{sprintBean.deleteSprint()}" ajax="false"/>
+                                        <span style="width: 20px;"></span>
+                                        <p:commandButton id="cancelSprintButton" value="Cancel" styleClass="button" onclick="dlgDeleteSprint.hide();"/>
+                                    </h:form>
+                                </div>
+                            </p:dialog>
                         </div>
                     </div>
                 </div>
