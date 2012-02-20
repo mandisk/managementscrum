@@ -4,7 +4,8 @@
  */
 package org.inftel.scrum.ejb;
 
-import java.util.List;
+import java.util.Collection;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,13 +15,13 @@ import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.User;
 
-
 /**
  *
  * @author Jorge
  */
 @Stateless
 public class SprintFacade extends AbstractFacade<Sprint> {
+
     @PersistenceContext(unitName = "MScrum-ejbPU")
     private EntityManager em;
 
@@ -31,12 +32,26 @@ public class SprintFacade extends AbstractFacade<Sprint> {
 
     public SprintFacade() {
         super(Sprint.class);
-    } 
+    }
     
-    public List<Sprint> findByProject(Project project) {
-        return em.createQuery("SELECT s FROM Sprint s WHERE s.project = :project")
-                .setParameter("project", project)
-                .getResultList();
-    }   
-    
+    public Collection<Sprint> findByProject(int idProject) {
+        Collection<Sprint> sprints = null;
+        Project project;
+        try {
+            
+            project = em.find(Project.class, idProject);
+            
+            if (project == null) {
+                return null;
+            }
+            
+            sprints = em.createQuery("SELECT s FROM Sprint s WHERE s.project = :project")
+                    .setParameter("project", project)
+                    .getResultList();
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return sprints;
+    }
 }

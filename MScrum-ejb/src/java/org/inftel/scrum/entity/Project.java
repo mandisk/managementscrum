@@ -5,6 +5,7 @@
 package org.inftel.scrum.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
@@ -43,7 +44,7 @@ public class Project implements Serializable {
     private String name;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 255)
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
@@ -60,9 +61,9 @@ public class Project implements Serializable {
     @NotNull
     @Column(name = "finalized")
     private boolean finalized;
-    @ManyToMany(mappedBy="projects", fetch= FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy="projects")
     private Collection<User> users;
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "scrum_master", referencedColumnName = "idUser")
     private User scrumMaster;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
@@ -71,6 +72,7 @@ public class Project implements Serializable {
     private Collection<Sprint> sprints;
 
     public Project() {
+        users = new ArrayList<User>();
     }
 
     public Project(Integer idProject) {
@@ -84,6 +86,7 @@ public class Project implements Serializable {
         this.initialDate = initialDate;
         this.endDate = endDate;
         this.finalized = finalized;
+        users = new ArrayList<User>();
     }
 
     public Integer getIdProject() {
@@ -164,6 +167,10 @@ public class Project implements Serializable {
 
     public void setSprints(Collection<Sprint> sprints) {
         this.sprints = sprints;
+    }
+    
+    public void addUser(User user) {
+        this.users.add(user);
     }
 
     @Override

@@ -183,6 +183,10 @@ public class User implements Serializable {
         this.assignedTasks = assignedTasks;
     }
     
+    public void addProject(Project project) {
+        this.projects.add(project);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
