@@ -104,6 +104,17 @@ public class ProjectFacade extends AbstractFacade<Project> {
         return p;
     }
     
+     public Project findByIdProject(int idProject) {
+        Project p;
+        try {
+            p = (Project) em.createNamedQuery("Project.findByIdProject")
+                    .setParameter("idProject", idProject).getSingleResult();
+        } catch (NoResultException ex) {
+            p = null;
+        }
+        return p;
+    }
+    
     public Project createProject(
             String name, 
             String description, 
