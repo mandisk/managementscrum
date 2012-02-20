@@ -194,7 +194,7 @@
                             <p><h:outputText value="This project has not sprints" rendered="#{selectedProjectBean.selected and selectedProjectBean.sprints.size() == 0}"/></p>
                             <h:dataTable value="#{selectedProjectBean.sprints}" styleClass="table"
                                          var="sprint" rendered="#{selectedProjectBean.selected and selectedProjectBean.sprints.size() > 0}"
-                                         binding="#{sprintBean.sprintTable}">
+                                         binding="#{selectedSprintBean.sprintTable}">
                                 
                                 <h:column>
                                     <f:facet name="header">
@@ -227,7 +227,7 @@
                                     </h:link>
                                 </h:column>
                                 <h:column>
-                                    <p:commandLink value="Delete" actionListener="#{sprintBean.deleteSprint()}" oncomplete="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
+                                    <p:commandLink value="Delete" actionListener="#{selectedSprintBean.selectSprint()}" onsuccess="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
                                 </h:column>
                                 
                             </h:dataTable>                            
@@ -238,7 +238,7 @@
                                         <h5>Are you sure to delete this sprint?</h5>
                                         <p:commandButton id="deleteSprintButton" value="Yes" oncomplete="dlgDeleteSprint.hide();" styleClass="button"
                                                          update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
-                                                         action="#{sprintBean.deleteSprint()}" ajax="false"/>
+                                                         action="#{selectedSprintBean.deleteSprint()}" ajax="false"/>
                                         <span style="width: 20px;"></span>
                                         <p:commandButton id="cancelSprintButton" value="Cancel" styleClass="button" onclick="dlgDeleteSprint.hide();"/>
                                     </h:form>

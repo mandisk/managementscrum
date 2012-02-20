@@ -54,4 +54,25 @@ public class SprintFacade extends AbstractFacade<Sprint> {
         
         return sprints;
     }
+    
+    public Sprint removeSprint(int idSprint) {
+        
+        Sprint sprint;
+        
+        try {
+            
+            sprint = em.find(Sprint.class, idSprint);
+            
+            if (sprint != null) {
+                
+                em.remove(sprint);
+                return sprint;
+            }
+            
+            return null;
+            
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+    }
 }
