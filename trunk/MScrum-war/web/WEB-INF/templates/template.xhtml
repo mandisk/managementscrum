@@ -38,17 +38,34 @@
                 <div class="grid_10">
                     <ul style="display: inline"> 
 
-                        
+
                         <li> <h:link value="#{msg.templateMenuMain}" outcome="main.xhtml"/></li>  
                         <li><h:link value="#{msg.templateAbout}" outcome="aboutUs.xhtml"/></li>  
 
                     </ul> 
                 </div>
-                <div class="grid_6">
-                    <h:form>
-                        <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
-                        <h:commandLink value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
-                    </h:form>
+                <div class="container_6">
+                    <div class="grid_2">
+                        <h:form>
+
+                            <h:panelGrid columns="2">
+
+                                <h:outputLabel value="#{msg.language}"/>
+                                <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
+                                                 valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
+                                    <f:selectItems value="#{languageBean.countriesInMap}" /> 
+                                </h:selectOneMenu>
+
+                            </h:panelGrid>
+
+                        </h:form>
+                    </div>
+                    <div class="grid_4" >
+                        <h:form>
+                            <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
+                            <h:commandLink value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
+                        </h:form>
+                    </div>
                 </div>
                 <div class="clear"></div>
             </div>
