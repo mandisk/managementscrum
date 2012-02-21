@@ -16,17 +16,7 @@ import org.primefaces.model.DualListModel;
  */
 public class UserListBaseBean implements Serializable{
     protected DualListModel<User> users;
-    protected List<User> usersSource;
-    protected List<User> usersTarget;
-    protected Project project;
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
+    protected int idProject;
 
     public DualListModel<User> getUsers() {
         return users;
@@ -36,20 +26,12 @@ public class UserListBaseBean implements Serializable{
         this.users = users;
     }
 
-    public List<User> getUsersSource() {
-        return usersSource;
+    public int getIdProject() {
+        return idProject;
     }
 
-    public void setUsersSource(List<User> usersSource) {
-        this.usersSource = usersSource;
-    }
-
-    public List<User> getUsersTarget() {
-        return usersTarget;
-    }
-
-    public void setUsersTarget(List<User> usersTarget) {
-        this.usersTarget = usersTarget;
+    public void setIdProject(int idProject) {
+        this.idProject = idProject;
     }
 
     
