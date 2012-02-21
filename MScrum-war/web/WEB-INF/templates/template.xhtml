@@ -50,7 +50,7 @@
 
                             <h:panelGrid columns="2">
 
-                                <h:outputLabel value="#{msg.language}"/>
+                                <h:outputLabel value=" #{msg.templateLanguage}"/>
                                 <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
                                                  valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
                                     <f:selectItems value="#{languageBean.countriesInMap}" /> 
