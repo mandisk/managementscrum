@@ -5,10 +5,12 @@
 package org.inftel.scrum.ejb;
 
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
 import org.inftel.scrum.entity.User;
@@ -31,6 +33,29 @@ public class TaskFacade extends AbstractFacade<Task> {
     public TaskFacade() {
         super(Task.class);
     }
+    
+    public Task createTask(String description, int time, int idProject) {
+        
+        Project project;
+        Task task;
+        
+        try {
+            
+            project = em.find(Project.class, idProject);
+            
+            if (project == null) {
+                return null;
+            }
+            
+            task = new Task(-1, 't', description, time, project, null, null);
+            em.persist(task);
+            
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return task;
+    }
 
     public List<Task> findBySprint(int idSprint) {
         Sprint sprint = em.find(Sprint.class, idSprint);
@@ -50,17 +75,27 @@ public class TaskFacade extends AbstractFacade<Task> {
         return listT;
     }
 
-    public void setSprint(Sprint s, List<Task> tasks) {
+    public void setSprint(int idSprint, Object[] idTasks) {
         
-        Sprint saux = em.find(Sprint.class, s.getIdSprint());
+        Sprint sprint;
+        
+        try {
+            
+            sprint = em.find(Sprint.class, idSprint);
+            if (sprint != null) {
+            
+                for (Object o : idTasks) {
+                    String s = (String) o;
+                    int idTask = Integer.parseInt(s);
 
-        for (Task t : tasks) {
-           
-            Task taux = em.find(Task.class, t.getIdTask());
-            taux.setSprint(saux);
+                    Task task = em.find(Task.class, idTask);
+
+                    task.setSprint(sprint);
+                }
+            }
+        } catch (Exception ex) {
+            throw new EJBException(ex);
         }
-
-        em.flush();
     }
     
     public List<Task> findByUserSprint(int user, int sprint){
