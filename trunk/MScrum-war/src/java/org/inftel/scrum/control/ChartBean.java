@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
@@ -36,36 +37,30 @@ import org.inftel.scrum.pruebas.TaskSimpleMap;
 @ManagedBean
 @RequestScoped
 public class ChartBean implements Serializable {
+
     @EJB
     private HistorialTareasFacade historialTareasFacade;
     @EJB
     private TaskFacade taskFacade;
     @EJB
     private ProjectFacade projectFacade;
-
     //private CartesianChartModel categoryModel;
     private TaskSimpleMap tareas = new TaskSimpleMap();
     private TaskSimpleMap tareas2 = new TaskSimpleMap();
     private Tareas tarea, tarea2;
-    //Extract user data
-    // Obtenemos el usuario de la sesión
-    FacesContext context = FacesContext.getCurrentInstance();
-    Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-    LoginBean loginBean = (LoginBean) sessionMap.get("loginBean");
-    String name = loginBean.getUser().getName();
+    //Sprint por defecto en sprint.getIdSprint()
+    int sprint = 1;
     
-    //Obtenemos proyecto de la sesión
-    SelectedProjectBean projectBean = (SelectedProjectBean) sessionMap.get("SelectedProjectBean");
-    int idProject = projectBean.getIdProject();
-    Project p = projectFacade.findByIdProject(idProject);
     
     private CartesianChartModel linearModel;
-    
-    
-        
-    
-     
+
     public ChartBean() {
+         
+//        createLinearModel();
+    }
+    
+    @PostConstruct
+    public void init() {
         createLinearModel();
     }
 
@@ -75,19 +70,35 @@ public class ChartBean implements Serializable {
 
     private void createLinearModel() {
         linearModel = new CartesianChartModel();
-        /*
-         Collection<User> users1 = p.getUsers();   //Usuarios del mismo proyecto   
-     Collection<Sprint> sprints1 = p.getSprints();
-            for (Iterator<User> it1 = users1.iterator(); it1.hasNext();) {
-                User user = it1.next();
-                List<Task> findByUser = taskFacade.findByUserSprint(user.getIdUser(), sprint.getIdSprint());
-                for (Iterator<Task> it2 = findByUser.iterator(); it2.hasNext();) {
-                    Task task = it2.next();
-                    List<Integer> listaPesos = historialTareasFacade.findByTask(task.getIdTask());
-                }
+        
+         //Extract user data
+    // Obtenemos el usuario de la sesión
+    FacesContext context = FacesContext.getCurrentInstance();
+    Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+    LoginBean loginBean = (LoginBean) sessionMap.get("loginBean");
+    String name = loginBean.getUser().getName();
+    
+    SelectedProjectBean selectedProjectBean = (SelectedProjectBean) sessionMap.get("selectedProjectBean");
+    //Obtenemos proyecto de la sesión
+//    FacesContext context2 = FacesContext.getCurrentInstance();
+//    Map<String, Object> sessionMap2 = context2.getExternalContext().getSessionMap();
+//    SelectedProjectBean projectBean = (SelectedProjectBean) sessionMap2.get("selectedProjectBean");
+    Project p = projectFacade.findByIdProject(selectedProjectBean.getIdProject());
+
+
+      
+
+        Collection<User> users1 = p.getUsers();   //Usuarios del mismo proyecto   
+        Collection<Sprint> sprints1 = p.getSprints();
+        for (Iterator<User> it1 = users1.iterator(); it1.hasNext();) {
+            User user = it1.next();
+            List<Task> findByUser = taskFacade.findByUserSprint(user.getIdUser(), sprint);
+            for (Iterator<Task> it2 = findByUser.iterator(); it2.hasNext();) {
+                Task task = it2.next();
+                List<Integer> listaPesos = historialTareasFacade.findByTask(task.getIdTask());
             }
-         * 
-         */
+        }
+
 
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel(name);
@@ -97,6 +108,7 @@ public class ChartBean implements Serializable {
         for (int i = 0; i < tam; i++) {
             series1.set(i, peso[i]);
         }
+       
         /* series1.set(0, peso[0]);
         series1.set(1, peso[1]);
         series1.set(2, peso[2]);
