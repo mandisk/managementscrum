@@ -34,6 +34,7 @@ public class SelectedSprintBean extends SprintBaseBean {
     private SprintFacade sprintFacade;
 
     private HtmlDataTable sprintTable;
+    DualListModel<Task> tareas;
     /**
      * Creates a new instance of SelectedSprintBean
      */
@@ -87,28 +88,32 @@ public class SelectedSprintBean extends SprintBaseBean {
     }
     
     public String createTask() {
-         Sprint currentSprint = (Sprint) sprintTable.getRowData();
-//        LOGGER.info(currentProject.getDescription());
-        List<Task> tareasSource = new ArrayList<Task>();
-        List<Task> tareasTarget = new ArrayList<Task>();
-          DualListModel<Task> tareas;
-//        LOGGER.info("loadList: " + currentProject.getName());
-       tareasTarget = (List<Task>) currentSprint.getTaskCollection();
-//        for (Iterator<User> it = usersTarget.iterator(); it.hasNext();) {
-//            User user = it.next();
-//            LOGGER.info("usersTarget: " + user.getName());
-//        }
+//         Sprint currentSprint = (Sprint) sprintTable.getRowData();
+//       
+//         List<Task> tareasSource = new ArrayList<Task>();
+//        List<Task> tareasTarget = new ArrayList<Task>();
+//          
+//       tareasTarget = (List<Task>) currentSprint.getTaskCollection();
+//        
+//        tareasSource = taskFacade.findTaskNotSprint(currentSprint.getProject().getIdProject());
+//        tareas = new DualListModel<Task>(tareasSource, tareasTarget);
+//      
+//        SprintPlaningBean sprintPlaningBean = new SprintPlaningBean();
+//        sprintPlaningBean.settareasSourcee(tareasSource);
+//        sprintPlaningBean.setTareasTarget(tareasTarget);
+//        sprintPlaningBean.setP(currentSprint.getProject());
+//        sprintPlaningBean.setTareas(tareas);
+//        sprintPlaningBean.setS(currentSprint);
+//        
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sprintPlaningBean", sprintPlaningBean);
+        Sprint sprint = (Sprint) this.sprintTable.getRowData();
         
-        tareasSource = taskFacade.findTaskNotSprint(currentSprint.getProject().getIdProject());
-        tareas = new DualListModel<Task>(tareasSource, tareasTarget);
-      
-        SprintPlaningBean sprintPlaningBean = new SprintPlaningBean();
-        sprintPlaningBean.settareasSourcee(tareasSource);
+        this.idSprint = sprint.getIdSprint();
+        this.sprintNumber = sprint.getSprintNumber();
+        this.initialDate = sprint.getInitialDate();
+        this.endDate = sprint.getEndDate();
         
-        sprintPlaningBean.setTareas(tareas);
-        
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sprintPlaningBean", sprintPlaningBean);
-        return "sprintPlaningBean?faces-redirect=true";
+        return "sprintPlaning?faces-redirect=true";
     }
     
     public String viewPanel() {
