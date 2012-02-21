@@ -5,20 +5,14 @@
 package org.inftel.scrum.control;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.RequestScoped;
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import org.inftel.scrum.bean.SprintPlaningBaseBean;
-import org.inftel.scrum.ejb.ProjectFacade;
-import org.inftel.scrum.ejb.SprintFacade;
 import org.inftel.scrum.ejb.TaskFacade;
 import org.inftel.scrum.entity.Task;
 import org.primefaces.model.DualListModel;
@@ -74,10 +68,14 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
         return null;
     }
     
-    public void modify() {
-//     
-        Object[] listaId = tareas.getTarget().toArray();
+    public String modify() {
+         FacesContext context = FacesContext.getCurrentInstance();
+      
+         Object[] listaId = tareas.getTarget().toArray();
         
         taskFacade.setSprint(this.idSprint, listaId);
+         context.addMessage(null, new FacesMessage("Successful", "Change Saved"));
+         
+         return "main?faces-redirect=true";
     }
 }
