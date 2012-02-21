@@ -6,14 +6,6 @@ package org.inftel.scrum.bean;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Vector;
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import org.inftel.scrum.ejb.ProjectFacade;
-import org.inftel.scrum.ejb.SprintFacade;
-import org.inftel.scrum.ejb.TaskFacade;
-import org.inftel.scrum.entity.Project;
-import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
 import org.primefaces.model.DualListModel;
 
@@ -33,11 +25,10 @@ public class SprintPlaningBaseBean implements Serializable{
     //Atributos Nueva tarea
     protected String descripcion;
     protected int time;
-    //Lista de Sprint asociadas al proyecto
-    protected  Vector<Integer> sprint;
+    
     //Variables que me pasaran por sesion
-    protected Project p;
-    protected Sprint s;
+    protected int idProject;
+    protected int idSprint;
     
   
     public SprintPlaningBaseBean() {
@@ -73,6 +64,39 @@ public class SprintPlaningBaseBean implements Serializable{
 
     public void setTareas(DualListModel<Task> tareas) {
         this.tareas = tareas;
+    }
+
+
+    public List<Task> getTareasSource() {
+        return tareasSource;
+    }
+
+    public void setTareasSource(List<Task> tareasSource) {
+        this.tareasSource = tareasSource;
+    }
+
+    public List<Task> getTareasTarget() {
+        return tareasTarget;
+    }
+
+    public void setTareasTarget(List<Task> tareasTarget) {
+        this.tareasTarget = tareasTarget;
+    }
+
+    public int getIdProject() {
+        return idProject;
+    }
+
+    public void setIdProject(int idProject) {
+        this.idProject = idProject;
+    }
+
+    public int getIdSprint() {
+        return idSprint;
+    }
+
+    public void setIdSprint(int idSprint) {
+        this.idSprint = idSprint;
     }
 
      
