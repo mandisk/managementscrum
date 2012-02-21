@@ -223,8 +223,7 @@
                                     </h:link>
                                 </h:column>
                                 <h:column>
-                                    <h:link value="Tareas" outcome="#{selectedSprintBean.createTask()}">
-                                    </h:link>
+                                    <h:commandLink value="#{msg.mainTask}" rendered="#{selectedProjectBean.owner == loginBean.user}" action ="#{selectedSprintBean.createTask()}" />
                                 </h:column>
                                 <h:column>
                                     <h:link value="Modify" rendered="#{selectedProjectBean.owner == loginBean.user}">
