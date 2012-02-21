@@ -30,11 +30,10 @@
                     <h1 class="texto3d">#{msg.templateTitle}</h1>
                 </div>
                 <div class="grid_2">
-                    <h:form>
-
+                    <br/>
+                    <h:form>                        
                         <h:panelGrid columns="2">
-
-                            <h:outputLabel value="#{msg.language}"/>
+                            <h:outputLabel value="#{msg.templateLanguage}"/>
                             <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
                                              valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
                                 <f:selectItems value="#{languageBean.countriesInMap}" /> 
