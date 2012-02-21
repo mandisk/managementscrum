@@ -145,6 +145,10 @@ public class Sprint implements Serializable {
     public void setTaskCollection(Collection<Task> taskCollection) {
         this.taskCollection = taskCollection;
     }
+    
+    public void addTask(Task task) {
+        this.taskCollection.add(task);
+    }
 
     public Project getProject() {
         return project;
