@@ -26,8 +26,23 @@
 
         <div id="header">
             <div class="container_16">
-                <div class="grid_16">
+                <div class="grid_14">
                     <h1 class="texto3d">#{msg.templateTitle}</h1>
+                </div>
+                <div class="grid_2">
+                    <h:form>
+
+                        <h:panelGrid columns="2">
+
+                            <h:outputLabel value="#{msg.language}"/>
+                            <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
+                                             valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
+                                <f:selectItems value="#{languageBean.countriesInMap}" /> 
+                            </h:selectOneMenu>
+
+                        </h:panelGrid>
+
+                    </h:form>
                 </div>
                 <div class="clear"></div>
             </div>
