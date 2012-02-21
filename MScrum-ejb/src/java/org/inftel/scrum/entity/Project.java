@@ -61,7 +61,11 @@ public class Project implements Serializable {
     @NotNull
     @Column(name = "finalized")
     private boolean finalized;
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy="projects")
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name="scrum_team",
+            joinColumns={@JoinColumn(name="idProject", referencedColumnName="idProject")},
+      inverseJoinColumns={@JoinColumn(name="idUser", referencedColumnName="idUser")})
     private Collection<User> users;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "scrum_master", referencedColumnName = "idUser")
@@ -171,6 +175,10 @@ public class Project implements Serializable {
     
     public void addUser(User user) {
         this.users.add(user);
+    }
+    
+    public void removeAllUsers() {
+        this.users.clear();
     }
 
     @Override

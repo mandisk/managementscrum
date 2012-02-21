@@ -38,31 +38,23 @@ public class ProjectFacade extends AbstractFacade<Project> {
         super(Project.class);
     }
     
-    public void AddUsers(int project, Vector<User> usuarios) {
+    public void addUsers(int idProject, Object[] idUsers) {
         
+        Project project = em.find(Project.class, idProject);
         
-        em.createNativeQuery("delete from scrum_team where idproject="+project).executeUpdate();
-        Project p = em.find(Project.class, project);
-//        p.getUsers().clear();
-//        em.merge(p);
-//        em.flush();
-        LOGGER.info("ProjectFacade: " + p.getName() + " --- "+ usuarios);
-        for (Iterator<User> it = usuarios.iterator(); it.hasNext();) {
-            User user = it.next();
-            User u = userFacade.find(user.getIdUser());
-//            p.getUsers().add(u);
-////            user.getProjects().add(p);
-            em.createNativeQuery("insert into scrum_team values("+project+","+u.getIdUser()+")").executeUpdate();
-////            Collection<Project> lista = user.getProjects();
-////            for (Iterator<Project> it1 = lista.iterator(); it1.hasNext();) {
-////                Project project1 = it1.next();
-////                LOGGER.info(project1.getName().toString());
-////            }
+        if (project != null) {
+            
+            project.removeAllUsers();
+            
+            for (Object o : idUsers) {
+                
+                String s = (String) o;
+                int idUser = Integer.parseInt(s);
+                User user = em.find(User.class, idUser);
+                
+                project.addUser(user);
+            }
         }
-////        p.setUsers(u);
-//        
-//        em.merge(p);
-//        em.flush();
     }
     
     public List<User> selectUsersNotIn(int project){

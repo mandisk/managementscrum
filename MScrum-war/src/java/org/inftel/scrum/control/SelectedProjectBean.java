@@ -181,25 +181,7 @@ public class SelectedProjectBean extends ProjectBaseBean {
     }
     
     public String addUsers(){
-        Project currentProject = (Project) projectTable.getRowData();
-//        LOGGER.info(currentProject.getDescription());
-        List<User> usersSource = new ArrayList<User>();
-        List<User> usersTarget = new ArrayList<User>();
-//        LOGGER.info("loadList: " + currentProject.getName());
-        usersTarget = (List<User>) currentProject.getUsers();
-//        for (Iterator<User> it = usersTarget.iterator(); it.hasNext();) {
-//            User user = it.next();
-//            LOGGER.info("usersTarget: " + user.getName());
-//        }
         
-        usersSource = projectFacade.selectUsersNotIn(currentProject.getIdProject());
-        users = new DualListModel<User>(usersSource, usersTarget);
-        UserListBean userListBean = new UserListBean();
-        userListBean.setProject(currentProject);
-        userListBean.setUsers(users);
-        userListBean.setUsersSource(users.getSource());
-        userListBean.setUsersTarget(users.getTarget());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userListBean", userListBean);
         return "addUsersProject?faces-redirect=true";
     }
 }

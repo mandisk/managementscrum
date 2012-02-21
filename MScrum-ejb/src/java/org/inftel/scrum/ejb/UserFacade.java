@@ -4,11 +4,13 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.User;
 
 /**
@@ -57,6 +59,20 @@ public class UserFacade extends AbstractFacade<User> {
         }    
         
         return user;
+    }
+    
+    public List<User> findByProject(int idProject) {
+        List<User> users = null;
+        
+        try {
+            users = em.createQuery("SELECT p.users FROM Project p WHERE p.idProject = :idProject")
+                    .setParameter("idProject", idProject)
+                    .getResultList();
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return users;
     }
     
 }
