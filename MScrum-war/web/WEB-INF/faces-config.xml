@@ -17,6 +17,14 @@
             <base-name>org.inftel.scrum.message.Messages</base-name>
             <var>msg</var>
         </resource-bundle>
+        <converter>
+            <converter-id>userConverter</converter-id>
+            <converter-class>org.inftel.scrum.control.UserConverter</converter-class>
+        </converter>
+        <converter>
+            <converter-id>taskConverter</converter-id>
+            <converter-class>org.inftel.scrum.control.TaskConverter</converter-class>
+        </converter>
     </application>
         
 <!--        <resource-bundle>
