@@ -23,7 +23,6 @@ import org.inftel.scrum.entity.Task;
 import org.inftel.scrum.entity.User;
 import org.primefaces.model.DualListModel;
 
-
 /**
  *
  * @author antonio
@@ -31,12 +30,11 @@ import org.primefaces.model.DualListModel;
 @ManagedBean
 @RequestScoped
 public class SprintPlaningBean extends SprintPlaningBaseBean {
-    @EJB
-    private ProjectFacade projectFacade;
 
     @EJB
+    private ProjectFacade projectFacade;
+    @EJB
     private TaskFacade taskFacade;
-    
     private Collection<Task> tasks;
     private HtmlDataTable taskTable;
     private int idTask;
@@ -52,7 +50,6 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
     public void setUser2(int user2) {
         this.user2 = user2;
     }
-    
 
     public Task getTask() {
         return task;
@@ -101,7 +98,7 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
     public void setTasks(Collection<Task> tasks) {
         this.tasks = tasks;
     }
-     
+
     public SprintPlaningBean() {
     }
 
@@ -110,71 +107,54 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> session = context.getExternalContext().getSessionMap();
-        SelectedSprintBean selectedSprintBean = 
+        SelectedSprintBean selectedSprintBean =
                 (SelectedSprintBean) session.get("selectedSprintBean");
-        SelectedProjectBean selectedProjectBean = 
+        SelectedProjectBean selectedProjectBean =
                 (SelectedProjectBean) session.get("selectedProjectBean");
-        
+
         this.idProject = selectedProjectBean.getIdProject();
         this.idSprint = selectedSprintBean.getIdSprint();
-        
+
         tareasSource = taskFacade.findTaskNotSprint(this.idProject);
         tareasTarget = taskFacade.findBySprint(this.idSprint);
         tareas = new DualListModel<Task>(tareasSource, tareasTarget);
-        
+
         tasks = taskFacade.findBySprint(this.idSprint);
-        users = (List<User>)projectFacade.find(selectedProjectBean.getIdProject()).getUsers();
-//        if (tasks.isEmpty()){
-//            tasks = new ArrayList<Task>();
-//        }
+        users = (List<User>) projectFacade.find(selectedProjectBean.getIdProject()).getUsers();
     }
-    
-    public String addTaskUser(){
-//       Task task = (Task) this.taskTable.getRowData();
+
+    public String addTaskUser() {
+        FacesContext context = FacesContext.getCurrentInstance();
         task.setUser(user);
         taskFacade.edit(task);
-//        System.out.println(task);
-//        System.out.println(user);
+        context.addMessage(null, new FacesMessage("Successful", "Change Saved"));
         return null;
     }
-    
-    public String selectTask() {
-        Task task = (Task) this.taskTable.getRowData();
-        
-        this.idTask = task.getIdTask();
-        System.out.println(this.idTask);
-        return null;
-    }
-    
+
     public String deleteTask() {
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
-//        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-//        Task task = (Task) this.taskTable.getRowData();
-//        this.idTask = task.getIdTask();
-//        System.out.println(this.idTask);
         task = taskFacade.removeTask(task.getIdTask());
         tasks.remove(task);
         tareas.getTarget().remove(task);
         if (task != null) {
-            
-            String delete = "Task " + this.idTask + " deleted";
+
+            String delete = "Task " + task.getDescription() + " deleted";
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, delete, delete);
             context.addMessage(null, msg);
-            
+
             return null;
-        }
-        else {
-            String error = "Task " + this.idTask + " can not be deleted";
+        } else {
+            String error = "Task " + task.getDescription()  + " can not be deleted";
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, error, error);
             context.addMessage(null, msg);
         }
         return null;
     }
-     
+
     public String addlist(ActionEvent actionEvent) {
         FacesContext context = FacesContext.getCurrentInstance();
-        
+
         if (descripcion.isEmpty() || descripcion == null || time == 0) {
 
             context.addMessage(null, new FacesMessage("Advise", "Please chek the empty field"));
@@ -183,23 +163,23 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
 
         Task t = taskFacade.createTask(descripcion, time, this.idProject);
         tareasSource.add(t);
-        
+
         context.addMessage(null, new FacesMessage("Successful", "Task Created"));
         return null;
     }
-    
+
     public String modify() {
-         FacesContext context = FacesContext.getCurrentInstance();
-      
-         Object[] listaId = tareas.getTarget().toArray();
-        
-        taskFacade.setSprint(this.idSprint, listaId);
-         context.addMessage(null, new FacesMessage("Successful", "Change Saved"));
-         
-         return "main?faces-redirect=true";
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        Object[] listaId = tareas.getTarget().toArray();
+        Object[] sourceTasks = tareas.getSource().toArray();
+        taskFacade.setSprint(this.idSprint, listaId, sourceTasks);
+        context.addMessage(null, new FacesMessage("Successful", "Change Saved"));
+
+        return null;
     }
-    
+
     public String returnMain() {
-        return "main";
+        return "main?faces-redirect=true";
     }
 }
