@@ -40,10 +40,11 @@
                             <p:commandButton value="#{msg.sprintPlaningbuttonReturn}"  action="#{sprintPlaningBean.returnMain()}" styleClass="button" ajax="false"/>
                         </h:panelGrid>         
 
-
-
+               
                     </h:form>
-
+                </div>
+                <div class="clear"></div>
+            <div class="grid_10">
                     <h:form id="tasks">
                         <h:panelGrid styleClass="table" columns="4" style="margin-bottom:10px">
 
@@ -57,9 +58,9 @@
                                 <f:selectItems value="#{sprintPlaningBean.users}" var="user" itemLabel="#{user.name}" itemValue="#{user}"/>
                             </p:selectOneMenu>
 
-                            <p:commandButton value="Submit" action="#{sprintPlaningBean.addTaskUser()}" />
+                            <p:commandButton value="#{msg.sprintPlaningbuttonSubmit}" action="#{sprintPlaningBean.addTaskUser()}" styleClass="button"  update=":form:growl" />
 
-                            <p:commandButton value="Delete" action="#{sprintPlaningBean.deleteTask()}" update=":form:growl"/>
+                            <p:commandButton value="#{msg.sprintPlaningbuttonDelete}" action="#{sprintPlaningBean.deleteTask()}" styleClass="button" update=":form:growl"/>
 
 
                         </h:panelGrid>
