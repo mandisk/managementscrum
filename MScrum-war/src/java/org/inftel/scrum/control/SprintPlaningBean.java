@@ -78,4 +78,8 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
          
          return "main?faces-redirect=true";
     }
+    
+    public String returnMain() {
+        return "main";
+    }
 }

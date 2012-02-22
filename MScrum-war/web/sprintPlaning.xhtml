@@ -15,8 +15,9 @@
                 <div class="grid_8 suffix_8 header">
                     
                     <h2>#{msg.sprintPlaningtitle}</h2>
+                    
                 </div>
-
+                <div class="clear"></div>
                 <div class="grid_16">
                 <h:form id="form" styleClass="prime-component table">
 
@@ -35,10 +36,10 @@
 
                     </p:pickList>
 
-                    <h:panelGrid columns="2" cellpadding="5">  
+                    <h:panelGrid columns="3" cellpadding="5">  
                         <p:commandButton id="effectsDialogButton" value="#{msg.sprintPlaningbuttonNewTask}" onclick="dlg.show();" type="button" styleClass="button" />  
                         <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button"/>
-
+                        <p:commandButton value="#{msg.sprintPlaningbuttonReturn}"  action="#{sprintPlaningBean.returnMain()}" styleClass="button" ajax="false"/>
                     </h:panelGrid>         
 
 
