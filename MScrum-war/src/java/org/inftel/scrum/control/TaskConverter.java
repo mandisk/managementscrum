@@ -5,11 +5,13 @@
 package org.inftel.scrum.control;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import org.inftel.scrum.ejb.TaskFacade;
 import org.inftel.scrum.entity.Task;
 
@@ -30,11 +32,19 @@ public class TaskConverter implements Converter{
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return taskFacade.find(value);
+        Integer id = Integer.valueOf(value);
+        System.out.println("id: "+ id);
+        try {
+            System.out.println("value: "+value);
+            return taskFacade.find(id);
+        } catch (Exception e) {
+            throw new ConverterException(new FacesMessage(String.format("Cannot convert %s to User", value)), e);
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return ((Task)value).getIdTask().toString();
+        Task task = (Task) value;
+        return String.valueOf(task.getIdTask());
     }
 }
