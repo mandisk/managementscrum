@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -56,6 +57,7 @@ public class ChartBean implements Serializable {
     private Tareas tarea, tarea2;
     //Sprint por defecto en sprint.getIdSprint()
     private final int sprint = 1;
+    List<LineChartSeries> series = null;
     
     
     private CartesianChartModel linearModel;
@@ -105,22 +107,39 @@ public class ChartBean implements Serializable {
 //    SelectedProjectBean projectBean = (SelectedProjectBean) sessionMap2.get("selectedProjectBean");
     Project p = projectFacade.findByIdProject(selectedProjectBean.getIdProject());
 
-
-        LineChartSeries[] series = new LineChartSeries[10];
-        int num = 1;
-        Collection<User> users1 = p.getUsers();   //Usuarios del mismo proyecto   
+   //   LineChartSeries series1 = new LineChartSeries();
+     
+        Collection<User> users1 = p.getUsers();   //Usuarios del mismo proyecto 
+        for(User user:users1){
+        series.add(new LineChartSeries());
+        }
         Collection<Sprint> sprints1 = p.getSprints();
+       for(LineChartSeries it : series ){
         for (Iterator<User> it1 = users1.iterator(); it1.hasNext();) {
             User user = it1.next(); 
+            LOGGER.log(Level.INFO, "Usuario:"+user.getName());
             List<Task> findByUser = taskFacade.findByUserSprint(user.getIdUser(), sprint);
             for (Iterator<Task> it2 = findByUser.iterator(); it2.hasNext();) {
                 Task task = it2.next();
+                LOGGER.log(Level.INFO, "Tarea:"+task.getIdTask());
                 List<Integer> listaPesos = historialTareasFacade.findByTask(task.getIdTask());
+              //  series1.setLabel(name);
+                it.setLabel(name);
+                tarea = tareas.findbyUser("1");
+                int tam = listaPesos.size();
+                LOGGER.log(Level.INFO, "Pesos:"+String.valueOf(tam));
+                for(int i = 0; i < tam;i++){
+                    LOGGER.log(Level.INFO, String.valueOf(i));
+                    LOGGER.log(Level.INFO,"Peso:"+ listaPesos.get(i));
+               // series1.set(i, listaPesos.get(i));
+                    it.set(i, listaPesos.get(i));
+                }
                 //String graph= "series"+String.valueOf(num);
                // series[num].setLabel(name);
             }
         }
-
+       linearModel.addSeries(it);
+       }
 
 //        LineChartSeries series1 = new LineChartSeries();
 //        series1.setLabel(name);
@@ -131,19 +150,16 @@ public class ChartBean implements Serializable {
 //            series1.set(i, peso[i]);
 //        }
       
-        try{
-      LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel(name);
-        tarea = tareas.findbyUser("1");
-        Integer[] peso = tarea.getPeso();
-        int tam = tarea.getPeso().length;
-        for (int i = 0; i < tam; i++) {
-            series1.set(i, peso[i]);
-        }
-       }
-       catch(Exception e){
-       LOGGER.severe(e.getMessage());
-       }
+       // try{
+      
+        
+        
+        
+       
+    //   }
+    //   catch(Exception e){
+    //   LOGGER.severe(e.getMessage());
+    //   }
         /* series1.set(0, peso[0]);
         series1.set(1, peso[1]);
         series1.set(2, peso[2]);
@@ -168,7 +184,7 @@ public class ChartBean implements Serializable {
         series2.set(4, 7);
         series2.set(5, 9);
 
-        linearModel.addSeries(series[num]);
+       // linearModel.addSeries(series1);
         linearModel.addSeries(series2);
     }
 }
