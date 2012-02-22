@@ -13,91 +13,75 @@
                 <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>
 
                 <div class="grid_8 suffix_8 header">
-                    
+
                     <h2>#{msg.sprintPlaningtitle}</h2>
-                    
+
                 </div>
                 <div class="clear"></div>
                 <div class="grid_16">
-                <h:form id="form" styleClass="prime-component table">
-
-                    <p:growl id="growl" showDetail="true" life="3000" />
-
-                    <p:pickList value="#{sprintPlaningBean.tareas}"  
-                                var="task" 
-                                itemLabel="#{task.description}"
-                                itemValue="#{task}"
-                                style="text-align:center;" 
-                                styleClass="prime-component"
-                                id="pickList">
-                        <f:facet name="sourceCaption">#{msg.sprintPlaningtitle1picklist}</f:facet>  
-                        <f:facet name="targetCaption">#{msg.sprintPlaningtitle2picklist}</f:facet>  
+                    <h:form id="form" styleClass="prime-component table">
+                        <p:growl id="growl" showDetail="true" life="3000" />
+                        <p:pickList value="#{sprintPlaningBean.tareas}"  
+                                    var="task" 
+                                    itemLabel="#{task.description}"
+                                    itemValue="#{task}"
+                                    style="text-align:center;" 
+                                    styleClass="prime-component"
+                                    id="pickList">
+                            <f:facet name="sourceCaption">#{msg.sprintPlaningtitle1picklist}</f:facet>  
+                            <f:facet name="targetCaption">#{msg.sprintPlaningtitle2picklist}</f:facet>  
 
 
-                    </p:pickList>
+                        </p:pickList>
 
-                    <h:panelGrid columns="3" cellpadding="5">  
-                        <p:commandButton id="effectsDialogButton" value="#{msg.sprintPlaningbuttonNewTask}" onclick="dlg.show();" type="button" styleClass="button" />  
-                        <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button"/>
-                        <p:commandButton value="#{msg.sprintPlaningbuttonReturn}"  action="#{sprintPlaningBean.returnMain()}" styleClass="button" ajax="false"/>
-                    </h:panelGrid>         
+                        <h:panelGrid columns="3" cellpadding="5">  
+                            <p:commandButton id="effectsDialogButton" value="#{msg.sprintPlaningbuttonNewTask}" onclick="dlg.show();" type="button" styleClass="button" />  
+                            <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button" update=":form:growl"/>
+                            <p:commandButton value="#{msg.sprintPlaningbuttonReturn}"  action="#{sprintPlaningBean.returnMain()}" styleClass="button" ajax="false"/>
+                        </h:panelGrid>         
 
 
 
-                </h:form>
+                    </h:form>
 
-                <h:form id="tasks">
-                    <h:panelGrid styleClass="table" columns="4" style="margin-bottom:10px">
+                    <h:form id="tasks">
+                        <h:panelGrid styleClass="table" columns="4" style="margin-bottom:10px">
 
-                        <p:selectOneMenu value="#{sprintPlaningBean.task}" converter="#{taskConverter}">
-<!--                            <f:selectItem itemLabel="Select One" itemValue=""/>-->
-                            <f:selectItems value="#{sprintPlaningBean.tasks}" var="task"  itemLabel="#{task.description}" itemValue="#{task}"/>
-                        </p:selectOneMenu>
+                            <p:selectOneMenu value="#{sprintPlaningBean.task}" converter="#{taskConverter}">
+                                <!--                            <f:selectItem itemLabel="Select One" itemValue=""/>-->
+                                <f:selectItems value="#{sprintPlaningBean.tasks}" var="task"  itemLabel="#{task.description}" itemValue="#{task}"/>
+                            </p:selectOneMenu>
 
-                        <p:selectOneMenu value="#{sprintPlaningBean.user}"  converter="#{userConverter}">
-<!--                            <f:selectItem itemLabel="Select One" itemValue=""/>-->
-                            <f:selectItems value="#{sprintPlaningBean.users}" var="user" itemLabel="#{user.name}" itemValue="#{user}"/>
-                        </p:selectOneMenu>
+                            <p:selectOneMenu value="#{sprintPlaningBean.user}"  converter="#{userConverter}">
+                                <!--                            <f:selectItem itemLabel="Select One" itemValue=""/>-->
+                                <f:selectItems value="#{sprintPlaningBean.users}" var="user" itemLabel="#{user.name}" itemValue="#{user}"/>
+                            </p:selectOneMenu>
 
-                        <p:commandButton value="Submit" action="#{sprintPlaningBean.addTaskUser()}" />
+                            <p:commandButton value="Submit" action="#{sprintPlaningBean.addTaskUser()}" />
 
-                        <p:commandButton value="Delete" action="#{sprintPlaningBean.deleteTask()}"/>
-
-
-                    </h:panelGrid>
-
-                </h:form>
-
-                <p:dialog widgetVar="dlgDeleteTask" modal="true" resizable="false" styleClass="prime-component" header="Delete task">
-                    <div class="form-item">
-                        <h:form id="delete-sprint" style="text-align: right">
-                            <h5>Are you sure to delete this task?</h5>
-                            <p:commandButton id="deleteTaskButton" value="Yes" oncomplete="dlgDeleteTask.hide();" styleClass="button"
-                                             update=":growl :projectList :actions :infoProject :sprintAction :sprint" 
-                                             action="#{sprintPlaningBean.deleteTask()}" ajax="false"/>
-                            <span style="width: 20px;"></span>
-                            <p:commandButton id="cancelSprintButton" value="Cancel" styleClass="button" onclick="dlgDeleteTask.hide();"/>
-                        </h:form>
-                    </div>
-                </p:dialog>
+                            <p:commandButton value="Delete" action="#{sprintPlaningBean.deleteTask()}" update=":form:growl"/>
 
 
-                <p:dialog header="#{msg.sprintPlaningbuttonNewTask}" modal="true" resizable="false" widgetVar="dlg" showEffect="explode" hideEffect="explode" styleClass="prime-component button">  
-                    <h:form id="formTask" styleClass="prime-component table"  >
-                        <p:messages id="messages"/>
-                        <h:panelGrid columns="2" style="table-layout: auto">  
-                            <h:outputLabel for="descripcion" value="#{msg.sprintPlaningDlgDescription}" />  
-                            <h:inputTextarea id="descripcion" value="#{sprintPlaningBean.descripcion}" required="true"/> 
-                            <h:outputLabel for="time" value="#{msg.sprintPlaningDlgTime}" />  
-                            <p:inputText id="time" value="#{sprintPlaningBean.time}"  /> 
+                        </h:panelGrid>
 
-                        </h:panelGrid>  
+                    </h:form>
 
-                        <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList, :form:growl"   actionListener="#{sprintPlaningBean.addlist(actionEvent)}" styleClass="button" oncomplete="dlg.hide();"/>  
+                    <p:dialog header="#{msg.sprintPlaningbuttonNewTask}" modal="true" resizable="false" widgetVar="dlg" showEffect="explode" hideEffect="explode" styleClass="prime-component button">  
+                        <h:form id="formTask" styleClass="prime-component table"  >
+                            <p:messages id="messages"/>
+                            <h:panelGrid columns="2" style="table-layout: auto">  
+                                <h:outputLabel for="descripcion" value="#{msg.sprintPlaningDlgDescription}" />  
+                                <h:inputTextarea id="descripcion" value="#{sprintPlaningBean.descripcion}" required="true"/> 
+                                <h:outputLabel for="time" value="#{msg.sprintPlaningDlgTime}" />  
+                                <p:inputText id="time" value="#{sprintPlaningBean.time}"  /> 
 
-                    </h:form>  
-                </p:dialog> 
-                    </div>
+                            </h:panelGrid>  
+
+                            <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList, :form:growl"   actionListener="#{sprintPlaningBean.addlist(actionEvent)}" styleClass="button" oncomplete="dlg.hide();"/>  
+
+                        </h:form>  
+                    </p:dialog> 
+                </div>
                 <div class="clear"></div>
 
             </ui:define>

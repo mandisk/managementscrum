@@ -72,13 +72,13 @@ public class TaskFacade extends AbstractFacade<Task> {
         List<Task> listT = (List<Task>) lista;
         return listT;
     }
-    
-    public Task findById ( int id){
-        Task t= (Task) em.createQuery("select t from Task t where t.idTask = :idTask").setParameter("idTask", id);
+
+    public Task findById(int id) {
+        Task t = (Task) em.createQuery("select t from Task t where t.idTask = :idTask").setParameter("idTask", id);
         return t;
     }
 
-    public void setSprint(int idSprint, Object[] idTasks) {
+    public void setSprint(int idSprint, Object[] idTasks, Object[] sourceTasks) {
 
         Sprint sprint;
 
@@ -94,6 +94,16 @@ public class TaskFacade extends AbstractFacade<Task> {
                     Task task = em.find(Task.class, idTask);
 
                     task.setSprint(sprint);
+                }
+
+                for (Object o : sourceTasks) {
+                    String s = (String) o;
+                    int idTask = Integer.parseInt(s);
+
+                    Task task = em.find(Task.class, idTask);
+
+                    task.setSprint(null);
+                    task.setUser(null);
                 }
             }
         } catch (Exception ex) {
@@ -117,26 +127,25 @@ public class TaskFacade extends AbstractFacade<Task> {
 //        List<Task> listT = (List<Task>) lista;
 //        return listT;
     }
-    
+
     public Task removeTask(int idTask) {
-        
+
         Task task;
-        
+
         try {
-            
+
             task = em.find(Task.class, idTask);
-            
+
             if (task != null) {
-                
+
                 em.remove(task);
                 return task;
             }
-            
+
             return null;
-            
+
         } catch (Exception ex) {
             throw new EJBException(ex);
         }
     }
 }
-
