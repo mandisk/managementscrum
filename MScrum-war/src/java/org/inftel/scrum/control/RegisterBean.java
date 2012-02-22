@@ -15,6 +15,7 @@ import org.inftel.scrum.bean.RegisterBaseBean;
 import org.inftel.scrum.ejb.UserFacade;
 import org.inftel.scrum.entity.User;
 import org.primefaces.event.FileUploadEvent;
+import org.inftel.scrum.util.Util;
 
 /**
  *
@@ -63,7 +64,7 @@ public class RegisterBean extends RegisterBaseBean {
                 user = userFacade.findByDNI(dni);
 
                 if (user == null) {
-                    user = new User(-1, name, surname, password, telephone, dni, email, photo);
+                    user = new User(-1, name, surname, Util.md5(password), telephone, dni, email, "0.png");
                     userFacade.create(user);
                     return "index";
                 } else {
