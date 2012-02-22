@@ -65,7 +65,7 @@
                                            theme="clean"/>  
                                 <br/>
                                 <div align="right">
-                                    <p:commandButton style=" color: #555;
+                                    <p:commandButton style=" color: #888;
                                                      border: 1px solid #2BB02B;
                                                      background-color: #BBE664;
                                                      border-radius: 3px;
@@ -74,10 +74,26 @@
                                                      value="#{msg.registrationfinish}"
                                                      update="growl"                                                 
                                                      action="#{registerBean.doRegister}" 
-                                                     ajax="false"/>  
+                                                     ajax="false"/>
                                 </div>
                             </h:panelGrid>
                         </p:panel>
+                    </h:form>
+                </div>
+                <div class="clear"></div>
+                <br/>
+                <div class="grid_16" align="right">
+                    <h:form>
+                        <p:commandButton style=" color: #888;
+                                         border: 1px solid #2BB02B;
+                                         background-color: #BBE664;
+                                         border-radius: 3px;
+                                         -webkit-border-radius: 3px;
+                                         -moz-border-radius: 3px;                                         
+                                         align: right;"
+                                         value="#{msg.registrationgoback}"          
+                                         action="#{registerBean.returnLogin}" 
+                                         ajax="false"/>
                     </h:form>
                 </div>
                 <div class="clear"></div>

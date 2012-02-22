@@ -79,4 +79,8 @@ public class RegisterBean extends RegisterBaseBean {
             }
         }
     }
+    
+    public String returnLogin(){        
+        return "index";
+    }
 }
