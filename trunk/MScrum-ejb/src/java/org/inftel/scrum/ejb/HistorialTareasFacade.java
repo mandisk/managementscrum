@@ -29,7 +29,7 @@ public class HistorialTareasFacade extends AbstractFacade<HistorialTareas> {
     }
     
     public List<Integer> findByTask(int task){
-        Query query = em.createQuery("select ht from HistorialTareas ht where ht.task = :task").setParameter("task", task);
+        Query query = em.createQuery("select ht from HistorialTareas ht where ht.task.idTask = :task").setParameter("task", task);
         List lista = query.getResultList();
         List<Integer> listT = (List<Integer>) lista;
         return listT;
