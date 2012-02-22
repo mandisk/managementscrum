@@ -8,65 +8,24 @@
 
     <body>
 
-        <ui:composition template="./WEB-INF/templates/stadistictemplate.xhtml">
+        <ui:composition template="./WEB-INF/templates/template.xhtml">
 
             <ui:define name="content">
-                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
-                </script>
-                <script type="text/javascript" src="js/tabs.js"></script>
-                <script type="text/javascript" src="js/viewChart.js"></script>
-                <ul class="tabs">
-                    <li><a href="#instrucciones">Instrucciones</a></li>
-                    <li><a href="#configuracion">Configuracion</a></li>
-                    <li><a href="#datos">Datos</a></li>
-                    <li><a href="#graficos">Graficos</a></li>
-                </ul>
 
-                <div>
-                    <div id="instrucciones" class="tab_container tab_content">
-                        <ui:include src="./stadisticmodule/instrucciones.xhtml" />
-                    </div>
-                    <div id="configuracion" class="tab_container tab_content">
-                        <ui:include src="./stadisticmodule/config.xhtml" />
-                    </div>
-                    <div id="datos" class="tab_container tab_content">
-                        <ui:include src="./stadisticmodule/data.xhtml" />
-                    </div>
-                    <div id="graficos" class="tab_container tab_content" >  
-                        <p:commandButton id="chartBtn" value="GRAFICO INDIVIDUAL" onclick="view('chartPanel')" type="button" />
-                        <p:overlayPanel id="chartPanel" for="chartBtn"  hideEffect="fade" style="visibility: hidden;"  dynamic="true"> 
-                            <ui:include src="./stadisticmodule/chart.xhtml" />
-                        </p:overlayPanel>
-                        <p:commandButton id="chartBtn2" value="GRAFICO DE TAREAS" onclick="view('chartPanel2')" type="button" />
-                        <p:overlayPanel id="chartPanel2" for="chartBtn2"  hideEffect="fade" style="visibility: hidden;" dynamic="true"> 
-                            <ui:include src="./stadisticmodule/taskgraphic.xhtml" />
-                        </p:overlayPanel>
-                        <p:commandButton id="chartBtn3" value="GRAFICO DE ESFUERZO" onclick="view('chartPanel3')" type="button" />
-                        <p:overlayPanel id="chartPanel3" for="chartBtn3"  hideEffect="fade" style="visibility: hidden;" dynamic="true"> 
-                            <ui:include src="./stadisticmodule/burndownChart.xhtml" />
-                        </p:overlayPanel>
-                    </div>
+                <f:loadBundle basename="org.inftel.scrum.message.Messages" var="msg"/>   
+                <div class="clear"></div>
+                <h1> Stadistics </h1>
+                <div class="clear"></div>
+                <div class="grid_16">
+
+                    <p:lineChart id="linear" value="#{chartsBean.linearModel}" legendPosition="e"  
+                                 title="Finished Tasks By User" minY="0" maxY="50" style="height:300px" yasixLabel="Task Time"/>  
+
+
+
+
                 </div>
-                <!--
-                <p:tabView id="tabView">
-
-            <p:tab id="tab1" title="Instrucciones">
-                <ui:include src="./stadisticmodule/instrucciones.xhtml" />
-            </p:tab>
-
-            <p:tab id="tab2" title="Configuración">
-                <ui:include src="./stadisticmodule/config.xhtml" />
-            </p:tab>
-
-            <p:tab id="tab3" title="Datos">
-                <ui:include src="./stadisticmodule/data.xhtml" />
-            </p:tab>
-            <p:tab id="tab4" title="Gráficos">
-                <ui:include src="./stadisticmodule/chart.xhtml" />
-            </p:tab>
-                        
-</p:tabView>
-                -->
+                <div class="clear"></div>                 
             </ui:define>
 
         </ui:composition>
