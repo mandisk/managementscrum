@@ -45,6 +45,7 @@ public class MyUserListBean extends UserListBaseBean {
         List<User> usersSource = projectFacade.selectUsersNotIn(selectedProjectBean.getIdProject());
         List<User> usersTarget = userFacade.findByProject(selectedProjectBean.getIdProject());
         usersTarget.remove(scrumMaster);
+        usersSource.remove(scrumMaster);
         
         this.idProject = selectedProjectBean.getIdProject();
         this.users = new DualListModel<User>(usersSource, usersTarget);
