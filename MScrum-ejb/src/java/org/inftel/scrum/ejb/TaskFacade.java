@@ -103,7 +103,7 @@ public class TaskFacade extends AbstractFacade<Task> {
             return null;
         }
 
-        List<Task> tasks = em.createQuery("select t from Task t where t.user = :user and t.sprint = :sprint").setParameter("user", u).setParameter("sprint", sprint).getResultList();
+        List<Task> tasks = em.createQuery("select t from Task t where t.user = :user and t.sprint.idSprint = :sprint").setParameter("user", u).setParameter("sprint", sprint).getResultList();
 
         return tasks;
 
@@ -113,3 +113,4 @@ public class TaskFacade extends AbstractFacade<Task> {
 //        return listT;
     }
 }
+
