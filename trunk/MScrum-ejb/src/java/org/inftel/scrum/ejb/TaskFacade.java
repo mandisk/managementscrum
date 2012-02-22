@@ -33,40 +33,38 @@ public class TaskFacade extends AbstractFacade<Task> {
     public TaskFacade() {
         super(Task.class);
     }
-    
+
     public Task createTask(String description, int time, int idProject) {
-        
+
         Project project;
         Task task;
-        
+
         try {
-            
+
             project = em.find(Project.class, idProject);
-            
+
             if (project == null) {
                 return null;
             }
-            
+
             task = new Task(-1, 't', description, time, project, null, null);
             em.persist(task);
-            
+
         } catch (Exception ex) {
             throw new EJBException(ex);
         }
-        
+
         return task;
     }
 
     public List<Task> findBySprint(int idSprint) {
-        Sprint sprint = em.find(Sprint.class, idSprint);
-        
-        if (sprint == null) {
-            return null;
-        }
-        
-        return (List<Task>) sprint.getTaskCollection();
+
+        Query query = em.createQuery("select t from Task t where t.sprint.idSprint = :sprint").setParameter("sprint", idSprint);
+        List lista = query.getResultList();
+        List<Task> listT = (List<Task>) lista;
+        return listT;
     }
-    
+
     public List<Task> findTaskNotSprint(int idProject) {
 
         Query query = em.createQuery("select t from Task t where t.project.idProject = :project and t.sprint is null").setParameter("project", idProject);
@@ -76,14 +74,14 @@ public class TaskFacade extends AbstractFacade<Task> {
     }
 
     public void setSprint(int idSprint, Object[] idTasks) {
-        
+
         Sprint sprint;
-        
+
         try {
-            
+
             sprint = em.find(Sprint.class, idSprint);
             if (sprint != null) {
-            
+
                 for (Object o : idTasks) {
                     String s = (String) o;
                     int idTask = Integer.parseInt(s);
@@ -97,21 +95,18 @@ public class TaskFacade extends AbstractFacade<Task> {
             throw new EJBException(ex);
         }
     }
-    
-    public List<Task> findByUserSprint(int user, int sprint){
+
+    public List<Task> findByUserSprint(int user, int sprint) {
         User u = em.find(User.class, user);
-        
+
         if (u == null) {
             return null;
         }
-        
-        List<Task> tasks = em.createQuery("select t from Task t where t.user = :user and t.sprint = :sprint")
-                .setParameter("user", u)
-                .setParameter("sprint", sprint)
-                .getResultList();
-        
+
+        List<Task> tasks = em.createQuery("select t from Task t where t.user = :user and t.sprint = :sprint").setParameter("user", u).setParameter("sprint", sprint).getResultList();
+
         return tasks;
-        
+
 //        Query query = em.createQuery("select t from Task t where t.user = :user").setParameter("user", u);
 //        List lista = query.getResultList();
 //        List<Task> listT = (List<Task>) lista;
