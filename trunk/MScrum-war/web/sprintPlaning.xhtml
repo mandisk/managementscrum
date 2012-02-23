@@ -38,7 +38,7 @@
 
                             <h:panelGrid columns="2" cellpadding="5">  
                                 <p:commandButton id="effectsDialogButton" value="#{msg.sprintPlaningbuttonNewTask}" onclick="dlg.show();" type="button" styleClass="button" />  
-                                <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button" update=":form:growl"/>
+                                <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button" update=":form:growl :tasks:j_idt27"/>
                             </h:panelGrid>         
                         </h:form>
                     </div>
