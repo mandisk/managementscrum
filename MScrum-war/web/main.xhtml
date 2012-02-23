@@ -226,10 +226,6 @@
                                     <h:commandLink value="#{msg.mainTask}" rendered="#{selectedProjectBean.owner == loginBean.user}" action ="#{selectedSprintBean.createTask()}" />
                                 </h:column>
                                 <h:column>
-                                    <h:link value="Modify" rendered="#{selectedProjectBean.owner == loginBean.user}">
-                                    </h:link>
-                                </h:column>
-                                <h:column>
                                     <p:commandLink value="Delete" actionListener="#{selectedSprintBean.selectSprint()}" onsuccess="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
                                 </h:column>
                                 
