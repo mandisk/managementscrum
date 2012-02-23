@@ -4,6 +4,7 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,6 +33,13 @@ public class HistorialTareasFacade extends AbstractFacade<HistorialTareas> {
         Query query = em.createQuery("select ht.hours from HistorialTareas ht where ht.task.idTask = :task").setParameter("task", task);
         List lista = query.getResultList();
         List<Integer> listT = (List<Integer>) lista;
+        return listT;
+    }
+    
+    public List<Date> findDateByTask(int task){
+        Query query = em.createQuery("select ht.date from HistorialTareas ht where ht.task.idTask = :task").setParameter("task", task);
+        List lista = query.getResultList();
+        List<Date> listT = (List<Date>) lista;
         return listT;
     }
     
