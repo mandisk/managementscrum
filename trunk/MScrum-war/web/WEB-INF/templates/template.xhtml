@@ -50,14 +50,7 @@
 
 
                                 <h:outputLabel style="font-size: 15px; color:#FFF; font-weight: bold;" value="#{msg.templateLanguage}"/>
-                                <h:selectOneMenu style="color: #555;
-                                                     border: 1px solid #2BB02B;
-                                                     background-color: #BBE664;
-                                                     border-radius: 3px;
-                                                     -webkit-border-radius: 3px;
-                                                     -moz-border-radius: 3px;
-                                                     font-family: Arial,sans-serif;"
-                                                     value="#{languageBean.localeCode}" onchange="submit()"
+                                <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
                                                      valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
                                       <f:selectItems value="#{languageBean.countriesInMap}" /> 
                                 </h:selectOneMenu>
