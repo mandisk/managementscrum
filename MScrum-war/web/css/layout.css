@@ -4,7 +4,19 @@
 
 #header {
 	color: #555;
-	background-color: #BBE664;
+background-image: linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -o-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -moz-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -webkit-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -ms-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right bottom,
+	color-stop(0.11, rgb(2,31,4)),
+	color-stop(0.5, rgb(16,128,72))
+);
 	height: 80px;
 	font-family: Lucida Sans;
 	border-bottom: 1px solid #2BB02B;
@@ -19,7 +31,19 @@
 */
 
 #nav {
-	background-color: #9ACD32;
+	background-image: linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -o-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -moz-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -webkit-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+background-image: -ms-linear-gradient(left top, rgb(2,31,4) 11%, rgb(16,128,72) 50%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right bottom,
+	color-stop(0.11, rgb(2,31,4)),
+	color-stop(0.5, rgb(16,128,72))
+);
 	border-bottom: 1px solid #2BB02B;
 	padding: 10px 0;
 }
@@ -27,7 +51,7 @@
 #nav a {
     text-decoration: none;
     margin-left: 12px;
-    color: #555;
+    color: #FFF;
     font-weight: bold;
 }
 
@@ -58,7 +82,7 @@
 
 #nav ul li a:hover {
 	background-color: #2BB02B;
-	color: #EEEEEE;
+	color: #FFF;
 }
 
 #nav form {
@@ -68,7 +92,7 @@
 
 #nav form input[type="text"] {
 	border: 1px solid #AAA;
-	color: #555;
+	color: #FFF;
 	padding: 2px;
 	padding-bottom: 3px;
 }
