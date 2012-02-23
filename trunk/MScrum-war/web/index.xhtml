@@ -19,7 +19,7 @@
                 <div class="prefix_2 grid_7">
                     <h1  id="tsb-text">#{msg.indextitle}</h1>
                 </div>
-                <div class="prefix_1 grid_4 suffix_2">
+                <div class="prefix_1 grid_5 suffix_1" >
                     <div class="form-item" >
                         <h:messages errorClass="errorMsg" infoClass="infoMsg"/>
                         <h:panelGrid style="width: 100%">
@@ -29,11 +29,11 @@
                             <h:outputLabel for="password">#{msg.indexpassword}</h:outputLabel>
                             <h:inputSecret id="password" value="#{loginBean.password}"/>
                         </h:panelGrid>
+                        <h:panelGrid columns="2"  styleClass="prime-component" >  
+                            <p:commandButton value="#{msg.indexlogin}" action="#{loginBean.doLogin()}" styleClass="button" ajax="false"/>
+                            <h:link value="#{msg.indexregister}" outcome="registration"/>
+                        </h:panelGrid>
                     </div>
-                    <h:panelGrid columns="2"  styleClass="prime-component" >  
-                        <p:commandButton value="#{msg.indexlogin}" action="#{loginBean.doLogin()}" styleClass="button"/>
-                        <h:link value="#{msg.indexregister}" outcome="registration"/>
-                    </h:panelGrid>
                 </div>
             <div class="clear"></div>
             </div>
