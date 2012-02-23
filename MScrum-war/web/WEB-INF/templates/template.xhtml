@@ -48,7 +48,6 @@
                     <div class="grid_2">
                         <h:form>
 
-                            <h:panelGrid columns="2">
 
                                 <h:outputLabel value="#{msg.templateLanguage}"/>
                                 <h:selectOneMenu style="color: #555;
@@ -62,8 +61,6 @@
                                                      valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
                                       <f:selectItems value="#{languageBean.countriesInMap}" /> 
                                 </h:selectOneMenu>
-
-                            </h:panelGrid>
 
                         </h:form>
                     </div>
