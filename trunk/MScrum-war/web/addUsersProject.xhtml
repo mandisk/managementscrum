@@ -16,7 +16,7 @@
   
                 <f:view contentType="text/html">
                     <center>
-                        <h:form id="form">
+                        <h:form id="form" styleClass="prime-component"> 
                             <p:pickList value="#{myUserListBean.users}" 
                                         var="user" 
                                         itemLabel="#{user}"
@@ -33,7 +33,7 @@
                                     #{user.idUser} - #{user.name}
                                 </p:column>  
                             </p:pickList>
-                            <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}" 
+                            <p:commandButton id="userSubmit" styleClass="button" value="#{msg.sprintPlaningbuttonSubmit}" 
                                              action="#{myUserListBean.insert()}"/>
 
                         </h:form>
