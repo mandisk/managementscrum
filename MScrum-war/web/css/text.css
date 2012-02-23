@@ -10,7 +10,19 @@
 
 body {
   font: 13px/1.5 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
-  background-color: #F2F2F2;
+ background-image: linear-gradient(bottom, rgb(199,190,183) 46%, rgb(222,218,213) 60%);
+background-image: -o-linear-gradient(bottom, rgb(199,190,183) 46%, rgb(222,218,213) 60%);
+background-image: -moz-linear-gradient(bottom, rgb(199,190,183) 46%, rgb(222,218,213) 60%);
+background-image: -webkit-linear-gradient(bottom, rgb(199,190,183) 46%, rgb(222,218,213) 60%);
+background-image: -ms-linear-gradient(bottom, rgb(199,190,183) 46%, rgb(222,218,213) 60%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.46, rgb(199,190,183)),
+	color-stop(0.6, rgb(222,218,213))
+);
 }
 
 pre,
