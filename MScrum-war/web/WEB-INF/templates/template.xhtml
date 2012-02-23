@@ -39,8 +39,8 @@
                     <ul style="display: inline"> 
 
 
-                        <li> <h:link value="#{msg.templateMenuMain}" outcome="main.xhtml"/></li>  
-                        <li><h:link value="#{msg.templateAbout}" outcome="aboutUs.xhtml"/></li>  
+                        <li> <h:link style="font-size: 15px; color:#FFF; font-weight: bold;" value="#{msg.templateMenuMain}" outcome="main.xhtml"/></li>  
+                        <li><h:link style="font-size: 15px; color:#FFF; font-weight: bold;" value="#{msg.templateAbout}" outcome="aboutUs.xhtml"/></li>  
 
                     </ul> 
                 </div>
@@ -49,7 +49,7 @@
                         <h:form>
 
 
-                                <h:outputLabel value="#{msg.templateLanguage}"/>
+                                <h:outputLabel style="font-size: 15px; color:#FFF; font-weight: bold;" value="#{msg.templateLanguage}"/>
                                 <h:selectOneMenu style="color: #555;
                                                      border: 1px solid #2BB02B;
                                                      background-color: #BBE664;
@@ -66,8 +66,8 @@
                     </div>
                     <div class="grid_4" >
                         <h:form>
-                            <h:outputText value="#{msg.templateGreeting} #{loginBean.user.name}"/>
-                            <h:commandLink value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
+                            <h:outputText style="font-size: 15px; color:#FFF; font-weight: bold;"  value="#{msg.templateGreeting} #{loginBean.user.name}"/>
+                            <h:commandLink style="font-size: 15px" value="#{msg.templateLogout}" action="#{loginBean.doLogout()}"/>
                         </h:form>
                     </div>
                 </div>
