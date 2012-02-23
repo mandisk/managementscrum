@@ -126,14 +126,14 @@
 }
 
 .prime-component .button {
-    color: #374683;
+    color: #000;
     border: 1px solid #2BB02B;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     margin: 0;
     padding: .2em 1em;
-    background-color: #BBE664;
+    background-color: cadetblue;
     font-weight: normal;
     font-size: 12px;
 }
