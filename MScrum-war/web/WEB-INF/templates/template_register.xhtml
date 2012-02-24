@@ -26,21 +26,15 @@
 
         <div id="header">
             <div class="container_16">
-                <div class="grid_14">
+                <div class="grid_12">
                     <h1 class="texto3d">#{msg.templateTitle}</h1>
                 </div>
-                <div class="grid_2">
+                <div class="grid_4">
                     <br/>
                     <h:form>                        
                         <h:panelGrid columns="2">
-                            <h:outputLabel value="#{msg.templateLanguage}"/>
-                            <h:selectOneMenu style="color: #555;
-                                                     border: 1px solid #2BB02B;
-                                                     background-color: #BBE664;
-                                                     border-radius: 3px;
-                                                     -webkit-border-radius: 3px;
-                                                     -moz-border-radius: 3px;"
-                                                     value="#{languageBean.localeCode}" onchange="submit()"
+                            <h:outputLabel style="font-size: 15px; color:#FFF; font-weight: bold;" value="#{msg.templateLanguage}"/>
+                            <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
                                              valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
                                 <f:selectItems value="#{languageBean.countriesInMap}" /> 
                             </h:selectOneMenu>
