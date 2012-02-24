@@ -7,6 +7,7 @@ package org.inftel.scrum.control;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -17,8 +18,10 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import org.inftel.scrum.bean.SprintPlaningBaseBean;
+import org.inftel.scrum.ejb.HistorialTareasFacade;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.TaskFacade;
+import org.inftel.scrum.entity.HistorialTareas;
 import org.inftel.scrum.entity.Task;
 import org.inftel.scrum.entity.User;
 import org.primefaces.model.DualListModel;
@@ -30,6 +33,8 @@ import org.primefaces.model.DualListModel;
 @ManagedBean
 @RequestScoped
 public class SprintPlaningBean extends SprintPlaningBaseBean {
+    @EJB
+    private HistorialTareasFacade historialTareasFacade;
 
     @EJB
     private ProjectFacade projectFacade;
@@ -165,6 +170,15 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
         tareasSource.add(t);
 
         context.addMessage(null, new FacesMessage("Successful", "Task Created"));
+        
+        HistorialTareas historialTareas = new HistorialTareas();
+        
+        historialTareas.setDate(new Date());
+        historialTareas.setHours(t.getTime());
+        historialTareas.setTask(t);
+        
+        historialTareasFacade.create(historialTareas);
+        
         return null;
     }
 
