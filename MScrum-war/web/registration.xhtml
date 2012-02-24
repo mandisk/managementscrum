@@ -65,12 +65,16 @@
                                            theme="clean"/>  
                                 <br/>
                                 <div align="right">
-                                    <p:commandButton style=" color: #888;
+                                    <p:commandButton style="color: #000;
                                                      border: 1px solid #2BB02B;
-                                                     background-color: #BBE664;
                                                      border-radius: 3px;
                                                      -webkit-border-radius: 3px;
-                                                     -moz-border-radius: 3px;"
+                                                     -moz-border-radius: 3px;
+                                                     margin: 0;
+                                                     padding: .2em 1em;
+                                                     background-color: cadetblue;
+                                                     font-weight: normal;
+                                                     font-size: 12px"
                                                      value="#{msg.registrationfinish}"
                                                      update="growl"                                                 
                                                      action="#{registerBean.doRegister}" 
@@ -84,13 +88,16 @@
                 <br/>
                 <div class="grid_16" align="right">
                     <h:form>
-                        <p:commandButton style=" color: #888;
+                        <p:commandButton style="color: #000;
                                          border: 1px solid #2BB02B;
-                                         background-color: #BBE664;
                                          border-radius: 3px;
                                          -webkit-border-radius: 3px;
-                                         -moz-border-radius: 3px;                                         
-                                         align: right;"
+                                         -moz-border-radius: 3px;
+                                         margin: 0;
+                                         padding: .2em 1em;
+                                         background-color: cadetblue;
+                                         font-weight: normal;
+                                         font-size: 12px"
                                          value="#{msg.registrationgoback}"          
                                          action="#{registerBean.returnLogin}" 
                                          ajax="false"/>
