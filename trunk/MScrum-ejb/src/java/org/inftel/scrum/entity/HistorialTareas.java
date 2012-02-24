@@ -25,8 +25,8 @@ import javax.validation.constraints.NotNull;
 public class HistorialTareas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @JoinColumn(name = "task", referencedColumnName = "idTask")
     @NotNull
     private Task task;
@@ -60,11 +60,11 @@ public class HistorialTareas implements Serializable {
         this.task = task;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -65,6 +65,21 @@ public class TaskFacade extends AbstractFacade<Task> {
         return listT;
     }
 
+    public List<Task> findInSprintByState(int idSprint, char state) {
+        List<Task> tasks = null;
+        
+        try {
+            tasks = em.createQuery("SELECT t FROM Task t WHERE t.sprint.idSprint = :idSprint AND t.state = :state")
+                    .setParameter("idSprint", idSprint)
+                    .setParameter("state", state)
+                    .getResultList();
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return tasks;
+    }
+    
     public List<Task> findTaskNotSprint(int idProject) {
 
         Query query = em.createQuery("select t from Task t where t.project.idProject = :project and t.sprint is null").setParameter("project", idProject);
