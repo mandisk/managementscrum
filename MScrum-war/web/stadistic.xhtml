@@ -19,10 +19,11 @@
                 <div class="grid_16">
 
                     <p:lineChart id="linear" value="#{chartsBean.linearModel}" legendPosition="e"  
-                                 title="Finished Tasks By User" minY="0" maxY="50" style="height:300px" yasixLabel="Task Time"/>  
-
-
-
+                                 title="Finished Tasks By User" maxX="#{chartsBean.maxDate}" showMarkers="true" enhancedLegend="true" minY="-10" maxY="200" style="height:300px" yaxisLabel="Task Time" xaxisLabel="Date"/>  
+                    <div class="clear"></div>
+                    <p:lineChart id="linear2" value="#{chartsBean.linearModel3}" legendPosition="e"  fill="true"
+                                 title="Gráfico de esfuerzo" maxX="#{chartsBean.maxDate}" showMarkers="true" enhancedLegend="true" minY="-10" maxY="200" style="height:300px" yaxisLabel="Task Time" xaxisLabel="Date"/>  
+                    
 
                 </div>
                 <div class="clear"></div>                 
