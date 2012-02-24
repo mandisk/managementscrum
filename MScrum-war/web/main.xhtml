@@ -219,11 +219,10 @@
                                     </h:outputText>
                                 </h:column>
                                 <h:column>
-                                    <h:link value="View sprint" outcome="#{selectedSprintBean.viewPanel()}">
-                                    </h:link>
+                                    <h:commandLink value="View sprint" action="#{selectedSprintBean.viewPanel()}"/>
                                 </h:column>
                                 <h:column>
-                                    <h:commandLink value="#{msg.mainTask}" rendered="#{selectedProjectBean.owner == loginBean.user}" action ="#{selectedSprintBean.createTask()}" />
+                                    <h:commandLink value="#{msg.mainTask}" action="#{selectedSprintBean.createTask()}" rendered="#{selectedProjectBean.owner == loginBean.user}"/>
                                 </h:column>
                                 <h:column>
                                     <p:commandLink value="Delete" actionListener="#{selectedSprintBean.selectSprint()}" onsuccess="dlgDeleteSprint.show();" rendered="#{selectedProjectBean.owner == loginBean.user}"/>

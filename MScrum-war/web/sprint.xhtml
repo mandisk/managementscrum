@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
 
@@ -14,127 +15,133 @@
 
                 <div class="grid_16">
                     
-                    <b><h:outputText value="Sprint Number: "/></b> 
-                    <h:outputText value="#{selectedSprintBean.sprintNumber}"/>
-                    
-                    <br/>
-                    
-                    <b><h:outputText value="Initial Date: "/></b>                        
-                    <h:outputText value="#{selectedSprintBean.initialDate}">
-                        <f:convertDateTime type="date" dateStyle="medium"/> 
-                    </h:outputText>     
-                    
-                    <b><h:outputText value="End Date: "/></b>
-                    <h:outputText value="#{selectedSprintBean.endDate}"> 
-                     <f:convertDateTime type="date" dateStyle="medium"/> 
-                    </h:outputText>
-                    
-                    <br/>
-                    <br/>    
-                    
-                    <h:form>  
+                    <div class="grid_6">
+                        
+                        <h2>Información del Sprint</h2>
+                        <div class="box">
 
-                        <p:dashboard id="board" style="resize: none" model="#{selectedSprintBean.model}">  
+                            <h:panelGrid styleClass="table" style="width: auto" columns="2">
 
-                            <p:ajax event="reorder" 
-                                    listener="#{selectedSprintBean.handleReorder}"/>  
+                                <h:outputText value="Sprint Number: " styleClass="bold"/>
+                                <h:outputText value="#{selectedSprintBean.sprintNumber}"/>
+                                <h:outputText value="Initial Date: " styleClass="bold"/>
+                                <h:outputText value="#{selectedSprintBean.initialDate}">
+                                    <f:convertDateTime type="date" dateStyle="medium"/> 
+                                </h:outputText>
+                                <h:outputText value="End Date: " styleClass="bold"/>
+                                <h:outputText value="#{selectedSprintBean.endDate}"> 
+                                    <f:convertDateTime type="date" dateStyle="medium"/> 
+                                </h:outputText>
 
-                            
-                            <p:panel id="pnl1" 
-                                     style="background-color: #BBE664;
-                                     border-color: #333; 
-                                     border: 1px solid #2BB02B;
-                                     font-family: Lucida Sans;
-                                     text-align: center; 
-                                     resize: none;">  
-                                <h:outputText value="Planned" />  
-                            </p:panel>                    
+                            </h:panelGrid>
 
-                            <p:panel id="pnl2" 
-                                     style="background-color: #BBE664;
-                                     border-color: black;
-                                     border-color: #333; 
-                                     border: 1px solid #2BB02B;
-                                     font-family: Lucida Sans;
-                                     text-align: center; 
-                                     resize: none;">  
-                                <h:outputText  value="In Process" />  
-                            </p:panel>
-
-                            <p:panel id="pnl3" 
-                                     style="background-color: #BBE664;
-                                     border-color: black;
-                                     border-color: #333; 
-                                     border: 1px solid #2BB02B;
-                                     font-family: Lucida Sans;
-                                     text-align: center;
-                                     resize: none;">
-                                <h:outputText value="Finished" />  
-                            </p:panel>
-
-                            
-<!--                            <p:panel id="pnl4"
-                                     
-                                     toggleable="true" 
-                                     header=""
-                                     footer="Developer: Alejandro"
-                                     
-                                     style="resize: node">
-                                
-                                <h:outputText value="Description: Creation Database with MySQL." />
-                                <br/>
-                                <h:form>
-                                    <h:outputText value="Time : " /> 
-                                    <p:inplace editor="true">  
-                                        <p:inputText value=""  
-                                                     required="true" 
-                                                     label="text1"/>  
-                                    </p:inplace>  
-                                </h:form>   
-
-                            </p:panel>  
-                            
-                            <p:panel id="pnl5" 
-                                     toggleable="true" 
-                                     header="Repository Creation"
-                                     footer="Developer: Manolo"
-                                     style="resize: node">
-
-                                <h:outputText value="Description: Creation a SVN repository for the project." />
-                                <br/>
-                                <h:form>
-                                    <h:outputText value="Time : " /> 
-                                    <p:inplace id="inputAjax2" editor="true">  
-                                        <p:inputText value=""  
-                                                     required="true" 
-                                                     label="text3"/>  
-                                    </p:inplace>  
-                                </h:form>   
-                              
-                            </p:panel>  
-
-                            <p:panel id="pnl6" 
-                                     toggleable="true" 
-                                     header="JSFs Creation"
-                                     footer="Developer: Agustin"
-                                     style="resize: node">
-                                <h:outputText value="Description: Creation JSF views." />
-                                <br/>
-                                <h:form>
-                                    <h:outputText value="Time : " />  
-                                     <p:inplace id="inputAjax3" editor="true">  
-                                        <p:inputText value=""  
-                                                     required="true" 
-                                                     label="text3"/>  
-                                    </p:inplace>  -->
-                                
-                          
-
-                        </p:dashboard>
-                      
-                    </h:form>
+                        </div>
+                        
                     </div>
+                    <div class="grid_10">
+                        
+                        <h2>Modificar tarea</h2>
+                        <div class="box">
+                            <div class="form-item">
                                 
+                                <h:form id="modifyForm" styleClass="prime-component">
+
+                                    <h:panelGrid columns="2" styleClass="table" style="width: auto">
+
+                                        <h:outputLabel for="selectTask" value="Selecciona una tarea:"/>
+                                        <p:selectOneMenu id="selectTask" value="#{dashboardBean.task}" converter="#{taskConverter}" style="width: 220px" disabled="#{dashboardBean.doingTaskList.size() == 0}">
+                                            <f:selectItems value="#{dashboardBean.doingTaskList}" var="task" itemLabel="#{task.description}" itemValue="#{task}"/>
+                                        </p:selectOneMenu>
+
+                                        <h:outputLabel for="modifyTime" value="Modifica su tiempo:"/>
+                                        <h:inputText id="modifyTime" value="#{dashboardBean.time}" disabled="#{dashboardBean.doingTaskList.size() == 0}"/>
+
+                                    </h:panelGrid>
+                                    
+                                    <h:panelGrid style="text-align: right" styleClass="table">
+                                        <p:commandButton styleClass="button" value="Modificar" actionListener="#{dashboardBean.modify()}" disabled="#{dashboardBean.doingTaskList.size() == 0}" update="modifyForm :dashboard"/>
+                                    </h:panelGrid>
+
+                                </h:form>
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="clear"></div>
+                    <div class="separator_20"></div>
+                    
+                    <div class="dark-box">
+                        <div class="header-todo">
+                            <h2>TO DO</h2>
+                        </div>
+                        <div class="header-doing">
+                            <h2>DOING</h2>
+                        </div>
+                        <div class="header-done">
+                            <h2>DONE</h2>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="separator_10"></div>
+                        
+                    <h:form id="dashboard">
+                        <p:dashboard model="#{dashboardBean.model}" >
+                            <p:ajax event="reorder" listener="#{dashboardBean.handleReorder}" update=":modifyForm dashboard"/>
+                            
+                            <c:forEach items="#{dashboardBean.todoTaskList}" var="todoTask">
+                                
+                                <p:panel id="t_#{todoTask.idTask}" header="#{todoTask.description}" style="margin: 20px;">
+                                    <div class="form-item">
+                                        <h:panelGrid columns="2">
+                                            <h:outputLabel value="Usuario:"/>
+                                            <h:outputText value="#{todoTask.user.name}" style="margin-left: 10px;"/>
+                                            <h:outputLabel value="Tiempo:"/>
+                                            <h:outputText value="#{todoTask.time}" style="margin-left: 10px;"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </p:panel>
+                            
+                            </c:forEach>
+                            
+                            <c:forEach items="#{dashboardBean.doingTaskList}" var="doingTask">
+                                
+                                <p:panel id="t_#{doingTask.idTask}" header="#{doingTask.description}" style="margin: 20px;">
+                                    <div class="form-item">
+                                        <h:panelGrid columns="2">
+                                            <h:outputLabel value="Usuario:"/>
+                                            <h:outputText value="#{doingTask.user.name}" style="margin-left: 10px;"/>
+                                            <h:outputLabel value="Tiempo:"/>
+                                            <h:outputText value="#{doingTask.time}" style="margin-left: 10px;"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </p:panel>
+                            
+                            </c:forEach>
+                            
+                            <c:forEach items="#{dashboardBean.doneTaskList}" var="doneTask">
+                                
+                                <p:panel id="t_#{doneTask.idTask}" header="#{doneTask.description}" style="margin: 20px;">
+                                    <div class="form-item">
+                                        <h:panelGrid columns="2">
+                                            <h:outputLabel value="Usuario:"/>
+                                            <h:outputText value="#{doneTask.user.name}" style="margin-left: 10px;"/>
+                                            <h:outputLabel value="Tiempo:"/>
+                                            <h:outputText value="#{doneTask.time}" style="margin-left: 10px;"/>
+                                        </h:panelGrid>
+                                    </div>
+                                </p:panel>
+                            
+                            </c:forEach>
+                            
+                        </p:dashboard>
+                    </h:form>
+                    
+                    <div class="clear"></div>
+                    
+                </div>
+
                 <div class="clear"></div>
             </ui:define>
 
