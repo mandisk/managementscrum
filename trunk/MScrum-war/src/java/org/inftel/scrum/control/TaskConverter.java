@@ -33,12 +33,10 @@ public class TaskConverter implements Converter{
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         Integer id = Integer.valueOf(value);
-        System.out.println("id: "+ id);
         try {
-            System.out.println("value: "+value);
             return taskFacade.find(id);
         } catch (Exception e) {
-            throw new ConverterException(new FacesMessage(String.format("Cannot convert %s to User", value)), e);
+            throw new ConverterException(new FacesMessage(String.format("Cannot convert %s to Task", value)), e);
         }
     }
 
