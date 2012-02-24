@@ -79,7 +79,7 @@ background-image: -webkit-gradient(
 }
 
 #nav ul li a:hover {
-background-image: linear-gradient(bottom, rgb(48,49,82) 36%, rgb(33,34,64) 60%);
+/*background-image: linear-gradient(bottom, rgb(48,49,82) 36%, rgb(33,34,64) 60%);
 background-image: -o-linear-gradient(bottom, rgb(48,49,82) 36%, rgb(33,34,64) 60%);
 background-image: -moz-linear-gradient(bottom, rgb(48,49,82) 36%, rgb(33,34,64) 60%);
 background-image: -webkit-linear-gradient(bottom, rgb(48,49,82) 36%, rgb(33,34,64) 60%);
@@ -91,7 +91,8 @@ background-image: -webkit-gradient(
 	left top,
 	color-stop(0.36, rgb(48,49,82)),
 	color-stop(0.6, rgb(33,34,64))
-);
+);*/
+background-color: cadetblue;
 
 	color: #FFF;
 }
