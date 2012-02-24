@@ -38,7 +38,7 @@
 
                             <h:panelGrid columns="2" cellpadding="5">  
                                 <p:commandButton id="effectsDialogButton" value="#{msg.sprintPlaningbuttonNewTask}" onclick="dlg.show();" type="button" styleClass="button" />  
-                                <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button" update=":form:growl :tasks:j_idt27"/>
+                                <p:commandButton id="userSubmit" value="#{msg.sprintPlaningbuttonSubmit}"  action="#{sprintPlaningBean.modify()}" styleClass="button" update=":tasks:selecTask :form:growl"/>
                             </h:panelGrid>         
                         </h:form>
                     </div>
@@ -46,7 +46,7 @@
                         <h:form id="tasks" styleClass="prime-component table">
                             <h:panelGrid styleClass="table" columns="2" style="margin-bottom:10px">
 
-                                <p:selectOneMenu value="#{sprintPlaningBean.task}" converter="#{taskConverter}">
+                                <p:selectOneMenu id="selecTask" value="#{sprintPlaningBean.task}" converter="#{taskConverter}">
                                     <!--                            <f:selectItem itemLabel="Select One" itemValue=""/>-->
                                     <f:selectItems value="#{sprintPlaningBean.tasks}" var="task"  itemLabel="#{task.description}" itemValue="#{task}"/>
                                 </p:selectOneMenu>
