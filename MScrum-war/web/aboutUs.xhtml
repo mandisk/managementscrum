@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html">
 
     <body>
@@ -10,22 +11,23 @@
 
             <ui:define name="content">
                 <h1>Proyecto realizado por: </h1>
-                 <div class="grid_4 suffix_8 box" style="border-color: #9ACD32">
+                <div class="grid_4 suffix_8" style="border-color: #9ACD32">
                     <div class="form-item">
-                        <h:form id="form" styleClass="prime-component">
-                            <h:outputLabel>Agustin Jiménez Fernández</h:outputLabel>
-                            <br/>
-                            <h:outputLabel>Jorge Polo Bermúdez </h:outputLabel>
-                            <br/>
-                            <h:outputLabel>Antonio Díaz Rodríguez </h:outputLabel>
-                            <br/>
-                            <h:outputLabel>Manuel Valls Vorndran </h:outputLabel>
-                            <br/>
-                            <h:outputLabel>Alejandro Leva Fuentes </h:outputLabel>
+                        <h:form id="form" >
+<!--                                                        <h:outputLabel>Agustin Jiménez Fernández</h:outputLabel>
+                                                        <br/>
+                                                        <h:outputLabel>Jorge Polo Bermúdez </h:outputLabel>
+                                                        <br/>
+                                                        <h:outputLabel>Antonio Díaz Rodríguez </h:outputLabel>
+                                                        <br/>
+                                                        <h:outputLabel>Manuel Valls Vorndran </h:outputLabel>
+                                                        <br/>
+                                                        <h:outputLabel>Alejandro Leva Fuentes </h:outputLabel>-->
+                                                        <p:tagCloud model="#{aboutUsBean.model}" styleClass="prime-component"/> 
                         </h:form>
                     </div>
-                 </div>
-                 <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
             </ui:define>
 
         </ui:composition>
