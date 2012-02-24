@@ -123,7 +123,7 @@ public class ChartsBean implements Serializable {
         int iniTotal = 0;
         LineChartSeries serie2 = new LineChartSeries();
         for (User u : users) {
-            System.out.println(u.getName());
+//            System.out.println(u.getName());
             LineChartSeries serie = new LineChartSeries();
             List<Integer> horas = new ArrayList<Integer>();
             List<Date> dates = new ArrayList<Date>();
@@ -137,12 +137,12 @@ public class ChartsBean implements Serializable {
 
                 List<Task> tareas = (List<Task>) u.getAssignedTasks();
                 for (Task t : tareas) {
-                    System.out.println("tarea: "+t.getDescription());
+//                    System.out.println("tarea: "+t.getDescription());
                     horas = historialTareasFacade.findByTask(t.getIdTask());
-                    System.out.println("horas: ");
-                    for (Integer h : horas) {
-                        System.out.print(h);
-                    }
+//                    System.out.println("horas: ");
+//                    for (Integer h : horas) {
+//                        System.out.print(h);
+//                    }
                     dates = historialTareasFacade.findDateByTask(t.getIdTask());
                     if(iniTotal == 0){
                         for (Integer h : horas) {
@@ -179,14 +179,14 @@ public class ChartsBean implements Serializable {
             }
             int total = dates.size();
             
-            System.out.println("Totales: ");
+//            System.out.println("Totales: ");
             for (int i = 0; i < total; i++) {
 
                 DateFormat dataformat = DateFormat.getDateInstance(DateFormat.LONG);
                 String s4 = dataformat.format(dates.get(i));
 
                 serie2.set(s4, totalTaskTime.get(i));
-                System.out.println(i + " : " + totalTaskTime.get(i));
+//                System.out.println(i + " : " + totalTaskTime.get(i));
             }
             linearModel2.addSeries(serie2);
         }
