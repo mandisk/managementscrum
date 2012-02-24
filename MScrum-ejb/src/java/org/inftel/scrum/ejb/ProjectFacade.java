@@ -130,6 +130,8 @@ public class ProjectFacade extends AbstractFacade<Project> {
                 scrumMaster.addProject(project);
             }
             
+            em.flush();
+            
         } catch (Exception ex) {
             throw new EJBException(ex);
         }
