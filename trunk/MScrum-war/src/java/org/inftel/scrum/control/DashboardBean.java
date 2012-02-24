@@ -131,7 +131,7 @@ public class DashboardBean {
         String[] strings = widgetId.split("_");
         int idTask = Integer.parseInt(strings[strings.length - 1]);
 
-        Task task = taskFacade.find(idTask);
+        task = taskFacade.find(idTask);
 
         LOGGER.info("Moving task: " + task.getDescription() + "...");
 
