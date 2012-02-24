@@ -54,6 +54,7 @@ public class ProjectFacade extends AbstractFacade<Project> {
                 
                 project.addUser(user);
             }
+            project.addUser(project.getScrumMaster());
         }
     }
     
