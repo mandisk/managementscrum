@@ -80,7 +80,6 @@ public class CreateSprintBean extends CreateSprintBaseBean {
         }
 
 
-        System.out.println(p.toString());
         Sprint s = new Sprint(1, sNumber, projectPath, initDate, endDate, null, p);
         sprintFacade.create(s);
         
