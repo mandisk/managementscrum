@@ -191,7 +191,7 @@ public class ChartsBean implements Serializable {
             linearModel2.addSeries(serie2);
         }
 
-        linearModel2.getSeries().get(0).setLabel("All");
+        linearModel2.getSeries().get(0).setLabel("Esfuerzo pendiente");
         linearModel3.addSeries(linearModel2.getSeries().get(0));
         
         for (Iterator<LineChartSeries> it = series.iterator(); it.hasNext();) {
