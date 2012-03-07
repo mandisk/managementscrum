@@ -67,6 +67,8 @@ public class LoginBean extends LoginBaseBean {
 
     public String doLogin() {
         FacesMessage msg;
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        
         if (email == null || email.trim().isEmpty()
                 || password == null || password.trim().isEmpty()) {
 
@@ -80,7 +82,6 @@ public class LoginBean extends LoginBaseBean {
             if (user.getPassword().trim().equals(Util.md5(password.trim()).trim())) {
 
                 Collection<Project> projects = projectFacade.findActiveProjectByUser(user.getIdUser());
-                FacesContext facesContext = FacesContext.getCurrentInstance();
                 if (facesContext != null) {
                     ProjectListBean projectListBean = new ProjectListBean();
                     projectListBean.setActiveProjects(activeProjects);
@@ -91,14 +92,19 @@ public class LoginBean extends LoginBaseBean {
                 }
                 return "main?faces-redirect=true";
             }
-
-            msg = new FacesMessage("Wrong password");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return null;
+            
+            if (facesContext != null) {
+                msg = new FacesMessage("Wrong password");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                return null;
+            }
         }
 
-        msg = new FacesMessage("User not found");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        if (facesContext != null) {
+            msg = new FacesMessage("User not found");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        
         return null;
     }
 
