@@ -212,4 +212,15 @@ public class User implements Serializable {
         return idUser.toString();
     }
     
+    public String toJSON() {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("\"name\":\"" + this.name + "\",");
+        builder.append("\"surname\":\"" + this.surname + "\",");
+        builder.append("\"email\":\"" + this.email + "\",");
+        builder.append("\"phone\":\"" + this.telephone + "\"");
+        
+        return builder.toString();
+    }
+    
 }

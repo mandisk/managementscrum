@@ -206,4 +206,15 @@ public class Project implements Serializable {
         return "entity.Project[ idProject=" + idProject + " ]";
     }
     
+    public String toJSON() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\"id\":\"" + this.idProject + "\",");
+        builder.append("\"name\":\"" + this.name + "\",");
+        builder.append("\"description\":\"" + this.description + "\",");
+        builder.append("\"initialdate\":\"" + this.initialDate.getTime() + "\",");
+        builder.append("\"enddate\":\"" + this.endDate.getTime() + "\",");
+        builder.append("\"scrummaster\": {" + this.scrumMaster.toJSON() + "}");
+        
+        return builder.toString();
+    }
 }
