@@ -7,6 +7,7 @@ package org.inftel.scrum.control;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -29,6 +30,8 @@ import org.inftel.scrum.util.Util;
 @ManagedBean
 @SessionScoped
 public class LoginBean extends LoginBaseBean {
+    
+    private final static Logger LOGGER = Logger.getLogger(LoginBean.class.getName());
 
     @EJB
     private UserFacade userFacade;
@@ -120,17 +123,15 @@ public class LoginBean extends LoginBaseBean {
             
             InitialContext initialContext = new InitialContext();
             java.lang.Object ejbHome =
-                    initialContext.lookup(
-                    "java:global/MScrum/MScrum-ejb/UserFacade");
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/UserFacade");
             this.userFacade =
                     (UserFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, UserFacade.class);
             ejbHome =
-                    initialContext.lookup(
-                    "java:global/MScrum/MScrum-ejb/ProjectFacade");
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/ProjectFacade");
             this.projectFacade = 
                     (ProjectFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, ProjectFacade.class);
         } catch (NamingException e) {
-            System.out.println(e.getMessage());
+            LOGGER.severe("NamingException: " + e.getMessage());
         }
     }
     
