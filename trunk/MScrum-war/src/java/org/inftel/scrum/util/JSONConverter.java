@@ -7,6 +7,7 @@ package org.inftel.scrum.util;
 import java.util.List;
 import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
+import org.inftel.scrum.entity.Task;
 import org.inftel.scrum.entity.User;
 
 /**
@@ -18,8 +19,8 @@ public class JSONConverter {
     private static final String PROJECTS =      formatString("projects");
     private static final String SESSION =       formatString("session");
     private static final String SPRINTS =       formatString("sprints");
+    private static final String TASKS =         formatString("tasks");
     
-    // Used by Project and User class
     private static final String DESCRIPTION =   formatString("description");
     private static final String EMAIL =         formatString("email");
     private static final String END_DATE =      formatString("enddate");
@@ -31,6 +32,9 @@ public class JSONConverter {
     private static final String SCRUM_MASTER =  formatString("scrummaster");
     private static final String SURNAME =       formatString("surname");
     private static final String SPRINT_NUMBER = formatString("sprintnumber");
+    private static final String STATE =         formatString("state");
+    private static final String TIME =          formatString("time");
+    private static final String USER =          formatString("user");
     
     /**
      * Build Project List and Session id JSON String to send to client
@@ -63,6 +67,23 @@ public class JSONConverter {
         
         builder .append("{")
                     .append(SPRINTS).append(":").append(jsonSprintList)
+                .append("}");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Build Task List JSON String to send to client
+     * @param taskList
+     * @return 
+     */
+    public static String buildJSONTaskList(List<Task> taskList) {
+        StringBuilder builder = new StringBuilder();
+        
+        String jsonTaskList = taskListToJSONString(taskList);
+        
+        builder .append("{")
+                    .append(TASKS).append(":").append(jsonTaskList)
                 .append("}");
         
         return builder.toString();
@@ -103,6 +124,28 @@ public class JSONConverter {
         for (int i = 0;  i < size; i++) {
             String jsonSprint = sprintToJSONString(sprintList.get(i));
             builder.append(jsonSprint);
+            
+            if (i < size - 1)
+                builder.append(",");
+        }
+        builder.append("]");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Convert Task List to JSON String
+     * @param taskList
+     * @return 
+     */
+    private static String taskListToJSONString(List<Task> taskList) {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("[");
+        int size = taskList.size();
+        for (int i = 0;  i < size; i++) {
+            String jsonTask = taskToJSONString(taskList.get(i));
+            builder.append(jsonTask);
             
             if (i < size - 1)
                 builder.append(",");
@@ -181,7 +224,32 @@ public class JSONConverter {
                     .append(SPRINT_NUMBER).append(":").append(sprintNumber).append(",")
                     .append(INITIAL_DATE).append(":").append(initialDate).append(",")
                     .append(END_DATE).append(":").append(endDate).append(",")
-                    .append(ID_PROJECT).append(":").append(id) // No definitivo
+                    .append(ID_PROJECT).append(":").append(idProject) // No definitivo
+                .append("}");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Convert Task to JSON String
+     * @param task
+     * @return 
+     */
+    public static String taskToJSONString(Task task) {
+        StringBuilder builder = new StringBuilder();
+        
+        String id = formatString(task.getIdTask().toString());
+        String state = formatString(String.valueOf(task.getState()));
+        String description = formatString(task.getDescription());
+        String time = formatString(String.valueOf(task.getTime()));
+        String user = userToJSONString(task.getUser());
+        
+        builder .append("{")
+                    .append(ID).append(":").append(id).append(",")
+                    .append(STATE).append(":").append(state).append(",")
+                    .append(DESCRIPTION).append(":").append(description).append(",")
+                    .append(TIME).append(":").append(time).append(",")
+                    .append(USER).append(":").append(user)
                 .append("}");
         
         return builder.toString();
