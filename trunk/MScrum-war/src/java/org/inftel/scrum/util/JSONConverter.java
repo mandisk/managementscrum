@@ -6,6 +6,7 @@ package org.inftel.scrum.util;
 
 import java.util.List;
 import org.inftel.scrum.entity.Project;
+import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.User;
 
 /**
@@ -16,18 +17,27 @@ public class JSONConverter {
     
     private static final String PROJECTS =      formatString("projects");
     private static final String SESSION =       formatString("session");
+    private static final String SPRINTS =       formatString("sprints");
     
     // Used by Project and User class
     private static final String DESCRIPTION =   formatString("description");
     private static final String EMAIL =         formatString("email");
     private static final String END_DATE =      formatString("enddate");
     private static final String ID =            formatString("id");
+    private static final String ID_PROJECT =    formatString("idproject");
     private static final String INITIAL_DATE =  formatString("initialdate");
     private static final String NAME =          formatString("name");
     private static final String PHONE =         formatString("phone");
     private static final String SCRUM_MASTER =  formatString("scrummaster");
     private static final String SURNAME =       formatString("surname");
+    private static final String SPRINT_NUMBER = formatString("sprintnumber");
     
+    /**
+     * Build Project List and Session id JSON String to send to client
+     * @param sessionId
+     * @param projectList
+     * @return 
+     */
     public static String buildJSONProjectList(String sessionId, List<Project> projectList) {
         StringBuilder builder = new StringBuilder();
         
@@ -36,6 +46,23 @@ public class JSONConverter {
         builder .append("{")
                     .append(SESSION).append(":").append(sessionId).append(",")
                     .append(PROJECTS).append(":").append(jsonProjectList)
+                .append("}");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Build Sprint List JSON String to send to client
+     * @param sprintList
+     * @return 
+     */
+    public static String buildJSONSprintList(List<Sprint> sprintList) {
+        StringBuilder builder = new StringBuilder();
+        
+        String jsonSprintList = sprintListToJSONString(sprintList);
+        
+        builder .append("{")
+                    .append(SPRINTS).append(":").append(jsonSprintList)
                 .append("}");
         
         return builder.toString();
@@ -64,6 +91,28 @@ public class JSONConverter {
     }
     
     /**
+     * Convert Sprint List to JSON String
+     * @param sprintList
+     * @return 
+     */
+    private static String sprintListToJSONString(List<Sprint> sprintList) {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("[");
+        int size = sprintList.size();
+        for (int i = 0;  i < size; i++) {
+            String jsonSprint = sprintToJSONString(sprintList.get(i));
+            builder.append(jsonSprint);
+            
+            if (i < size - 1)
+                builder.append(",");
+        }
+        builder.append("]");
+        
+        return builder.toString();
+    }
+    
+    /**
      * Convert Project to JSON String
      * @param project
      * @return 
@@ -74,8 +123,8 @@ public class JSONConverter {
         String idProject = formatString(project.getIdProject().toString());
         String name = formatString(project.getName());
         String description = formatString(project.getDescription());
-        String initialDate = String.valueOf(project.getInitialDate().getTime());
-        String endDate = String.valueOf(project.getEndDate().getTime());
+        String initialDate = formatString(String.valueOf(project.getInitialDate().getTime()));
+        String endDate = formatString(String.valueOf(project.getEndDate().getTime()));
         String scrumMaster = userToJSONString(project.getScrumMaster());
         
         builder .append("{")
@@ -108,6 +157,31 @@ public class JSONConverter {
                     .append(SURNAME).append(":").append(surname).append(",")
                     .append(EMAIL).append(":").append(email).append(",")
                     .append(PHONE).append(":").append(phone)
+                .append("}");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Convert Sprint to JSON String
+     * @param sprint
+     * @return 
+     */
+    public static String sprintToJSONString(Sprint sprint) {
+        StringBuilder builder = new StringBuilder();
+        
+        String id = formatString(sprint.getIdSprint().toString());
+        String sprintNumber = formatString(sprint.getSprintNumber().toString());
+        String initialDate = formatString(String.valueOf(sprint.getInitialDate().getTime()));
+        String endDate = formatString(String.valueOf(sprint.getEndDate().getTime()));
+        String idProject = formatString(sprint.getProject().getIdProject().toString());
+        
+        builder .append("{")
+                    .append(ID).append(":").append(id).append(",")
+                    .append(SPRINT_NUMBER).append(":").append(sprintNumber).append(",")
+                    .append(INITIAL_DATE).append(":").append(initialDate).append(",")
+                    .append(END_DATE).append(":").append(endDate).append(",")
+                    .append(ID_PROJECT).append(":").append(id) // No definitivo
                 .append("}");
         
         return builder.toString();
