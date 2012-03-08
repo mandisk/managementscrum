@@ -87,7 +87,7 @@ public class LoginBean extends LoginBaseBean {
                 Collection<Project> projects = projectFacade.findActiveProjectByUser(user.getIdUser());
                 if (facesContext != null) {
                     ProjectListBean projectListBean = new ProjectListBean();
-                    projectListBean.setActiveProjects(activeProjects);
+                    projectListBean.setActiveProjects(projects);
                     facesContext.getExternalContext().getSessionMap().put("projectListBean", projectListBean);
                 }
                 else {
