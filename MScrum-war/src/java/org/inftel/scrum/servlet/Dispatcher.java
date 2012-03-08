@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.inftel.scrum.control.LoginBean;
 import org.inftel.scrum.entity.Project;
+import org.inftel.scrum.util.JSONConverter;
 
 /**
  *
@@ -71,22 +72,10 @@ public class Dispatcher extends HttpServlet {
                 loginBean.setPassword(sPassword);
                 
                 if (loginBean.doLogin() != null) {
-                    StringBuilder builder = new StringBuilder();
+                    List<Project> projectList = (List<Project>) loginBean.getActiveProjects();
+                    String sessionId = request.getSession(true).getId();
                     
-                    List<Project> activeProjects = (List<Project>)loginBean.getActiveProjects();
-                    int size = activeProjects.size();
-                    for (int i = 0;  i < size; i++) {
-                        if (i < size - 1)
-                            builder.append("{" + activeProjects.get(i).toJSON() + "},");
-                        else
-                            builder.append("{" + activeProjects.get(i).toJSON() + "}");
-                    }
-                    
-                    result = "{" +
-                                "\"session\":\"" + request.getSession(true).getId() + "\"," +
-                                "\"projects\": [" + builder.toString() + "]" +
-                             "}";
-                                
+                    result = JSONConverter.buildJSONProjectList(sessionId, projectList);
                 }
                 else {
                     result = ERROR_LOGIN;
