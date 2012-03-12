@@ -30,6 +30,9 @@ public class Dispatcher extends HttpServlet {
     
     // ACTIONS CONSTANTS
     private static final int ACTION_LOGIN = 0;
+    private static final int ACTION_REGISTER = 1;    
+    private static final int ACTION_REQUEST_LIST_SPRINTS = 2;
+    private static final int ACTION_REQUEST_LIST_TASKS = 3;
     
     // RESPONSES CONSTANTS
     private static final String ERROR_UNKNOWN_ACTION = "UNKNOWN_ACTION";
@@ -87,6 +90,23 @@ public class Dispatcher extends HttpServlet {
                 }
                 
                 break;
+                case ACTION_REQUEST_LIST_SPRINTS:
+                    
+                    
+                    
+                    
+                    
+                    
+                 break;   
+                case ACTION_REQUEST_LIST_TASKS:
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                 break;   
             default:
                 result = ERROR_UNKNOWN_ACTION;
                 break;
