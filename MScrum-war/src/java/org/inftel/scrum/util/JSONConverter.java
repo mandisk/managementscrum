@@ -20,6 +20,7 @@ public class JSONConverter {
     private static final String SESSION =       formatString("session");
     private static final String SPRINTS =       formatString("sprints");
     private static final String TASKS =         formatString("tasks");
+    private static final String USERS =         formatString("users");
     
     private static final String DESCRIPTION =   formatString("description");
     private static final String EMAIL =         formatString("email");
@@ -88,6 +89,23 @@ public class JSONConverter {
         
         return builder.toString();
     }
+    
+    /**
+     * Build User List JSON String to send to client
+     * @param userList
+     * @return 
+     */
+    public static String buildJSONUserList(List<User> userList) {
+        StringBuilder builder = new StringBuilder();
+        
+        String jsonUserList = userListToJSONString(userList);
+        
+        builder .append("{")
+                    .append(USERS).append(":").append(jsonUserList)
+                .append("}");
+        
+        return builder.toString();
+    }
             
     /**
      * Convert Project List to JSON String
@@ -146,6 +164,28 @@ public class JSONConverter {
         for (int i = 0;  i < size; i++) {
             String jsonTask = taskToJSONString(taskList.get(i));
             builder.append(jsonTask);
+            
+            if (i < size - 1)
+                builder.append(",");
+        }
+        builder.append("]");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Convert User List to JSON String
+     * @param userList
+     * @return 
+     */
+    private static String userListToJSONString(List<User> userList) {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("[");
+        int size = userList.size();
+        for (int i = 0;  i < size; i++) {
+            String jsonUser = userToJSONString(userList.get(i));
+            builder.append(jsonUser);
             
             if (i < size - 1)
                 builder.append(",");
