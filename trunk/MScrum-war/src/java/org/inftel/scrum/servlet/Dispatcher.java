@@ -38,8 +38,8 @@ public class Dispatcher extends HttpServlet {
     private static final int ACTION_REGISTER = 1;
     private static final int ACTION_REQUEST_LIST_SPRINTS = 2;
     private static final int ACTION_REQUEST_LIST_TASKS = 3;
-    private static final int ACTION_ADD_PROJECT = 4;
-    private static final int ACTION_REQUEST_LIST_USERS = 5;
+    private static final int ACTION_REQUEST_LIST_USERS = 4;
+    private static final int ACTION_ADD_PROJECT = 5;
     
     // RESPONSES CONSTANTS
     private static final String ERROR_ADD_PROJECT = "ERROR_ADD_PROJECT";
