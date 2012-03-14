@@ -39,6 +39,7 @@ public class Dispatcher extends HttpServlet {
     private static final int ACTION_REQUEST_LIST_SPRINTS = 2;
     private static final int ACTION_REQUEST_LIST_TASKS = 3;
     private static final int ACTION_ADD_PROJECT = 4;
+    private static final int ACTION_REQUEST_LIST_USERS = 5;
     
     // RESPONSES CONSTANTS
     private static final String ERROR_ADD_PROJECT = "ERROR_ADD_PROJECT";
@@ -94,6 +95,10 @@ public class Dispatcher extends HttpServlet {
             case ACTION_ADD_PROJECT:
                 
                 result = actionAddProject(dis, request);
+                break;
+            case ACTION_REQUEST_LIST_USERS:
+                
+                result = actionRequestUserList(dis, request);
                 break;
             default:
                 
@@ -291,6 +296,44 @@ public class Dispatcher extends HttpServlet {
             }
         }
 
+        return result;
+    }
+    
+    private String actionRequestUserList(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idProject = Integer.valueOf(dis.readUTF());
+
+            SelectedProjectBean selectedProjectBean =  new SelectedProjectBean();
+            selectedProjectBean.initEJB();
+            ProjectListBean projectListBean = (ProjectListBean) session.getAttribute("projectListBean");
+            
+            for (Project p : projectListBean.getActiveProjects()) {
+                if (p.getIdProject() == idProject) {
+                    selectedProjectBean.setIdProject(p.getIdProject());
+                    selectedProjectBean.setName(p.getName());
+                    selectedProjectBean.setDescription(p.getDescription());
+                    selectedProjectBean.setInitialDate(p.getInitialDate());
+                    selectedProjectBean.setEndDate(p.getEndDate());
+                    selectedProjectBean.setOwner(p.getScrumMaster());
+                    
+                    selectedProjectBean.select();
+                }
+            }
+            
+            session.setAttribute("selectedProjectBean", selectedProjectBean);
+            
+            MyUserListBean myUserListBean = new MyUserListBean();
+            myUserListBean.init();
+            
+            result = JSONConverter.buildJSONUserList(myUserListBean.getUsersInProject(idProject));
+        }
+        
         return result;
     }
     //</editor-fold>
