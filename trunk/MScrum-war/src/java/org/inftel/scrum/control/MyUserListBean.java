@@ -44,20 +44,22 @@ public class MyUserListBean extends UserListBaseBean {
     @PostConstruct
     public void init() {
         FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> session = context.getExternalContext().getSessionMap();
-        SelectedProjectBean selectedProjectBean = 
-                (SelectedProjectBean) session.get("selectedProjectBean");
-        
-        User scrumMaster = selectedProjectBean.getOwner();
-        
-        List<User> usersSource = getUserNotInProject(selectedProjectBean.getIdProject());
-        List<User> usersTarget = getUsersInProject(selectedProjectBean.getIdProject());
-        
-        usersTarget.remove(scrumMaster);
-        usersSource.remove(scrumMaster);
-        
-        this.idProject = selectedProjectBean.getIdProject();
-        this.users = new DualListModel<User>(usersSource, usersTarget);
+        if (context != null) {
+            Map<String, Object> session = context.getExternalContext().getSessionMap();
+            SelectedProjectBean selectedProjectBean = 
+                    (SelectedProjectBean) session.get("selectedProjectBean");
+
+            User scrumMaster = selectedProjectBean.getOwner();
+
+            List<User> usersSource = getUserNotInProject(selectedProjectBean.getIdProject());
+            List<User> usersTarget = getUsersInProject(selectedProjectBean.getIdProject());
+
+            usersTarget.remove(scrumMaster);
+            usersSource.remove(scrumMaster);
+
+            this.idProject = selectedProjectBean.getIdProject();
+            this.users = new DualListModel<User>(usersSource, usersTarget);
+        }
     }
     
     public List<User> getUsersInProject(int idProject) {
