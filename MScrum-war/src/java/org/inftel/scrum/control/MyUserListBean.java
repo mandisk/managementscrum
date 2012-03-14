@@ -6,11 +6,14 @@ package org.inftel.scrum.control;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.bean.UserListBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.UserFacade;
@@ -24,6 +27,9 @@ import org.primefaces.model.DualListModel;
 @ManagedBean
 @RequestScoped
 public class MyUserListBean extends UserListBaseBean {
+    
+    private static final Logger LOGGER = Logger.getLogger(MyUserListBean.class.getName());
+    
     @EJB
     private ProjectFacade projectFacade;
     @EJB
@@ -41,9 +47,12 @@ public class MyUserListBean extends UserListBaseBean {
         Map<String, Object> session = context.getExternalContext().getSessionMap();
         SelectedProjectBean selectedProjectBean = 
                 (SelectedProjectBean) session.get("selectedProjectBean");
+        
         User scrumMaster = selectedProjectBean.getOwner();
-        List<User> usersSource = projectFacade.selectUsersNotIn(selectedProjectBean.getIdProject());
-        List<User> usersTarget = userFacade.findByProject(selectedProjectBean.getIdProject());
+        
+        List<User> usersSource = getUserNotInProject(selectedProjectBean.getIdProject());
+        List<User> usersTarget = getUsersInProject(selectedProjectBean.getIdProject());
+        
         usersTarget.remove(scrumMaster);
         usersSource.remove(scrumMaster);
         
@@ -51,12 +60,37 @@ public class MyUserListBean extends UserListBaseBean {
         this.users = new DualListModel<User>(usersSource, usersTarget);
     }
     
+    public List<User> getUsersInProject(int idProject) {
+        return userFacade.findByProject(idProject);
+    }
+    
+    public List<User> getUserNotInProject(int idProject) {
+        return projectFacade.selectUsersNotIn(idProject);
+    }
+    
     public String insert() {
         
         Object[] idUsers = users.getTarget().toArray();
-        
         projectFacade.addUsers(this.idProject, idUsers);
         
         return "main?faces-redirect=true";
+    }
+    
+    public void initEJB() {
+        
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/UserFacade");
+            this.userFacade =
+                    (UserFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, UserFacade.class);
+            ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/ProjectFacade");
+            this.projectFacade = 
+                    (ProjectFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, ProjectFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }
