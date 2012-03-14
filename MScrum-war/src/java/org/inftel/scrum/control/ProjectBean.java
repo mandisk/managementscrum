@@ -4,12 +4,16 @@
  */
 package org.inftel.scrum.control;
 
+import java.util.Date;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.bean.ProjectBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.entity.Project;
@@ -21,6 +25,9 @@ import org.inftel.scrum.entity.Project;
 @ManagedBean
 @RequestScoped
 public class ProjectBean extends ProjectBaseBean {
+    
+    private static final Logger LOGGER = Logger.getLogger(ProjectBean.class.getName());
+    
     @EJB
     private ProjectFacade projectFacade;
 
@@ -46,12 +53,7 @@ public class ProjectBean extends ProjectBaseBean {
         
         if (projectFacade.findByName(name) == null) {
             
-            Project p = projectFacade.createProject(
-                                        name, 
-                                        description, 
-                                        initialDate, 
-                                        endDate, 
-                                        loginBean.getUser().getIdUser());
+            Project p = persistProject(loginBean.getUser().getIdUser());
 
             ProjectListBean projectListBean = (ProjectListBean) sessionMap.get("projectListBean");
             projectListBean.getActiveProjects().add(p);
@@ -82,5 +84,24 @@ public class ProjectBean extends ProjectBaseBean {
         }
         
         return null;
+    }
+    
+    public Project persistProject(int idUser) {
+        
+        return projectFacade.createProject(name, description, initialDate, endDate, idUser);
+    }
+    
+    public void initEJB() {
+        
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/ProjectFacade");
+            this.projectFacade =
+                    (ProjectFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, ProjectFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }

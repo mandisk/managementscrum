@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.bean.ProjectBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.SprintFacade;
@@ -29,6 +32,9 @@ import org.primefaces.model.DualListModel;
 @ManagedBean
 @SessionScoped
 public class SelectedProjectBean extends ProjectBaseBean {
+    
+    private static final Logger LOGGER = Logger.getLogger(SelectedProjectBean.class.getName());
+    
     @EJB
     private ProjectFacade projectFacade;
     @EJB
@@ -94,17 +100,18 @@ public class SelectedProjectBean extends ProjectBaseBean {
     }
     
     public String select() {
-        Project p = (Project) projectTable.getRowData();
+        if (projectTable != null) {
+            Project p = (Project) projectTable.getRowData();
+            this.idProject = p.getIdProject();
+            this.name = p.getName();
+            this.description = p.getDescription();
+            this.initialDate = p.getInitialDate();
+            this.endDate = p.getEndDate();
+            this.owner = p.getScrumMaster();
+            this.selected = true;   
+        }
         
-        this.idProject = p.getIdProject();
-        this.name = p.getName();
-        this.description = p.getDescription();
-        this.initialDate = p.getInitialDate();
-        this.endDate = p.getEndDate();
-        this.owner = p.getScrumMaster();
         this.sprints = sprintFacade.findByProject(idProject);
-        
-        this.selected = true;
         
         return null;
     }
@@ -183,5 +190,23 @@ public class SelectedProjectBean extends ProjectBaseBean {
     public String addUsers(){
         
         return "addUsersProject?faces-redirect=true";
+    }
+    
+    public void initEJB() {
+        
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/SprintFacade");
+            this.sprintFacade =
+                    (SprintFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, SprintFacade.class);
+            ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/ProjectFacade");
+            this.projectFacade = 
+                    (ProjectFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, ProjectFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }
