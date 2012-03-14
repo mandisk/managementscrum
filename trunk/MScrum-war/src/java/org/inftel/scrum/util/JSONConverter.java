@@ -282,7 +282,10 @@ public class JSONConverter {
         String state = formatString(String.valueOf(task.getState()));
         String description = formatString(task.getDescription());
         String time = formatString(String.valueOf(task.getTime()));
-        String user = userToJSONString(task.getUser());
+        String user = formatString("null");
+        
+        if (task.getUser() != null)
+             user = userToJSONString(task.getUser());
         
         builder .append("{")
                     .append(ID).append(":").append(id).append(",")

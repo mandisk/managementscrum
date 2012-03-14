@@ -4,21 +4,21 @@
  */
 package org.inftel.scrum.control;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.bean.SprintBaseBean;
 import org.inftel.scrum.ejb.SprintFacade;
 import org.inftel.scrum.ejb.TaskFacade;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
-import org.inftel.scrum.entity.User;
 import org.primefaces.model.DualListModel;
 
 /**
@@ -28,6 +28,9 @@ import org.primefaces.model.DualListModel;
 @ManagedBean
 @SessionScoped
 public class SelectedSprintBean extends SprintBaseBean {
+    
+    private static final Logger LOGGER = Logger.getLogger(SelectedSprintBean.class.getName());
+    
     @EJB
     private TaskFacade taskFacade;
     @EJB
@@ -50,12 +53,16 @@ public class SelectedSprintBean extends SprintBaseBean {
     }
     
     public String selectSprint() {
-        Sprint sprint = (Sprint) this.sprintTable.getRowData();
+        if (sprintTable != null) {
+            Sprint sprint = (Sprint) this.sprintTable.getRowData();
+
+            this.idSprint = sprint.getIdSprint();
+            this.sprintNumber = sprint.getSprintNumber();
+            this.initialDate = sprint.getInitialDate();
+            this.endDate = sprint.getEndDate();
+        }
         
-        this.idSprint = sprint.getIdSprint();
-        this.sprintNumber = sprint.getSprintNumber();
-        this.initialDate = sprint.getInitialDate();
-        this.endDate = sprint.getEndDate();
+        this.taskList = taskFacade.findBySprint(idSprint);
         
         return null;
     }
@@ -125,5 +132,23 @@ public class SelectedSprintBean extends SprintBaseBean {
         this.endDate = sprint.getEndDate();
         
         return "sprint?faces-redirect=true";
+    }
+    
+    public void initEJB() {
+        
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/SprintFacade");
+            this.sprintFacade =
+                    (SprintFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, SprintFacade.class);
+            ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/TaskFacade");
+            this.taskFacade = 
+                    (TaskFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, TaskFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }

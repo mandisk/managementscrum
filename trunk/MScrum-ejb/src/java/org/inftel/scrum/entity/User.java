@@ -51,7 +51,7 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
-    @NotNull
+//    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "dni")
     private String dni;

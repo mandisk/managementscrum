@@ -4,17 +4,17 @@
  */
 package org.inftel.scrum.control;
 
-import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.bean.RegisterBaseBean;
 import org.inftel.scrum.ejb.UserFacade;
 import org.inftel.scrum.entity.User;
-import org.primefaces.event.FileUploadEvent;
 import org.inftel.scrum.util.Util;
 
 /**
@@ -24,6 +24,8 @@ import org.inftel.scrum.util.Util;
 @ManagedBean
 @RequestScoped
 public class RegisterBean extends RegisterBaseBean {
+    
+    private final static Logger LOGGER = Logger.getLogger(RegisterBean.class.getName());
 
     @EJB
     private UserFacade userFacade;
@@ -45,6 +47,7 @@ public class RegisterBean extends RegisterBaseBean {
     }
     
     public String doRegister() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
 
         if (name == null || name.trim().isEmpty()
                 || surname == null || surname.trim().isEmpty()
@@ -52,7 +55,7 @@ public class RegisterBean extends RegisterBaseBean {
                 || password == null || password.trim().isEmpty()) {
 
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Check the fields again please because there are some empty fields.", "Fields");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            facesContext.addMessage(null, msg);
             return null;
 
         } else {
@@ -68,19 +71,36 @@ public class RegisterBean extends RegisterBaseBean {
                     userFacade.create(user);
                     return "index";
                 } else {
-                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Check the field 'DNI' please because it is already been used by other user.", "DNI");
-                    FacesContext.getCurrentInstance().addMessage(null, msg);
-                    return null;
+                    if (facesContext != null) {
+                        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Check the field 'DNI' please because it is already been used by other user.", "DNI");
+                        facesContext.addMessage(null, msg);
+                    }
                 }
             } else {
-                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Check the field 'Email' please because it is already been used by other user.", "Email");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-                return null;
+                if (facesContext != null) {
+                    FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Check the field 'Email' please because it is already been used by other user.", "Email");
+                    facesContext.addMessage(null, msg);
+                }
             }
         }
+        return null;
     }
     
     public String returnLogin(){        
         return "index";
+    }
+    
+    public void initEJB() {
+        
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/UserFacade");
+            this.userFacade =
+                    (UserFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, UserFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }
