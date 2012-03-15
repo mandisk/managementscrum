@@ -5,10 +5,7 @@
 package org.inftel.scrum.servlet;
 
 import java.io.*;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -40,9 +37,16 @@ public class Dispatcher extends HttpServlet {
     private static final int ACTION_REQUEST_LIST_TASKS = 3;
     private static final int ACTION_REQUEST_LIST_USERS = 4;
     private static final int ACTION_ADD_PROJECT = 5;
+    private static final int ACTION_ADD_SPRINT = 6;
+    private static final int ACTION_ADD_TASK = 7;
+    private static final int ACTION_DELETE_PROJECT = 8;
+    private static final int ACTION_DELETE_SPRINT = 9;
+    private static final int ACTION_DELETE_TASK = 10;
     
     // RESPONSES CONSTANTS
     private static final String ERROR_ADD_PROJECT = "ERROR_ADD_PROJECT";
+    private static final String ERROR_ADD_SPRINT = "ERROR_ADD_SPRINT";
+    private static final String ERROR_ADD_TASK = "ERROR_ADD_TASK";
     private static final String ERROR_UNKNOWN_ACTION = "UNKNOWN_ACTION";
     private static final String ERROR_LOGIN = "ERROR_LOGIN";
     private static final String ERROR_REGISTER = "ERROR_REGISTER";
@@ -92,13 +96,21 @@ public class Dispatcher extends HttpServlet {
                 
                 result = actionRequestTaskList(dis, request);
                 break;
+            case ACTION_REQUEST_LIST_USERS:
+                
+                result = actionRequestUserList(dis, request);
+                break;
             case ACTION_ADD_PROJECT:
                 
                 result = actionAddProject(dis, request);
                 break;
-            case ACTION_REQUEST_LIST_USERS:
+            case ACTION_ADD_SPRINT:
                 
-                result = actionRequestUserList(dis, request);
+                result = actionAddSprint(dis, request);
+                break;
+            case ACTION_ADD_TASK:
+                
+                result = actionAddTask(dis, request);
                 break;
             default:
                 
@@ -329,11 +341,102 @@ public class Dispatcher extends HttpServlet {
             session.setAttribute("selectedProjectBean", selectedProjectBean);
             
             MyUserListBean myUserListBean = new MyUserListBean();
-            myUserListBean.init();
+            myUserListBean.initEJB();
             
             result = JSONConverter.buildJSONUserList(myUserListBean.getUsersInProject(idProject));
         }
         
+        return result;
+    }
+    
+    private String actionAddSprint(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            
+            int iSprintNumber = Integer.valueOf(dis.readUTF());
+            int initialDay = Integer.valueOf(dis.readUTF());
+            int initialMonth = Integer.valueOf(dis.readUTF());
+            int initialYear = Integer.valueOf(dis.readUTF());
+            int endDay = Integer.valueOf(dis.readUTF());
+            int endMonth = Integer.valueOf(dis.readUTF());
+            int endYear = Integer.valueOf(dis.readUTF());
+            
+            Calendar calendar = new GregorianCalendar();
+            calendar.set(initialYear, initialDay, initialMonth);
+            Date initialDate = calendar.getTime();
+            calendar.set(endYear, endDay, endMonth);
+            Date endDate = calendar.getTime();
+            
+            SprintBean sprintBean =  new SprintBean();
+            sprintBean.setSprintNumber(iSprintNumber);
+            sprintBean.setInitialDate(initialDate);
+            sprintBean.setEndDate(endDate);
+            
+            sprintBean.initEJB();
+            
+            int idProject = selectedProjectBean.getIdProject();
+            Sprint sprint = sprintBean.persistSprint(idProject);
+            
+            if (sprint == null) {
+                result = ERROR_ADD_SPRINT;
+            }
+            else {
+                
+                selectedProjectBean.addSprint(sprint);
+                result = JSONConverter.buildJSONSprintList((List<Sprint>)selectedProjectBean.getSprints());
+            }
+        }
+        return result;
+    }
+    
+    private String actionAddTask(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            
+            SelectedSprintBean selectedSprintBean =
+                    (SelectedSprintBean) session.getAttribute("selectedSprintBean");
+            
+            int idProject = selectedProjectBean.getIdProject();
+            int idSprint = selectedSprintBean.getIdSprint();
+            
+            String description = dis.readUTF();
+            int time = Integer.valueOf(dis.readUTF());
+            
+            if (description == null) {
+                LOGGER.warning("Null description");
+            }
+            
+            SprintPlaningBean sprintPlaningBean = new SprintPlaningBean();
+            sprintPlaningBean.initEJB();
+            
+            sprintPlaningBean.setDescripcion(description);
+            sprintPlaningBean.setTime(time);
+            
+            Task task = sprintPlaningBean.persistTask(idProject, idSprint);
+            if (task == null) {
+                
+                result = ERROR_ADD_TASK;
+            }
+            else {
+                
+                selectedSprintBean.addTask(task);
+                result = JSONConverter.buildJSONTaskList((List<Task>)selectedSprintBean.getTaskList());
+            }
+        }
         return result;
     }
     //</editor-fold>

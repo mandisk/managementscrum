@@ -5,11 +5,10 @@
 package org.inftel.scrum.control;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,11 +16,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.bean.SprintPlaningBaseBean;
-import org.inftel.scrum.ejb.HistorialTareasFacade;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.TaskFacade;
-import org.inftel.scrum.entity.HistorialTareas;
 import org.inftel.scrum.entity.Task;
 import org.inftel.scrum.entity.User;
 import org.primefaces.model.DualListModel;
@@ -33,8 +32,8 @@ import org.primefaces.model.DualListModel;
 @ManagedBean
 @RequestScoped
 public class SprintPlaningBean extends SprintPlaningBaseBean {
-    @EJB
-    private HistorialTareasFacade historialTareasFacade;
+    
+    private static final Logger LOGGER = Logger.getLogger(SprintPlaningBean.class.getName());
 
     @EJB
     private ProjectFacade projectFacade;
@@ -157,7 +156,7 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
         return null;
     }
 
-    public String addlist(ActionEvent actionEvent) {
+    public String addTaskToList(ActionEvent actionEvent) {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (descripcion.isEmpty() || descripcion == null || time == 0) {
@@ -166,20 +165,16 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
             return null;
         }
 
-        Task t = taskFacade.createTask(descripcion, time, this.idProject);
+        Task t = persistTask(idProject, -1);
         tareasSource.add(t);
 
         context.addMessage(null, new FacesMessage("Successful", "Task Created"));
         
-        HistorialTareas historialTareas = new HistorialTareas();
-        
-        historialTareas.setDate(new Date());
-        historialTareas.setHours(t.getTime());
-        historialTareas.setTask(t);
-        
-        historialTareasFacade.create(historialTareas);
-        
         return null;
+    }
+    
+    public Task persistTask(int idProject, int idSprint) {
+        return taskFacade.createTask(descripcion, time, idProject, idSprint);
     }
 
     public String modify() {
@@ -195,5 +190,18 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
 
     public String returnMain() {
         return "main?faces-redirect=true";
+    }
+    
+    public void initEJB() {
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/TaskFacade");
+            this.taskFacade =
+                    (TaskFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, TaskFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }

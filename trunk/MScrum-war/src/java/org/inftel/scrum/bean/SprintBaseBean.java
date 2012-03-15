@@ -18,6 +18,7 @@ public class SprintBaseBean implements Serializable {
     protected int sprintNumber;
     protected Date initialDate;
     protected Date endDate;
+    protected String projectPath;
     
     protected Collection<Task> taskList;
 
@@ -62,5 +63,17 @@ public class SprintBaseBean implements Serializable {
 
     public void setTaskList(Collection<Task> taskList) {
         this.taskList = taskList;
+    }
+    
+    public String getProjectPath() {
+        return projectPath;
+    }
+    
+    public void setProjectPath(String projectPath) {
+        this.projectPath = projectPath;
+    }
+    
+    public void addTask(Task task) {
+        this.taskList.add(task);
     }
 }
