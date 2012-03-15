@@ -75,4 +75,25 @@ public class UserFacade extends AbstractFacade<User> {
         return users;
     }
     
+    public List<User> findNotInProject(int idProject){
+        Project project = null;
+        List<User> users = null;
+        
+        try {
+            project = em.find(Project.class, idProject);
+            
+            if (project == null) {
+                return null;
+            }
+            
+            users = em.createQuery("select u from User u, Project p where p.idProject = :idProject and u not member of p.users")
+                    .setParameter("idProject", idProject)
+                    .getResultList();
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return users;
+    }
+    
 }

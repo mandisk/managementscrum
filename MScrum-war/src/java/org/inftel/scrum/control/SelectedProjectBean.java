@@ -20,6 +20,7 @@ import javax.naming.NamingException;
 import org.inftel.scrum.bean.ProjectBaseBean;
 import org.inftel.scrum.ejb.ProjectFacade;
 import org.inftel.scrum.ejb.SprintFacade;
+import org.inftel.scrum.ejb.UserFacade;
 import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.User;
@@ -39,6 +40,8 @@ public class SelectedProjectBean extends ProjectBaseBean {
     private ProjectFacade projectFacade;
     @EJB
     private SprintFacade sprintFacade;
+    @EJB
+    private UserFacade userFacade;
 
     private int idProject;
     private Collection<Sprint> sprints;
@@ -209,8 +212,20 @@ public class SelectedProjectBean extends ProjectBaseBean {
                     initialContext.lookup("java:global/MScrum/MScrum-ejb/ProjectFacade");
             this.projectFacade = 
                     (ProjectFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, ProjectFacade.class);
+            ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/UserFacade");
+            this.userFacade = 
+                    (UserFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, UserFacade.class);
         } catch (NamingException e) {
             LOGGER.severe("NamingException: " + e.getMessage());
         }
+    }
+    
+    public List<User> getUsersInProject() {
+        return userFacade.findByProject(idProject);
+    }
+    
+    public List<User> getUserNotInProject() {
+        return userFacade.findNotInProject(idProject);
     }
 }

@@ -32,8 +32,6 @@ public class MyUserListBean extends UserListBaseBean {
     
     @EJB
     private ProjectFacade projectFacade;
-    @EJB
-    private UserFacade userFacade;
 
     /**
      * Creates a new instance of MyUserListBean
@@ -50,22 +48,14 @@ public class MyUserListBean extends UserListBaseBean {
 
         User scrumMaster = selectedProjectBean.getOwner();
 
-        List<User> usersSource = getUserNotInProject(selectedProjectBean.getIdProject());
-        List<User> usersTarget = getUsersInProject(selectedProjectBean.getIdProject());
+        List<User> usersSource = selectedProjectBean.getUserNotInProject();
+        List<User> usersTarget = selectedProjectBean.getUsersInProject();
 
         usersTarget.remove(scrumMaster);
         usersSource.remove(scrumMaster);
 
         this.idProject = selectedProjectBean.getIdProject();
         this.users = new DualListModel<User>(usersSource, usersTarget);
-    }
-    
-    public List<User> getUsersInProject(int idProject) {
-        return userFacade.findByProject(idProject);
-    }
-    
-    public List<User> getUserNotInProject(int idProject) {
-        return projectFacade.selectUsersNotIn(idProject);
     }
     
     public String insert() {
@@ -82,10 +72,6 @@ public class MyUserListBean extends UserListBaseBean {
             
             InitialContext initialContext = new InitialContext();
             java.lang.Object ejbHome =
-                    initialContext.lookup("java:global/MScrum/MScrum-ejb/UserFacade");
-            this.userFacade =
-                    (UserFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, UserFacade.class);
-            ejbHome =
                     initialContext.lookup("java:global/MScrum/MScrum-ejb/ProjectFacade");
             this.projectFacade = 
                     (ProjectFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, ProjectFacade.class);
