@@ -168,19 +168,19 @@
                                     <h:panelGrid  styleClass="table" columns="2" style="margin-bottom:10px">  
 
                                         <h:outputLabel value="#{msg.createSprintFieldSprintNumber}"/>
-                                        <p:inputText value="#{createSprintBean.sprintNumber}"/>  
+                                        <p:inputText value="#{sprintBean.sprintNumber}"/>  
 
                                         <h:outputLabel value="#{msg.createSprintFieldInitDate}"/>
-                                        <p:calendar id="InitialDate" value="#{createSprintBean.initDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{selectedProjectBean.endDate}"/>  
+                                        <p:calendar id="InitialDate" value="#{sprintBean.initialDate}" mindate="#{sprintBean.actualDate}" maxdate="#{selectedProjectBean.endDate}"/>  
 
                                         <h:outputLabel value="#{msg.createSprintFieldEndDate}"/>
-                                        <p:calendar id="EndDate" value="#{createSprintBean.endDate}" mindate="#{createSprintBean.actualDate}" maxdate="#{selectedProjectBean.endDate}"/>  
+                                        <p:calendar id="EndDate" value="#{sprintBean.endDate}" mindate="#{sprintBean.actualDate}" maxdate="#{selectedProjectBean.endDate}"/>  
 
                                         <h:outputLabel value="#{msg.createSprintFieldPathProject}"/>
-                                        <p:inputText value ="#{createSprintBean.projectPath}" required="false"/>  
+                                        <p:inputText value ="#{sprintBean.projectPath}" required="false"/>  
 
                                     </h:panelGrid>
-                                    <p:commandButton id="createSprintButton" value="#{msg.createSprintButtonCreate}"  actionListener="#{createSprintBean.createNewSprint()}" oncomplete="dlgCreateSprint.hide();" styleClass="button" update=":growl :sprint"/> 
+                                    <p:commandButton id="createSprintButton" value="#{msg.createSprintButtonCreate}"  actionListener="#{sprintBean.createSprint()}" oncomplete="dlgCreateSprint.hide();" styleClass="button" update=":growl :sprint"/> 
                                 </h:form>
                             </div>
                         </p:dialog>

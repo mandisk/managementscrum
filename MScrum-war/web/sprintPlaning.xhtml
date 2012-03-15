@@ -77,7 +77,7 @@
 
                                 </h:panelGrid>  
 
-                                <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList, :form:growl"   actionListener="#{sprintPlaningBean.addlist(actionEvent)}" styleClass="button" oncomplete="dlg.hide();"/>  
+                                <p:commandButton id="submitButton" value="#{msg.sprintPlaningbuttonSubmit}" update=":form:pickList, :form:growl"   actionListener="#{sprintPlaningBean.addTaskToList(actionEvent)}" styleClass="button" oncomplete="dlg.hide();"/>  
 
                             </h:form>  
                         </p:dialog> 
