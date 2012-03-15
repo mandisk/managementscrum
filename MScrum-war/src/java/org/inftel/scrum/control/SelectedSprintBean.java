@@ -72,7 +72,7 @@ public class SelectedSprintBean extends SprintBaseBean {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         
-        Sprint sprint = sprintFacade.removeSprint(this.idSprint);
+        Sprint sprint = removeSprint();
         
         if (sprint != null) {
             
@@ -92,6 +92,10 @@ public class SelectedSprintBean extends SprintBaseBean {
         }
         
         return null;
+    }
+    
+    public Sprint removeSprint() {
+        return sprintFacade.removeSprint(this.idSprint);
     }
     
     public String createTask() {

@@ -138,7 +138,7 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
     public String deleteTask() {
 
         FacesContext context = FacesContext.getCurrentInstance();
-        task = taskFacade.removeTask(task.getIdTask());
+        task = removeTask();
         tasks.remove(task);
         tareas.getTarget().remove(task);
         if (task != null) {
@@ -154,6 +154,10 @@ public class SprintPlaningBean extends SprintPlaningBaseBean {
             context.addMessage(null, msg);
         }
         return null;
+    }
+    
+    public Task removeTask() {
+        return taskFacade.removeTask(task.getIdTask());
     }
 
     public String addTaskToList(ActionEvent actionEvent) {
