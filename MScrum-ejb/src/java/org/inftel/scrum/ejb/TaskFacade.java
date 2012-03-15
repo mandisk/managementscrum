@@ -4,16 +4,15 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.inftel.scrum.entity.Project;
-import org.inftel.scrum.entity.Sprint;
-import org.inftel.scrum.entity.Task;
-import org.inftel.scrum.entity.User;
+import org.inftel.scrum.entity.*;
 
 /**
  *
@@ -21,6 +20,8 @@ import org.inftel.scrum.entity.User;
  */
 @Stateless
 public class TaskFacade extends AbstractFacade<Task> {
+    
+    private static final Logger LOGGER = Logger.getLogger(TaskFacade.class.getName());
 
     @PersistenceContext(unitName = "MScrum-ejbPU")
     private EntityManager em;
@@ -34,21 +35,44 @@ public class TaskFacade extends AbstractFacade<Task> {
         super(Task.class);
     }
 
-    public Task createTask(String description, int time, int idProject) {
+    public Task createTask(String description, int time, int idProject, int idSprint) {
+        
+        LOGGER.info("Creating task...");
 
         Project project;
-        Task task;
+        Sprint sprint = null;
+        Task task = null;
+        HistorialTareas historialTareas;
 
         try {
 
             project = em.find(Project.class, idProject);
+            
+            LOGGER.info("Project: " + project.toString());
 
             if (project == null) {
                 return null;
             }
+            
+            if (idSprint > 0) {
+                sprint = em.find(Sprint.class, idSprint);
+                
+                LOGGER.info("Sprint: " + sprint.toString());
+                
+                if (sprint == null) {
+                    return null;
+                }
+            }
 
-            task = new Task(-1, 't', description, time, project, null, null);
+            task = new Task(-1, 't', description, time, project, sprint, null);
             em.persist(task);
+            
+            LOGGER.info("Task created");
+            
+            historialTareas = new HistorialTareas(task, new Date(), task.getTime());
+            em.persist(historialTareas);
+            
+            em.flush();
 
         } catch (Exception ex) {
             throw new EJBException(ex);

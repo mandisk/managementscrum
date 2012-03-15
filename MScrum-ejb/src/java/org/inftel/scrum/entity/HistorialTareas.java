@@ -35,6 +35,14 @@ public class HistorialTareas implements Serializable {
     private Date date;
     @NotNull
     private int hours;
+    
+    public HistorialTareas() {}
+    
+    public HistorialTareas(Task task, Date date, int hours) {
+        this.task = task;
+        this.date = date;
+        this.hours = hours;
+    }
 
     public int getHours() {
         return hours;
