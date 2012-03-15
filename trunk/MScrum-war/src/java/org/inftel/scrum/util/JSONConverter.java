@@ -16,26 +16,27 @@ import org.inftel.scrum.entity.User;
  */
 public class JSONConverter {
     
-    private static final String PROJECTS =      formatString("projects");
-    private static final String SESSION =       formatString("session");
-    private static final String SPRINTS =       formatString("sprints");
-    private static final String TASKS =         formatString("tasks");
-    private static final String USERS =         formatString("users");
+    private static final String PROJECTS =              formatString("projects");
+    private static final String SESSION =               formatString("session");
+    private static final String SPRINTS =               formatString("sprints");
+    private static final String TASKS =                 formatString("tasks");
+    private static final String USERS =                 formatString("users");
+    private static final String USERS_NOT_IN_PROJECT =  formatString("usersnotinproject");
     
-    private static final String DESCRIPTION =   formatString("description");
-    private static final String EMAIL =         formatString("email");
-    private static final String END_DATE =      formatString("enddate");
-    private static final String ID =            formatString("id");
-    private static final String ID_PROJECT =    formatString("idproject");
-    private static final String INITIAL_DATE =  formatString("initialdate");
-    private static final String NAME =          formatString("name");
-    private static final String PHONE =         formatString("phone");
-    private static final String SCRUM_MASTER =  formatString("scrummaster");
-    private static final String SURNAME =       formatString("surname");
-    private static final String SPRINT_NUMBER = formatString("sprintnumber");
-    private static final String STATE =         formatString("state");
-    private static final String TIME =          formatString("time");
-    private static final String USER =          formatString("user");
+    private static final String DESCRIPTION =           formatString("description");
+    private static final String EMAIL =                 formatString("email");
+    private static final String END_DATE =              formatString("enddate");
+    private static final String ID =                    formatString("id");
+    private static final String ID_PROJECT =            formatString("idproject");
+    private static final String INITIAL_DATE =          formatString("initialdate");
+    private static final String NAME =                  formatString("name");
+    private static final String PHONE =                 formatString("phone");
+    private static final String SCRUM_MASTER =          formatString("scrummaster");
+    private static final String SURNAME =               formatString("surname");
+    private static final String SPRINT_NUMBER =         formatString("sprintnumber");
+    private static final String STATE =                 formatString("state");
+    private static final String TIME =                  formatString("time");
+    private static final String USER =                  formatString("user");
     
     /**
      * Build Project List and Session id JSON String to send to client
@@ -90,19 +91,27 @@ public class JSONConverter {
         return builder.toString();
     }
     
+    public static String buildJSONUserList(List<User> userList) {
+        return buildJSONUserList(userList, null);
+    }
+    
     /**
      * Build User List JSON String to send to client
      * @param userList
      * @return 
      */
-    public static String buildJSONUserList(List<User> userList) {
+    public static String buildJSONUserList(List<User> userList, List<User> userListNotInProject) {
         StringBuilder builder = new StringBuilder();
         
         String jsonUserList = userListToJSONString(userList);
+        String jsonUserListNotInProject = userListToJSONString(userListNotInProject);
         
         builder .append("{")
-                    .append(USERS).append(":").append(jsonUserList)
-                .append("}");
+                    .append(USERS).append(":").append(jsonUserList);
+        if (userListNotInProject != null) {
+            builder.append(USERS_NOT_IN_PROJECT).append(":").append(jsonUserListNotInProject);
+        }
+        builder.append("}");
         
         return builder.toString();
     }

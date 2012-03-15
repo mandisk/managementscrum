@@ -58,13 +58,6 @@ public class ProjectFacade extends AbstractFacade<Project> {
         }
     }
     
-    public List<User> selectUsersNotIn(int project){
-        Project pro = em.find(Project.class, project);
-        LOGGER.info(pro.getName());
-        
-        return em.createQuery("select u from User u, Project p where p.idProject = :project and u not member of p.users").setParameter("project", project).getResultList();
-    }
-    
     public List<Project> findActiveProjectByUser(int idUser) {
         
         User user = null;

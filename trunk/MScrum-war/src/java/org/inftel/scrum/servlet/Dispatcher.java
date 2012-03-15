@@ -19,6 +19,7 @@ import org.inftel.scrum.control.*;
 import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.Sprint;
 import org.inftel.scrum.entity.Task;
+import org.inftel.scrum.entity.User;
 import org.inftel.scrum.util.JSONConverter;
 
 /**
@@ -31,27 +32,31 @@ public class Dispatcher extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(Dispatcher.class.getName());
     
     // ACTIONS CONSTANTS
-    private static final int ACTION_LOGIN = 0;
-    private static final int ACTION_REGISTER = 1;
-    private static final int ACTION_REQUEST_LIST_SPRINTS = 2;
-    private static final int ACTION_REQUEST_LIST_TASKS = 3;
-    private static final int ACTION_REQUEST_LIST_USERS = 4;
-    private static final int ACTION_ADD_PROJECT = 5;
-    private static final int ACTION_ADD_SPRINT = 6;
-    private static final int ACTION_ADD_TASK = 7;
-    private static final int ACTION_DELETE_PROJECT = 8;
-    private static final int ACTION_DELETE_SPRINT = 9;
-    private static final int ACTION_DELETE_TASK = 10;
+    private static final int ACTION_LOGIN =                 0;
+    private static final int ACTION_REGISTER =              1;
+    private static final int ACTION_REQUEST_LIST_SPRINTS =  2;
+    private static final int ACTION_REQUEST_LIST_TASKS =    3;
+    private static final int ACTION_REQUEST_LIST_USERS =    4;
+    private static final int ACTION_ADD_PROJECT =           5;
+    private static final int ACTION_ADD_SPRINT =            6;
+    private static final int ACTION_ADD_TASK =              7;
+    private static final int ACTION_DELETE_PROJECT =        8;
+    private static final int ACTION_DELETE_SPRINT =         9;
+    private static final int ACTION_DELETE_TASK =           10;	
+    private static final int ACTION_EDIT_PROJECT_ASK =      13;
     
     // RESPONSES CONSTANTS
-    private static final String ERROR_ADD_PROJECT = "ERROR_ADD_PROJECT";
-    private static final String ERROR_ADD_SPRINT = "ERROR_ADD_SPRINT";
-    private static final String ERROR_ADD_TASK = "ERROR_ADD_TASK";
-    private static final String ERROR_UNKNOWN_ACTION = "UNKNOWN_ACTION";
-    private static final String ERROR_LOGIN = "ERROR_LOGIN";
-    private static final String ERROR_REGISTER = "ERROR_REGISTER";
-    private static final String REGISTER_OK = "REGISTER_OK";
-    private static final String SESSION_EXPIRED = "SESSION_EXPIRED";
+    private static final String ERROR_ADD_PROJECT =     "ERROR_ADD_PROJECT";
+    private static final String ERROR_ADD_SPRINT =      "ERROR_ADD_SPRINT";
+    private static final String ERROR_ADD_TASK =        "ERROR_ADD_TASK";
+    private static final String ERROR_DELETE_PROJECT =  "ERROR_DELETE_PROJECT";
+    private static final String ERROR_DELETE_SPRINT =   "ERROR_DELETE_SPRINT";
+    private static final String ERROR_DELETE_TASK =     "ERROR_DELETE_TASK";
+    private static final String ERROR_LOGIN =           "ERROR_LOGIN";
+    private static final String ERROR_REGISTER =        "ERROR_REGISTER";
+    private static final String ERROR_UNKNOWN_ACTION =  "UNKNOWN_ACTION";
+    private static final String REGISTER_OK =           "REGISTER_OK";
+    private static final String SESSION_EXPIRED =       "SESSION_EXPIRED";
 
     /**
      * Processes requests for both HTTP
@@ -111,6 +116,22 @@ public class Dispatcher extends HttpServlet {
             case ACTION_ADD_TASK:
                 
                 result = actionAddTask(dis, request);
+                break;
+            case ACTION_DELETE_PROJECT:
+                
+                result = actionDeleteProject(dis, request);
+                break;
+            case ACTION_DELETE_SPRINT:
+                
+                result = actionDeleteSprint(dis, request);
+                break;
+            case ACTION_DELETE_TASK:
+                
+                result = actionDeleteTask(dis, request);
+                break;
+            case ACTION_EDIT_PROJECT_ASK:
+                
+                result = actionEditProject(dis, request);
                 break;
             default:
                 
@@ -243,6 +264,41 @@ public class Dispatcher extends HttpServlet {
         return result;
     }
     
+    private String actionRequestUserList(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idProject = Integer.valueOf(dis.readUTF());
+
+            SelectedProjectBean selectedProjectBean =  new SelectedProjectBean();
+            selectedProjectBean.initEJB();
+            ProjectListBean projectListBean = (ProjectListBean) session.getAttribute("projectListBean");
+            
+            for (Project p : projectListBean.getActiveProjects()) {
+                if (p.getIdProject() == idProject) {
+                    selectedProjectBean.setIdProject(p.getIdProject());
+                    selectedProjectBean.setName(p.getName());
+                    selectedProjectBean.setDescription(p.getDescription());
+                    selectedProjectBean.setInitialDate(p.getInitialDate());
+                    selectedProjectBean.setEndDate(p.getEndDate());
+                    selectedProjectBean.setOwner(p.getScrumMaster());
+                    
+                    selectedProjectBean.select();
+                }
+            }
+            
+            session.setAttribute("selectedProjectBean", selectedProjectBean);
+            
+            result = JSONConverter.buildJSONUserList(selectedProjectBean.getUsersInProject());
+        }
+        
+        return result;
+    }
+    
     private String actionAddProject(DataInputStream dis, HttpServletRequest request)
             throws IOException {
         
@@ -308,44 +364,6 @@ public class Dispatcher extends HttpServlet {
             }
         }
 
-        return result;
-    }
-    
-    private String actionRequestUserList(DataInputStream dis, HttpServletRequest request)
-            throws IOException {
-        
-        String result = SESSION_EXPIRED;
-        
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            
-            int idProject = Integer.valueOf(dis.readUTF());
-
-            SelectedProjectBean selectedProjectBean =  new SelectedProjectBean();
-            selectedProjectBean.initEJB();
-            ProjectListBean projectListBean = (ProjectListBean) session.getAttribute("projectListBean");
-            
-            for (Project p : projectListBean.getActiveProjects()) {
-                if (p.getIdProject() == idProject) {
-                    selectedProjectBean.setIdProject(p.getIdProject());
-                    selectedProjectBean.setName(p.getName());
-                    selectedProjectBean.setDescription(p.getDescription());
-                    selectedProjectBean.setInitialDate(p.getInitialDate());
-                    selectedProjectBean.setEndDate(p.getEndDate());
-                    selectedProjectBean.setOwner(p.getScrumMaster());
-                    
-                    selectedProjectBean.select();
-                }
-            }
-            
-            session.setAttribute("selectedProjectBean", selectedProjectBean);
-            
-            MyUserListBean myUserListBean = new MyUserListBean();
-            myUserListBean.initEJB();
-            
-            result = JSONConverter.buildJSONUserList(myUserListBean.getUsersInProject(idProject));
-        }
-        
         return result;
     }
     
@@ -439,6 +457,172 @@ public class Dispatcher extends HttpServlet {
         }
         return result;
     }
+    
+    public String actionDeleteProject(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idProject = Integer.parseInt(dis.readUTF());
+            SelectedProjectBean selectedProjectBean =  new SelectedProjectBean();
+            selectedProjectBean.initEJB();
+            ProjectListBean projectListBean =
+                    (ProjectListBean) session.getAttribute("projectListBean");
+            
+            for (Project p : projectListBean.getActiveProjects()) {
+                if (p.getIdProject() == idProject) {
+                    selectedProjectBean.setIdProject(p.getIdProject());
+                    selectedProjectBean.setName(p.getName());
+                    selectedProjectBean.setDescription(p.getDescription());
+                    selectedProjectBean.setInitialDate(p.getInitialDate());
+                    selectedProjectBean.setEndDate(p.getEndDate());
+                    selectedProjectBean.setOwner(p.getScrumMaster());
+
+                    selectedProjectBean.select();
+                }
+            }
+            
+            Project p = selectedProjectBean.removeProject();
+            if (p == null) {
+                result = ERROR_DELETE_PROJECT;
+            }
+            else {
+                projectListBean.removeActiveProject(p);
+                
+//                selectedProjectBean.setIdProject(-1);
+//                selectedProjectBean.setName(null);
+//                selectedProjectBean.setDescription(null);
+//                selectedProjectBean.setInitialDate(null);
+//                selectedProjectBean.setEndDate(null);
+//                selectedProjectBean.setOwner(null);
+//                selectedProjectBean.setSprints(null);
+                selectedProjectBean = null;
+                
+                result = JSONConverter.buildJSONProjectList(
+                        session.getId(), 
+                        (List<Project>) projectListBean.getActiveProjects());
+            }
+        }
+        
+        return result;
+    }
+    
+    public String actionDeleteSprint(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idSprint = Integer.valueOf(dis.readUTF());
+            
+            SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            
+            SelectedSprintBean selectedSprintBean = new SelectedSprintBean();
+            selectedSprintBean.initEJB();
+            
+            Collection<Sprint> sprintList = selectedProjectBean.getSprints();
+            for (Sprint s : sprintList) {
+                if (s.getIdSprint() == idSprint) {
+                    
+                    selectedSprintBean.setIdSprint(s.getIdSprint());
+                    selectedSprintBean.setSprintNumber(s.getSprintNumber());
+                    selectedSprintBean.setInitialDate(s.getInitialDate());
+                    selectedSprintBean.setEndDate(s.getEndDate());
+                    
+                    selectedSprintBean.selectSprint();
+                }
+            }
+            
+            Sprint sprint = selectedSprintBean.removeSprint();
+            if (sprint == null) {
+                result = ERROR_DELETE_SPRINT;
+            }
+            else {
+                
+                selectedProjectBean.removeSprint(sprint);
+                
+                selectedSprintBean = null;
+                result = JSONConverter.buildJSONSprintList((List<Sprint>)selectedProjectBean.getSprints());
+            }
+        }
+        
+        return result;
+    }
+    
+    public String actionDeleteTask(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idTask = Integer.valueOf(dis.readUTF());
+            Task task = new Task(idTask);
+            
+            SelectedSprintBean selectedSprintBean =
+                    (SelectedSprintBean) session.getAttribute("selectedSprintBean");
+            
+            SprintPlaningBean sprintPlaningBean = new SprintPlaningBean();
+            sprintPlaningBean.initEJB();
+            sprintPlaningBean.setTask(task);
+            
+            task = sprintPlaningBean.removeTask();
+            if (task == null) {
+                result = ERROR_DELETE_TASK;
+            }
+            else {
+                
+                selectedSprintBean.removeTask(task);
+                result = JSONConverter.buildJSONTaskList((List<Task>)selectedSprintBean.getTaskList());
+            }
+        }
+        
+        return result;
+    }
+    
+    public String actionEditProject(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idProject = Integer.parseInt(dis.readUTF());
+            SelectedProjectBean selectedProjectBean =  new SelectedProjectBean();
+            selectedProjectBean.initEJB();
+            ProjectListBean projectListBean =
+                    (ProjectListBean) session.getAttribute("projectListBean");
+            
+            for (Project p : projectListBean.getActiveProjects()) {
+                if (p.getIdProject() == idProject) {
+                    selectedProjectBean.setIdProject(p.getIdProject());
+                    selectedProjectBean.setName(p.getName());
+                    selectedProjectBean.setDescription(p.getDescription());
+                    selectedProjectBean.setInitialDate(p.getInitialDate());
+                    selectedProjectBean.setEndDate(p.getEndDate());
+                    selectedProjectBean.setOwner(p.getScrumMaster());
+
+                    selectedProjectBean.select();
+                }
+            }
+            
+            List<User> userList = selectedProjectBean.getUsersInProject();
+            List<User> userListNotInProject = selectedProjectBean.getUserNotInProject();
+            
+            result = JSONConverter.buildJSONUserList(userList, userListNotInProject);
+        }
+        
+        return result;
+    }
+    
     //</editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
