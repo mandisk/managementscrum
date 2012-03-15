@@ -109,7 +109,8 @@ public class JSONConverter {
         builder .append("{")
                     .append(USERS).append(":").append(jsonUserList);
         if (userListNotInProject != null) {
-            builder.append(USERS_NOT_IN_PROJECT).append(":").append(jsonUserListNotInProject);
+            builder .append(",")
+                    .append(USERS_NOT_IN_PROJECT).append(":").append(jsonUserListNotInProject);
         }
         builder.append("}");
         
