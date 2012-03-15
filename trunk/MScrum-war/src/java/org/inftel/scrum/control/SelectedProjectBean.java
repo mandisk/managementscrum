@@ -121,7 +121,7 @@ public class SelectedProjectBean extends ProjectBaseBean {
         FacesContext context = FacesContext.getCurrentInstance();      
         Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         
-        Project p = projectFacade.removeProject(this.idProject);
+        Project p = removeProject();
         
         if (p != null) {
             
@@ -143,6 +143,10 @@ public class SelectedProjectBean extends ProjectBaseBean {
             context.addMessage(null, msg);
         }
         return null;
+    }
+    
+    public Project removeProject() {
+        return projectFacade.removeProject(this.idProject);
     }
     
     public String updateProject() {

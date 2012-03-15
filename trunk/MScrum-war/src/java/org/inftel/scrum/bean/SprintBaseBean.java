@@ -76,4 +76,8 @@ public class SprintBaseBean implements Serializable {
     public void addTask(Task task) {
         this.taskList.add(task);
     }
+    
+    public void removeTask(Task task) {
+        this.taskList.remove(task);
+    }
 }
