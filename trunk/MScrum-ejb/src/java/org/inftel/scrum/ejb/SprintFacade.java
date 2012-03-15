@@ -5,6 +5,7 @@
 package org.inftel.scrum.ejb;
 
 import java.util.Collection;
+import java.util.Date;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -74,5 +75,47 @@ public class SprintFacade extends AbstractFacade<Sprint> {
         } catch (Exception ex) {
             throw new EJBException(ex);
         }
+    }
+    
+    public Sprint createSprint(
+            int sprintNumber, 
+            Date initialDate, 
+            Date endDate, 
+            String projectPath,
+            int idProject) {
+        
+        Project project;
+        Sprint sprint;
+        
+        try {
+            
+            project = em.find(Project.class, idProject);
+            
+            if (project == null) {
+                return null;
+            }
+            
+            try {
+                sprint = (Sprint) em.createQuery("SELECT s FROM Sprint s WHERE s.project = :project AND s.sprintNumber = :sprintNumber")
+                        .setParameter("project", project)
+                        .setParameter("sprintNumber", sprintNumber)
+                        .getSingleResult();    
+            } catch (NoResultException ex) { 
+                sprint = null;
+            }
+            
+            if (sprint != null) {
+                return null;
+            }
+            
+            sprint = new Sprint(-1, sprintNumber, projectPath, initialDate, endDate, null, project);
+            em.persist(sprint);
+            
+            em.flush();
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+        
+        return sprint;
     }
 }
