@@ -239,12 +239,14 @@ public class JSONConverter {
     public static String userToJSONString(User user) {
         StringBuilder builder = new StringBuilder();
         
+        String idUser = formatString(user.getIdUser().toString());
         String name = formatString(user.getName());
         String surname = formatString(user.getSurname());
         String email = formatString(user.getEmail());
         String phone = formatString(user.getTelephone().toString());
         
         builder .append("{")
+                    .append(ID).append(":").append(idUser).append(",")
                     .append(NAME).append(":").append(name).append(",")
                     .append(SURNAME).append(":").append(surname).append(",")
                     .append(EMAIL).append(":").append(email).append(",")
