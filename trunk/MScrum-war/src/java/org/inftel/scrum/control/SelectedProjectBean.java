@@ -166,7 +166,7 @@ public class SelectedProjectBean extends ProjectBaseBean {
             return null;
         }
         
-        project = projectFacade.updateProject(idProject, name, description, initialDate, endDate);
+        project = editProject();
         
         if (project != null) {
             
@@ -219,6 +219,10 @@ public class SelectedProjectBean extends ProjectBaseBean {
         } catch (NamingException e) {
             LOGGER.severe("NamingException: " + e.getMessage());
         }
+    }
+    
+    public Project editProject() {
+        return projectFacade.updateProject(idProject, name, description, initialDate, endDate);
     }
     
     public List<User> getUsersInProject() {

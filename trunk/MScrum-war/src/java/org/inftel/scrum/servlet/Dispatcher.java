@@ -42,21 +42,25 @@ public class Dispatcher extends HttpServlet {
     private static final int ACTION_ADD_TASK =              7;
     private static final int ACTION_DELETE_PROJECT =        8;
     private static final int ACTION_DELETE_SPRINT =         9;
-    private static final int ACTION_DELETE_TASK =           10;	
+    private static final int ACTION_DELETE_TASK =           10;
+    private static final int ACTION_MODIFY_TASK =           11;
+    private static final int ACTION_REQUEST_CHART =         12;
     private static final int ACTION_EDIT_PROJECT_ASK =      13;
+    private static final int ACTION_EDIT_PROJECT_SEND =     14;
     
     // RESPONSES CONSTANTS
-    private static final String ERROR_ADD_PROJECT =     "ERROR_ADD_PROJECT";
-    private static final String ERROR_ADD_SPRINT =      "ERROR_ADD_SPRINT";
-    private static final String ERROR_ADD_TASK =        "ERROR_ADD_TASK";
-    private static final String ERROR_DELETE_PROJECT =  "ERROR_DELETE_PROJECT";
-    private static final String ERROR_DELETE_SPRINT =   "ERROR_DELETE_SPRINT";
-    private static final String ERROR_DELETE_TASK =     "ERROR_DELETE_TASK";
-    private static final String ERROR_LOGIN =           "ERROR_LOGIN";
-    private static final String ERROR_REGISTER =        "ERROR_REGISTER";
-    private static final String ERROR_UNKNOWN_ACTION =  "UNKNOWN_ACTION";
-    private static final String REGISTER_OK =           "REGISTER_OK";
-    private static final String SESSION_EXPIRED =       "SESSION_EXPIRED";
+    private static final String ERROR_ADD_PROJECT =         "ERROR_ADD_PROJECT";
+    private static final String ERROR_ADD_SPRINT =          "ERROR_ADD_SPRINT";
+    private static final String ERROR_ADD_TASK =            "ERROR_ADD_TASK";
+    private static final String ERROR_DELETE_PROJECT =      "ERROR_DELETE_PROJECT";
+    private static final String ERROR_DELETE_SPRINT =       "ERROR_DELETE_SPRINT";
+    private static final String ERROR_DELETE_TASK =         "ERROR_DELETE_TASK";
+    private static final String ERROR_EDIT_PROJECT_SEND =   "ERROR_EDIT_PROJECT_SEND";
+    private static final String ERROR_LOGIN =               "ERROR_LOGIN";
+    private static final String ERROR_REGISTER =            "ERROR_REGISTER";
+    private static final String ERROR_UNKNOWN_ACTION =      "UNKNOWN_ACTION";
+    private static final String REGISTER_OK =               "REGISTER_OK";
+    private static final String SESSION_EXPIRED =           "SESSION_EXPIRED";
 
     /**
      * Processes requests for both HTTP
@@ -70,7 +74,6 @@ public class Dispatcher extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         
         // Send to client
         ServletOutputStream out = response.getOutputStream();
@@ -131,7 +134,11 @@ public class Dispatcher extends HttpServlet {
                 break;
             case ACTION_EDIT_PROJECT_ASK:
                 
-                result = actionEditProject(dis, request);
+                result = actionEditProjectAsk(dis, request);
+                break;
+            case ACTION_EDIT_PROJECT_SEND:
+                
+                result = actionEditProjectSend(dis, request);
                 break;
             default:
                 
@@ -307,60 +314,95 @@ public class Dispatcher extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session != null) {
             
-            Calendar calendarInitial = new GregorianCalendar();
-            Calendar calendarEnd = new GregorianCalendar();
-
-            String sName = dis.readUTF();
-            String sDescription = dis.readUTF();
-            String sInitialDay = dis.readUTF();
-            String sInitialMonth = dis.readUTF();
-            String sInitialYear = dis.readUTF();
-            String sEndDay = dis.readUTF();
-            String sEndMonth = dis.readUTF();
-            String sEndYear = dis.readUTF();
-
-            int iInitialDay = Integer.parseInt(sInitialDay);
-            int iInitialMonth = Integer.parseInt(sInitialMonth);
-            int iInitialYear = Integer.parseInt(sInitialYear);
-
-            int iEndDay = Integer.parseInt(sEndDay);
-            int iEndMonth = Integer.parseInt(sEndMonth);
-            int iEndYear = Integer.parseInt(sEndYear);
-
-            calendarInitial.set(iInitialYear, iInitialMonth, iInitialDay);
-            calendarEnd.set(iEndYear, iEndMonth, iEndDay);
-
-            ProjectBean projectBean = new ProjectBean();
-            projectBean.initEJB();
-            projectBean.setName(sName);
-            projectBean.setDescription(sDescription);
-            projectBean.setInitialDate(calendarInitial.getTime());
-            projectBean.setEndDate(calendarEnd.getTime());
+            Calendar calendar = new GregorianCalendar();
             
-            LoginBean loginBean = (LoginBean) session.getAttribute("loginBean");
+            String varControl = dis.readUTF();
             
-            Project p = projectBean.persistProject(loginBean.getUser().getIdUser());
-            if (p != null) {
-                ProjectListBean projectListBean = 
-                        (ProjectListBean) session.getAttribute("projectListBean");
-                projectListBean.addActiveProject(p);
+            LOGGER.info("Action: " + varControl);
+            
+            boolean addProject = varControl.equals("0") ? true : false;
+            
+            LOGGER.info("Action: " + addProject);
+            
+            String name = dis.readUTF();
+            String description = dis.readUTF();
+            
+            int initialDay = Integer.valueOf(dis.readUTF());
+            int initialMonth = Integer.valueOf(dis.readUTF());
+            int initialYear = Integer.valueOf(dis.readUTF());
+            calendar.set(initialYear, initialMonth, initialDay);
+            Date initialDate = calendar.getTime();
+            
+            int endDay = Integer.valueOf(dis.readUTF());
+            int endMonth = Integer.valueOf(dis.readUTF());
+            int endYear = Integer.valueOf(dis.readUTF());
+            calendar.set(endYear, endMonth, endDay);
+            Date endDate = calendar.getTime();
+            
+            // ADD PROJECT
+            if (addProject) {
+                ProjectBean projectBean = new ProjectBean();
+                projectBean.initEJB();
+                projectBean.setName(name);
+                projectBean.setDescription(description);
+                projectBean.setInitialDate(initialDate);
+                projectBean.setEndDate(endDate);
                 
-                SelectedProjectBean selectedProjectBean = new SelectedProjectBean();
-                selectedProjectBean.setIdProject(p.getIdProject());
-                selectedProjectBean.setName(p.getName());
-                selectedProjectBean.setDescription(p.getDescription());
-                selectedProjectBean.setInitialDate(p.getInitialDate());
-                selectedProjectBean.setEndDate(p.getEndDate());
-                selectedProjectBean.setOwner(p.getScrumMaster());
+                LoginBean loginBean = (LoginBean) session.getAttribute("loginBean");
+                Project p = projectBean.persistProject(loginBean.getUser().getIdUser());
                 
-                session.setAttribute("selectedProjectBean", selectedProjectBean);
-                
-                result = JSONConverter.buildJSONProjectList(
-                            session.getId(),
-                            (List<Project>) projectListBean.getActiveProjects());
-            }
-            else {
-                result = ERROR_ADD_PROJECT;
+                if (p != null) {
+                    ProjectListBean projectListBean = 
+                            (ProjectListBean) session.getAttribute("projectListBean");
+                    projectListBean.addActiveProject(p);
+
+                    SelectedProjectBean selectedProjectBean = new SelectedProjectBean();
+                    selectedProjectBean.setIdProject(p.getIdProject());
+                    selectedProjectBean.setName(p.getName());
+                    selectedProjectBean.setDescription(p.getDescription());
+                    selectedProjectBean.setInitialDate(p.getInitialDate());
+                    selectedProjectBean.setEndDate(p.getEndDate());
+                    selectedProjectBean.setOwner(p.getScrumMaster());
+
+                    session.setAttribute("selectedProjectBean", selectedProjectBean);
+
+                    result = JSONConverter.buildJSONProjectList(
+                                session.getId(),
+                                (List<Project>) projectListBean.getActiveProjects());
+                }
+                else {
+                    result = ERROR_ADD_PROJECT;
+                }
+            // UPDATE PROJECT 
+            } else {
+                SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            
+                selectedProjectBean.setName(name);
+                selectedProjectBean.setDescription(description);
+                selectedProjectBean.setInitialDate(initialDate);
+                selectedProjectBean.setEndDate(endDate);
+
+                Project project = selectedProjectBean.editProject();
+
+                if (project == null) {
+                    result = ERROR_EDIT_PROJECT_SEND;
+                } else {
+                    ProjectListBean projectListBean =
+                            (ProjectListBean) session.getAttribute("projectListBean");
+                    Collection<Project> projectList = projectListBean.getActiveProjects();
+
+                    for (Project p : projectList) {
+                        if (p.getIdProject() == selectedProjectBean.getIdProject()) {
+                            p.setName(name);
+                            p.setDescription(description);
+                            p.setInitialDate(initialDate);
+                            p.setEndDate(endDate);
+                        }
+                    }
+
+                    result = JSONConverter.buildJSONProjectList(session.getId(), (List<Project>) projectList);
+                }
             }
         }
 
@@ -587,7 +629,7 @@ public class Dispatcher extends HttpServlet {
         return result;
     }
     
-    public String actionEditProject(DataInputStream dis, HttpServletRequest request)
+    public String actionEditProjectAsk(DataInputStream dis, HttpServletRequest request)
             throws IOException {
         
         String result = SESSION_EXPIRED;
@@ -596,7 +638,7 @@ public class Dispatcher extends HttpServlet {
         if (session != null) {
             
             int idProject = Integer.parseInt(dis.readUTF());
-            SelectedProjectBean selectedProjectBean =  new SelectedProjectBean();
+            SelectedProjectBean selectedProjectBean = new SelectedProjectBean();
             selectedProjectBean.initEJB();
             ProjectListBean projectListBean =
                     (ProjectListBean) session.getAttribute("projectListBean");
@@ -618,6 +660,66 @@ public class Dispatcher extends HttpServlet {
             List<User> userListNotInProject = selectedProjectBean.getUserNotInProject();
             
             result = JSONConverter.buildJSONUserList(userList, userListNotInProject);
+        }
+        
+        return result;
+    }
+    
+    public String actionEditProjectSend(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            Calendar calendar = new GregorianCalendar();
+            
+            int idProject = Integer.parseInt(dis.readUTF()); // No necesario
+            
+            String name = dis.readUTF();
+            String description = dis.readUTF();
+            int initialDay = Integer.valueOf(dis.readUTF());
+            int initialMonth = Integer.valueOf(dis.readUTF());
+            int initialYear = Integer.valueOf(dis.readUTF());
+            int endDay = Integer.valueOf(dis.readUTF());
+            int endMonth = Integer.valueOf(dis.readUTF());
+            int endYear = Integer.valueOf(dis.readUTF());
+            
+            calendar.set(initialYear, initialMonth, initialDay);
+            Date initialDate = calendar.getTime();
+            
+            calendar.set(endYear, endMonth, endDay);
+            Date endDate = calendar.getTime();
+            
+            SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            
+            selectedProjectBean.setName(name);
+            selectedProjectBean.setDescription(description);
+            selectedProjectBean.setInitialDate(initialDate);
+            selectedProjectBean.setEndDate(endDate);
+            
+            Project project = selectedProjectBean.editProject();
+            
+            if (project == null) {
+                result = ERROR_EDIT_PROJECT_SEND;
+            } else {
+                ProjectListBean projectListBean =
+                        (ProjectListBean) session.getAttribute("projectListBean");
+                Collection<Project> projectList = projectListBean.getActiveProjects();
+                
+                for (Project p : projectList) {
+                    if (p.getIdProject() == selectedProjectBean.getIdProject()) {
+                        p.setName(name);
+                        p.setDescription(description);
+                        p.setInitialDate(initialDate);
+                        p.setEndDate(endDate);
+                    }
+                }
+                
+                result = JSONConverter.buildJSONProjectList(session.getId(), (List<Project>) projectList);
+            }
         }
         
         return result;
