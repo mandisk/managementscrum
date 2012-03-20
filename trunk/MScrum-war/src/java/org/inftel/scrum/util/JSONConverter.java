@@ -104,13 +104,12 @@ public class JSONConverter {
         StringBuilder builder = new StringBuilder();
         
         String jsonUserList = userListToJSONString(userList);
-        String jsonUserListNotInProject = userListToJSONString(userListNotInProject);
         
         builder .append("{")
                     .append(USERS).append(":").append(jsonUserList);
         if (userListNotInProject != null) {
             builder .append(",")
-                    .append(USERS_NOT_IN_PROJECT).append(":").append(jsonUserListNotInProject);
+                    .append(USERS_NOT_IN_PROJECT).append(":").append(userListToJSONString(userListNotInProject));
         }
         builder.append("}");
         
