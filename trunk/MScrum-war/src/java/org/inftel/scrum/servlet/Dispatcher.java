@@ -299,6 +299,7 @@ public class Dispatcher extends HttpServlet {
                     selectedProjectBean.setOwner(p.getScrumMaster());
                     
                     selectedProjectBean.select();
+                    LOGGER.info(p.toString() + " selected");
                 }
             }
             
