@@ -22,8 +22,6 @@ import org.inftel.scrum.entity.User;
  */
 @Stateless
 public class ProjectFacade extends AbstractFacade<Project> {
-    @EJB
-    private UserFacade userFacade;
     private final static Logger LOGGER = Logger.getLogger(ProjectFacade.class .getName());
 
     @PersistenceContext(unitName = "MScrum-ejbPU")
@@ -40,27 +38,28 @@ public class ProjectFacade extends AbstractFacade<Project> {
     
     public void addUsers(int idProject, Object[] idUsers) {
         
+        LOGGER.info("Adding users");
+        
         Project project = em.find(Project.class, idProject);
         
         if (project != null) {
-            
             project.removeAllUsers();
             
             for (Object o : idUsers) {
-                
                 String s = (String) o;
                 int idUser = Integer.parseInt(s);
                 User user = em.find(User.class, idUser);
-                
+                System.out.println(idUser);
                 project.addUser(user);
             }
             project.addUser(project.getScrumMaster());
+            LOGGER.info("Users added");
         }
     }
     
     public List<Project> findActiveProjectByUser(int idUser) {
         
-        User user = null;
+        User user;
         List<Project> projects = null;
         
         try {
@@ -108,7 +107,7 @@ public class ProjectFacade extends AbstractFacade<Project> {
             Date endDate,
             int idScrumMaster) {
         
-        User scrumMaster = null;
+        User scrumMaster;
         Project project = null;
         
         try {
@@ -135,7 +134,7 @@ public class ProjectFacade extends AbstractFacade<Project> {
     
     public Project removeProject(int idProject) {
         
-        Project project = null;
+        Project project;
         
         try {
             
