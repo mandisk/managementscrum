@@ -5,10 +5,10 @@
 package org.inftel.scrum.ejb;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import org.inftel.scrum.entity.Project;
 import org.inftel.scrum.entity.User;
@@ -19,6 +19,9 @@ import org.inftel.scrum.entity.User;
  */
 @Stateless
 public class UserFacade extends AbstractFacade<User> {
+    
+    private static final Logger LOGGER = Logger.getLogger(UserFacade.class.getName());
+    
     @PersistenceContext(unitName = "MScrum-ejbPU")
     private EntityManager em;
 
@@ -65,9 +68,15 @@ public class UserFacade extends AbstractFacade<User> {
         List<User> users = null;
         
         try {
+            
             users = em.createQuery("SELECT p.users FROM Project p WHERE p.idProject = :idProject")
                     .setParameter("idProject", idProject)
                     .getResultList();
+            
+            if (users == null) {
+                LOGGER.info("Lista de usuarios nula");
+            }
+            
         } catch (Exception ex) {
             throw new EJBException(ex);
         }

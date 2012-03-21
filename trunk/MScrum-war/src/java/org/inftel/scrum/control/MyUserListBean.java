@@ -61,9 +61,13 @@ public class MyUserListBean extends UserListBaseBean {
     public String insert() {
         
         Object[] idUsers = users.getTarget().toArray();
-        projectFacade.addUsers(this.idProject, idUsers);
+        addUsers(idUsers);
         
         return "main?faces-redirect=true";
+    }
+    
+    public void addUsers(Object[] idUsers) {
+        projectFacade.addUsers(this.idProject, idUsers);
     }
     
     public void initEJB() {

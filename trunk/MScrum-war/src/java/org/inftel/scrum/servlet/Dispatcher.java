@@ -47,6 +47,7 @@ public class Dispatcher extends HttpServlet {
     private static final int ACTION_REQUEST_CHART =         12;
     private static final int ACTION_EDIT_PROJECT     =      13;
     private static final int ACTION_EDIT_USER_PROJECT_ASK = 14;
+    private static final int ACTION_EDIT_USER_PROJECT_SEND = 15;
     
     // RESPONSES CONSTANTS
     private static final String ERROR_ADD_PROJECT =         "ERROR_ADD_PROJECT";
@@ -140,10 +141,10 @@ public class Dispatcher extends HttpServlet {
                 
                 result = actionEditUserProjectAsk(dis, request);
                 break;
-//            case ACTION_EDIT_PROJECT_SEND:
-//                
-//                result = actionEditProjectSend(dis, request);
-//                break;
+            case ACTION_EDIT_USER_PROJECT_SEND:
+                
+                result = actionEditUserProjectSend(dis, request);
+                break;
             default:
                 
                 result = ERROR_UNKNOWN_ACTION;
@@ -677,8 +678,10 @@ public class Dispatcher extends HttpServlet {
                     selectedProjectBean.setInitialDate(p.getInitialDate());
                     selectedProjectBean.setEndDate(p.getEndDate());
                     selectedProjectBean.setOwner(p.getScrumMaster());
-
+                    
                     selectedProjectBean.select();
+                    
+                    session.setAttribute("selectedProjectBean", selectedProjectBean);
                 }
             }
             
@@ -686,6 +689,43 @@ public class Dispatcher extends HttpServlet {
             List<User> userListNotInProject = selectedProjectBean.getUserNotInProject();
             
             result = JSONConverter.buildJSONUserList(userList, userListNotInProject);
+        }
+        
+        return result;
+    }
+    
+    public String actionEditUserProjectSend(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            String scrumMasterId = String.valueOf(selectedProjectBean.getOwner().getIdUser());
+            
+            // Get number of id's
+            int size = dis.readInt();
+            // Get array of id's
+            List<String> idUsers = new ArrayList<String>();
+            for (int i = 0; i < size; i++) {
+                String id = dis.readUTF();
+                if (!scrumMasterId.equals(id)) {
+                    idUsers.add(id);
+                }
+            }
+            
+            MyUserListBean myUserListBean = new MyUserListBean();
+            myUserListBean.initEJB();
+            myUserListBean.setIdProject(selectedProjectBean.getIdProject());
+            myUserListBean.addUsers(idUsers.toArray());
+            
+            ProjectListBean projectListBean = 
+                    (ProjectListBean) session.getAttribute("projectListBean");
+            
+            result = JSONConverter.buildJSONProjectList(session.getId(), (List<Project>)projectListBean.getActiveProjects());
         }
         
         return result;
