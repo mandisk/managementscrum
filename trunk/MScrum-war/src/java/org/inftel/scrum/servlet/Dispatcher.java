@@ -32,22 +32,23 @@ public class Dispatcher extends HttpServlet {
     private final static Logger LOGGER = Logger.getLogger(Dispatcher.class.getName());
     
     // ACTIONS CONSTANTS
-    private static final int ACTION_LOGIN =                 0;
-    private static final int ACTION_REGISTER =              1;
-    private static final int ACTION_REQUEST_LIST_SPRINTS =  2;
-    private static final int ACTION_REQUEST_LIST_TASKS =    3;
-    private static final int ACTION_REQUEST_LIST_USERS =    4;
-    private static final int ACTION_ADD_PROJECT =           5;
-    private static final int ACTION_ADD_SPRINT =            6;
-    private static final int ACTION_ADD_TASK =              7;
-    private static final int ACTION_DELETE_PROJECT =        8;
-    private static final int ACTION_DELETE_SPRINT =         9;
-    private static final int ACTION_DELETE_TASK =           10;
-    private static final int ACTION_MODIFY_TASK =           11;
-    private static final int ACTION_REQUEST_CHART =         12;
-    private static final int ACTION_EDIT_PROJECT     =      13;
-    private static final int ACTION_EDIT_USER_PROJECT_ASK = 14;
-    private static final int ACTION_EDIT_USER_PROJECT_SEND = 15;
+    private static final int ACTION_LOGIN =                     0;
+    private static final int ACTION_REGISTER =                  1;
+    private static final int ACTION_REQUEST_LIST_SPRINTS =      2;
+    private static final int ACTION_REQUEST_LIST_TASKS =        3;
+    private static final int ACTION_REQUEST_LIST_USERS =        4;
+    private static final int ACTION_ADD_PROJECT =               5;
+    private static final int ACTION_ADD_SPRINT =                6;
+    private static final int ACTION_ADD_TASK =                  7;
+    private static final int ACTION_DELETE_PROJECT =            8;
+    private static final int ACTION_DELETE_SPRINT =             9;
+    private static final int ACTION_DELETE_TASK =               10;
+    private static final int ACTION_EDIT_TASK_ASK =             11;
+    private static final int ACTION_REQUEST_CHART =             12;
+    private static final int ACTION_EDIT_PROJECT     =          13;
+    private static final int ACTION_EDIT_USER_PROJECT_ASK =     14;
+    private static final int ACTION_EDIT_USER_PROJECT_SEND =    15;
+    private static final int ACTION_EDIT_TASK_SEND =            16;
     
     // RESPONSES CONSTANTS
     private static final String ERROR_ADD_PROJECT =         "ERROR_ADD_PROJECT";
@@ -133,6 +134,10 @@ public class Dispatcher extends HttpServlet {
                 
                 result = actionDeleteTask(dis, request);
                 break;
+            case ACTION_EDIT_TASK_ASK:
+                
+                result = actionEditTaskAsk(dis, request);
+                break;
             case ACTION_EDIT_PROJECT:
                 
                 result = actionEditProject(dis, request);
@@ -144,6 +149,10 @@ public class Dispatcher extends HttpServlet {
             case ACTION_EDIT_USER_PROJECT_SEND:
                 
                 result = actionEditUserProjectSend(dis, request);
+                break;
+            case ACTION_EDIT_TASK_SEND:
+                
+                result = actionEditTaskSend(dis, request);
                 break;
             default:
                 
@@ -595,6 +604,24 @@ public class Dispatcher extends HttpServlet {
         return result;
     }
     
+    public String actionEditTaskAsk(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            SelectedProjectBean selectedProjectBean =
+                    (SelectedProjectBean) session.getAttribute("selectedProjectBean");
+            
+            List<User> userList = selectedProjectBean.getUsersInProject();
+            result = JSONConverter.buildJSONUserList(userList);
+        }
+        
+        return result;
+    }
+    
     public String actionEditProject(DataInputStream dis, HttpServletRequest request)
             throws IOException {
         // Check session
@@ -726,6 +753,19 @@ public class Dispatcher extends HttpServlet {
                     (ProjectListBean) session.getAttribute("projectListBean");
             
             result = JSONConverter.buildJSONProjectList(session.getId(), (List<Project>)projectListBean.getActiveProjects());
+        }
+        
+        return result;
+    }
+    
+    public String actionEditTaskSend(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
         }
         
         return result;
