@@ -80,4 +80,15 @@ public class SprintBaseBean implements Serializable {
     public void removeTask(Task task) {
         this.taskList.remove(task);
     }
+    
+    public void updateTask(Task task) {
+        for (Task t : taskList) {
+            if (t.getIdTask() == task.getIdTask()) {
+                t.setDescription(task.getDescription());
+                t.setState(task.getState());
+                t.setTime(task.getTime());
+                t.setUser(task.getUser());
+            }
+        }
+    }
 }

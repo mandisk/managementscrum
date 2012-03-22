@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.inftel.scrum.entity.*;
@@ -193,6 +194,46 @@ public class TaskFacade extends AbstractFacade<Task> {
 
             return null;
 
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
+    }
+    
+    public Task updateTask(int idTask, int idUser, String description, int time, char state) {
+        
+        Task task;
+        User user;
+        
+        try {
+            
+            user = em.find(User.class, idUser);
+            
+            if (user == null) {
+                return null;
+            }
+            
+            task = em.find(Task.class, idTask);
+            task.setDescription(description);
+            task.setState(state);
+            task.setTime(time);
+            task.setUser(user);
+            
+            Date today = new Date();
+            
+            HistorialTareas historialTareas = (HistorialTareas)
+                    em.createQuery("SELECT h FROM HistorialTareas h WHERE h.task = :task AND h.date = :date")
+                    .setParameter("task", task)
+                    .setParameter("date", today)
+                    .getSingleResult();
+            
+            historialTareas.setHours(time);
+            
+            em.flush();
+            
+            return task;
+        } catch (NoResultException ex) {
+            LOGGER.info(ex.getMessage());
+            return null;
         } catch (Exception ex) {
             throw new EJBException(ex);
         }
