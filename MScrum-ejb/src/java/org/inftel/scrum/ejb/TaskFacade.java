@@ -4,7 +4,9 @@
  */
 package org.inftel.scrum.ejb;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJBException;
@@ -22,6 +24,8 @@ import org.inftel.scrum.entity.*;
 public class TaskFacade extends AbstractFacade<Task> {
     
     private static final Logger LOGGER = Logger.getLogger(TaskFacade.class.getName());
+    
+    private static final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000;
 
     @PersistenceContext(unitName = "MScrum-ejbPU")
     private EntityManager em;
@@ -36,8 +40,6 @@ public class TaskFacade extends AbstractFacade<Task> {
     }
 
     public Task createTask(String description, int time, int idProject, int idSprint) {
-        
-        LOGGER.info("Creating task...");
 
         Project project;
         Sprint sprint = null;
@@ -47,8 +49,6 @@ public class TaskFacade extends AbstractFacade<Task> {
         try {
 
             project = em.find(Project.class, idProject);
-            
-            LOGGER.info("Project: " + project.toString());
 
             if (project == null) {
                 return null;
@@ -56,8 +56,6 @@ public class TaskFacade extends AbstractFacade<Task> {
             
             if (idSprint > 0) {
                 sprint = em.find(Sprint.class, idSprint);
-                
-                LOGGER.info("Sprint: " + sprint.toString());
                 
                 if (sprint == null) {
                     return null;
@@ -67,10 +65,22 @@ public class TaskFacade extends AbstractFacade<Task> {
             task = new Task(-1, 't', description, time, project, sprint, null);
             em.persist(task);
             
-            LOGGER.info("Task created");
+            Date initialDate = sprint.getInitialDate();
+            Date endDate = sprint.getEndDate();
             
-            historialTareas = new HistorialTareas(task, new Date(), task.getTime());
-            em.persist(historialTareas);
+            int days = dateDiff(endDate, initialDate);
+            
+            LOGGER.info("Diferencia de dias: " + days);
+            
+            for (int i = 0; i < days + 1; i++) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(initialDate);
+                calendar.add(Calendar.DAY_OF_MONTH, i);
+                
+                
+                historialTareas = new HistorialTareas(task, calendar.getTime(), task.getTime());
+                em.persist(historialTareas);
+            }
             
             em.flush();
 
@@ -186,5 +196,9 @@ public class TaskFacade extends AbstractFacade<Task> {
         } catch (Exception ex) {
             throw new EJBException(ex);
         }
+    }
+    
+    private int dateDiff(Date date1, Date date2) {
+        return (int) ((date1.getTime() - date2.getTime()) / MILLSECS_PER_DAY);
     }
 }
