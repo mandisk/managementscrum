@@ -76,7 +76,7 @@ public class TaskFacade extends AbstractFacade<Task> {
             
             LOGGER.info("Diferencia de dias: " + days);
             
-            for (int i = 0; i < days + 1; i++) {
+            for (int i = 0; i < days; i++) {
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(initialDate);
                 calendar.add(Calendar.DAY_OF_MONTH, i);
