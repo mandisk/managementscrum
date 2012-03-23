@@ -69,6 +69,9 @@ public class TaskFacade extends AbstractFacade<Task> {
             Date initialDate = sprint.getInitialDate();
             Date endDate = sprint.getEndDate();
             
+            LOGGER.info("Initial date: " + initialDate);
+            LOGGER.info("End date: " + endDate);
+            
             int days = dateDiff(endDate, initialDate);
             
             LOGGER.info("Diferencia de dias: " + days);
@@ -220,13 +223,15 @@ public class TaskFacade extends AbstractFacade<Task> {
             
             Date today = new Date();
             
-            HistorialTareas historialTareas = (HistorialTareas)
-                    em.createQuery("SELECT h FROM HistorialTareas h WHERE h.task = :task AND h.date = :date")
+            List<HistorialTareas> historialTareasList =
+                    em.createQuery("SELECT h FROM HistorialTareas h WHERE h.task = :task AND h.date >= :date")
                     .setParameter("task", task)
                     .setParameter("date", today)
-                    .getSingleResult();
+                    .getResultList();
             
-            historialTareas.setHours(time);
+            for (HistorialTareas historialTareas : historialTareasList) {
+                historialTareas.setHours(time);
+            }
             
             em.flush();
             
@@ -240,6 +245,8 @@ public class TaskFacade extends AbstractFacade<Task> {
     }
     
     private int dateDiff(Date date1, Date date2) {
-        return (int) ((date1.getTime() - date2.getTime()) / MILLSECS_PER_DAY);
+        long days = ((date1.getTime() - date2.getTime()) / MILLSECS_PER_DAY);
+        
+        return (int) days + 1;
     }
 }

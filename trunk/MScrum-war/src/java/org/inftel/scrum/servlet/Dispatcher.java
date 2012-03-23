@@ -49,6 +49,8 @@ public class Dispatcher extends HttpServlet {
     private static final int ACTION_EDIT_USER_PROJECT_ASK =     14;
     private static final int ACTION_EDIT_USER_PROJECT_SEND =    15;
     private static final int ACTION_EDIT_TASK_SEND =            16;
+    private static final int ACTION_CLOSE_SESSION =             17;
+    
     
     // RESPONSES CONSTANTS
     private static final String ERROR_ADD_PROJECT =         "ERROR_ADD_PROJECT";
@@ -64,6 +66,7 @@ public class Dispatcher extends HttpServlet {
     private static final String ERROR_UNKNOWN_ACTION =      "UNKNOWN_ACTION";
     private static final String REGISTER_OK =               "REGISTER_OK";
     private static final String SESSION_EXPIRED =           "SESSION_EXPIRED";
+    private static final String SESSION_CLOSED =            "SESSION_CLOSED";
 
     /**
      * Processes requests for both HTTP
@@ -154,6 +157,14 @@ public class Dispatcher extends HttpServlet {
             case ACTION_EDIT_TASK_SEND:
                 
                 result = actionEditTaskSend(dis, request);
+                break;
+            case ACTION_REQUEST_CHART:
+                
+                result = actionStatistics(dis, request);
+                break;
+            case ACTION_CLOSE_SESSION:
+                
+                result = actionCloseSession(dis, request);
                 break;
             default:
                 
@@ -795,6 +806,41 @@ public class Dispatcher extends HttpServlet {
             result = JSONConverter.buildJSONTaskList((List<Task>)selectedSprintBean.getTaskList());
         }
         
+        return result;
+    }
+    
+    public String actionStatistics(DataInputStream dis, HttpServletRequest request)
+            throws IOException {
+        
+        String result = SESSION_EXPIRED;
+        
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            
+            int idSprint = Integer.valueOf(dis.readUTF());
+            
+            ChartsBean chartsBean = new ChartsBean();
+            chartsBean.initEJB();
+            
+            Date date = new Date();
+            List<Long> times = chartsBean.getStatistics(idSprint, date);
+            
+            for (Long l : times) {
+                LOGGER.info("Sum hours: " + l);
+            }
+            
+            result = JSONConverter.buildJSONHourList(times);
+        }
+        
+        return result;
+    }
+    
+    public String actionCloseSession(DataInputStream dis, HttpServletRequest request) {
+        String result = SESSION_CLOSED;
+        HttpSession session = request.getSession(false);
+        if(session != null){
+            session.invalidate();
+        }
         return result;
     }
     

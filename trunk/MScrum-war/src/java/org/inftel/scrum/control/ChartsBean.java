@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inftel.scrum.ejb.HistorialTareasFacade;
 import org.inftel.scrum.ejb.TaskFacade;
 import org.inftel.scrum.ejb.UserFacade;
@@ -30,6 +33,8 @@ import org.primefaces.model.chart.LineChartSeries;
 @ManagedBean
 @SessionScoped
 public class ChartsBean implements Serializable {
+    
+    private static final Logger LOGGER = Logger.getLogger(ChartsBean.class.getName());
 
     @EJB
     private HistorialTareasFacade historialTareasFacade;
@@ -245,5 +250,23 @@ public class ChartsBean implements Serializable {
 
     public void setLinearModel(CartesianChartModel linearModel) {
         this.linearModel = linearModel;
+    }
+    
+    public List<Long> getStatistics(int idSprint, Date date) {
+        return historialTareasFacade.getStatistics(idSprint, date);
+    }
+    
+    public void initEJB() {
+        
+        try {
+            
+            InitialContext initialContext = new InitialContext();
+            java.lang.Object ejbHome =
+                    initialContext.lookup("java:global/MScrum/MScrum-ejb/HistorialTareasFacade");
+            this.historialTareasFacade =
+                    (HistorialTareasFacade) javax.rmi.PortableRemoteObject.narrow(ejbHome, HistorialTareasFacade.class);
+        } catch (NamingException e) {
+            LOGGER.severe("NamingException: " + e.getMessage());
+        }
     }
 }
