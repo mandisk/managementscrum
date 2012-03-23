@@ -20,6 +20,7 @@ public class JSONConverter {
     private static final String SESSION =               formatString("session");
     private static final String SPRINTS =               formatString("sprints");
     private static final String TASKS =                 formatString("tasks");
+    private static final String HOURS =                 formatString("hours");
     private static final String USERS =                 formatString("users");
     private static final String USERS_NOT_IN_PROJECT =  formatString("usersnotinproject");
     
@@ -115,6 +116,23 @@ public class JSONConverter {
         
         return builder.toString();
     }
+    
+    /**
+     * Build Hour List JSON String to send to client
+     * @param hourList
+     * @return 
+     */
+    public static String buildJSONHourList(List<Long> hourList) {
+        StringBuilder builder = new StringBuilder();
+        
+        String jsonHourList = hourListToJSONString(hourList);
+        
+        builder .append("{")
+                    .append(HOURS).append(":").append(jsonHourList)
+                .append("}");
+        
+        return builder.toString();
+    }
             
     /**
      * Convert Project List to JSON String
@@ -195,6 +213,28 @@ public class JSONConverter {
         for (int i = 0;  i < size; i++) {
             String jsonUser = userToJSONString(userList.get(i));
             builder.append(jsonUser);
+            
+            if (i < size - 1)
+                builder.append(",");
+        }
+        builder.append("]");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Convert Hour List to JSON String
+     * @param hourList
+     * @return 
+     */
+    private static String hourListToJSONString(List<Long> hourList) {
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("[");
+        int size = hourList.size();
+        for (int i = 0;  i < size; i++) {
+            String jsonHour = hourToJSONString(hourList.get(i));
+            builder.append(jsonHour);
             
             if (i < size - 1)
                 builder.append(",");
@@ -304,6 +344,21 @@ public class JSONConverter {
                     .append(DESCRIPTION).append(":").append(description).append(",")
                     .append(TIME).append(":").append(time).append(",")
                     .append(USER).append(":").append(user)
+                .append("}");
+        
+        return builder.toString();
+    }
+    
+    /**
+     * Convert Hours to JSON String
+     * @param hours
+     * @return 
+     */
+    private static String hourToJSONString(Long hours) {
+        StringBuilder builder = new StringBuilder();
+        
+        builder .append("{")
+                    .append(TIME).append(":").append(hours)
                 .append("}");
         
         return builder.toString();

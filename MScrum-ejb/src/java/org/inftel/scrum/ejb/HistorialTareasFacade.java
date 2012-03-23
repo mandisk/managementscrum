@@ -6,6 +6,7 @@ package org.inftel.scrum.ejb;
 
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,7 @@ public class HistorialTareasFacade extends AbstractFacade<HistorialTareas> {
     @PersistenceContext(unitName = "MScrum-ejbPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
@@ -41,6 +43,24 @@ public class HistorialTareasFacade extends AbstractFacade<HistorialTareas> {
         List lista = query.getResultList();
         List<Date> listT = (List<Date>) lista;
         return listT;
+    }
+    
+    public List<Long> getStatistics(int idSprint, Date date) {
+        
+        try {
+            String query = "SELECT SUM(h.hours) FROM HistorialTareas h " +
+                    "WHERE h.date <= :date AND h.task.sprint.idSprint = :idSprint " +
+                    "GROUP BY h.date " +
+                    "ORDER BY h.date";
+            List<Long> times = em.createQuery(query)
+                    .setParameter("date", date)
+                    .setParameter("idSprint", idSprint)
+                    .getResultList();
+            
+            return times;
+        } catch (Exception ex) {
+            throw new EJBException(ex);
+        }
     }
     
 }
